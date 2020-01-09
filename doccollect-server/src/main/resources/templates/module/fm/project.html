@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目管理</title>
+		<#include "/inc/header.html">
+    <style>
+        #app{padding:8px;}
+        .el-upload__input,input[type=file]{display:none;}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div v-show="showList">
+        <el-row class="grid-btn">
+          <el-col :span="6">
+              <el-input v-model="q.project_name" @keyup.enter="query" clearable placeholder="项目名称"></el-input>
+          </el-col>
+          <el-col :span="4" :offset="1">
+            <el-input v-model="q.unit_name" @keyup.enter="query" clearable placeholder="单位名称"></el-input>
+          </el-col>
+          <el-col :span="11" :offset="2">
+              <el-button type="primary" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+              <el-button type="primary" @click="upload"><i class="fa fa-cloud-upload"></i>&nbsp;上传</el-button>
+              <!--<el-button type="primary" @click="add"><i class="fa fa-plus-circle"></i>&nbsp;新增</el-button>-->
+              <el-button type="primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+            <el-col :span="24">
+                <el-table
+                        :data="tablePage.list"
+                        border
+                        size="small"
+                        height="430"
+                        :stripe="true"
+                        style="width: 100%"
+                        highlight-current-row
+                        @selection-change="tableClick">
+                    <el-table-column
+                            type="selection"
+                            width="50">
+                    </el-table-column>
+                    <el-table-column label="序号" width="50" :formatter="colIndex" align="center"></el-table-column>
+                    <el-table-column prop="project_no" width="160" label="备案号" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column prop="unit_name" label="单位名称" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="150">
+                        <template slot-scope="scope">
+                            <!--<el-button @click="view(scope.row)" type="text" size="mini">查看</el-button>-->
+                            <el-button @click="update(scope.row)" type="text" size="mini">手工补录</el-button>
+                            <el-button @click="listFile(scope.row)" type="text" size="mini">附件列表</el-button>
+                        </template>
+                    </el-table-column>
+                    <!--<el-table-column-->
+                            <!--prop="crtDate"-->
+                            <!--label="创建日期"-->
+                            <!--:show-overflow-tooltip="true"-->
+                            <!--width="120"-->
+                            <!--align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<span>{{dateStr(scope.row.crtDate)}}</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                </el-table>
+                <el-pagination
+                        :pager-count="5"
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="tablePage.currPage"
+                        :page-size="tablePage.pageSize"
+                        :page-sizes="[10, 20, 30]"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="tablePage.totalCount">
+                </el-pagination>
+            </el-col>
+        </el-row>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">
+          <el-button @click="reBack"><i class="fa fa-mail-reply"></i>&nbsp;返回</el-button>
+            <el-button type="primary" @click="save"><i class="fa fa-save"></i>&nbsp;保存</el-button>
+        </div>
+        <el-scrollbar style="height:calc(100vh - 60px);margin-top:20px;" class="scroll-fix">
+            <el-row>
+            <el-col :span="24">
+                <div class="doc-title">
+                    <h3>北京市非政府投资工业和信息化固定资产投资项目</h3>
+                    <h3>备案证明</h3>
+                    <b>{{info.project_no}}</b>
+                </div>
+                <div style="text-align:right;">单位：资金（万元）面积（平方米）</div>
+            </el-col>
+        </el-row>
+        <cmp :column="config" :info="info"></cmp>
+        </el-scrollbar>
+    </div>
+    <el-dialog title="数据上传" :close-on-click-modal="false" :visible.sync="showUpload">
+        <el-upload action="${request.contextPath}/fm/project/upload" ref="upload" :on-success="endUpload"
+                :multiple="false" accept=".doc,.docx" :auto-upload="false" :file-list="fileList">
+            <el-button slot="trigger" size="mini" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="mini" type="success" @click="startUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传doc/docx文件</div>
+        </el-upload>
+    </el-dialog>
+    <el-dialog title="数据上传" :close-on-click-modal="false" :visible.sync="showFile" width="500px">
+        <el-row>
+            <el-col :span="24">
+                <el-table
+                        :data="filePage.list"
+                        border
+                        size="mini"
+                        height="250px"
+                        :stripe="true"
+                        style="width: 450px"
+                        highlight-current-row>
+                    <el-table-column label="序号" width="50" type="index" align="center"></el-table-column>
+                    <el-table-column prop="file_name" label="文件名" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="120">
+                        <template slot-scope="scope">
+                            <el-button @click="downloadFile(scope.row)" type="text" size="mini">下载</el-button>
+                            <el-button @click="delFile(scope.row)" type="text" size="mini">删除</el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-col>
+            <el-col :span="24">
+                <el-upload action="${request.contextPath}/sys/file/save" ref="fileUpload" :on-success="endFileUpload"
+                           :multiple="false" :auto-upload="false" :file-list="filePage.uplist" :data="filePage.parm">
+                    <el-button slot="trigger" size="mini" type="primary">选取文件</el-button>
+                    <el-button style="margin-left: 10px;" size="mini" type="success" @click="startFileUpload">上传</el-button>
+                </el-upload>
+            </el-col>
+        </el-row>
+    </el-dialog>
+
+</div>
+<script src="${request.contextPath}/static/js/module/fm/seavizForm.js?_${.now?long}"></script>
+<script src="${request.contextPath}/static/js/module/fm/project.js?_${.now?long}"></script>
+
+</body>
+</html>

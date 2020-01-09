@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>定时任务日志</title>
+<#include "/header.html">
+	<style>
+		.el-checkbox:last-of-type{margin-bottom: 0}
+		.status-nor{background: green; border-radius: 8px; color: white; padding: 5px 12px}
+		.status-pau{background: red; border-radius: 8px; color: white; padding: 5px 12px}
+	</style>
+</head>
+<body>
+<div id="rrapp">
+	<div class="grid-btn">
+		<div class="form-group col-sm-2">
+			<input type="text" class="form-control" v-model="beanName" @keyup.enter="query(true)" placeholder="beanName">
+		</div>
+		<a class="btn btn-default" @click="query"><i class="fa fa-search"></i>&nbsp;查询</a>
+		&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="back" value="返回"/>
+	</div>
+	<div style="padding: 0 10px">
+		<el-table
+				:data="dataPage.list"
+				border
+				size="small"
+				height="430"
+				:stripe="true"
+				style="width: 100%">
+			<el-table-column
+					label="序号"
+					:formatter="colIndex"
+					width="50"
+					align="center">
+			</el-table-column>
+			<el-table-column
+					prop="beanName"
+					label="bean名称"
+					:show-overflow-tooltip="true"
+					align="center">
+			</el-table-column>
+			<el-table-column
+					prop="params"
+					label="参数"
+					:show-overflow-tooltip="true"
+					align="center">
+			</el-table-column>
+			<el-table-column
+					prop="remark"
+					label="备注"
+					:show-overflow-tooltip="true"
+					align="center">
+			</el-table-column>
+			<el-table-column
+					prop="status"
+					label="状态"
+					:show-overflow-tooltip="true"
+					align="center">
+				<template slot-scope="scope">
+					<spanc v-if="scope.row.status == 0" class="status-nor">成功</spanc>
+					<span v-else="" class="status-pau" style="cursor: pointer" @click="showError(scope.row.logId)">失败</span>
+				</template>
+			</el-table-column>
+			<el-table-column
+					prop="times"
+					label="耗时(单位：毫秒)"
+					:show-overflow-tooltip="true"
+					align="center">
+			</el-table-column>
+			<el-table-column
+					prop="createTime"
+					label="执行时间"
+					:show-overflow-tooltip="true"
+					align="center">
+			</el-table-column>
+		</el-table>
+		<el-pagination
+				@size-change="handleSizeChange"
+				@current-change="handleCurrentChange"
+				:current-page="dataPage.currPage"
+				:page-size="dataPage.pageSize"
+				:page-sizes="[10, 20, 30]"
+				layout="total, sizes, prev, pager, next, jumper"
+				:total="dataPage.totalCount">
+		</el-pagination>
+	</div>
+</div>
+
+<script src="${request.contextPath}/static/js/module/job/schedule_log.js?_${.now?long}"></script>
+</body>
+</html>

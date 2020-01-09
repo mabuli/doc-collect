@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>定时任务</title>
+<#include "/header.html">
+	<style>
+		.el-checkbox:last-of-type{margin-bottom: 0}
+		.status-nor{background: green; border-radius: 8px; color: white; padding: 5px 12px}
+		.status-pau{background: red; border-radius: 8px; color: white; padding: 5px 12px}
+	</style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn" style="height:34px;">
+			<div class="form-group col-sm-2">
+				<input type="text" class="form-control" v-model="beanName" @keyup.enter="query" placeholder="bean名称">
+			</div>
+			<a class="btn btn-default" @click="query(true)"><i class="fa fa-search"></i>&nbsp;查询</a>
+			<#if shiro.hasPermission("sys:schedule:save")>
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:schedule:update")>
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:schedule:delete")>
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
+			<#if shiro.hasPermission("sys:schedule:pause")>
+			<a class="btn btn-primary" @click="pause"><i class="fa fa-pause"></i>&nbsp;暂停</a>
+			</#if>
+			<#if shiro.hasPermission("sys:schedule:resume")>
+			<a class="btn btn-primary" @click="resume"><i class="fa fa-play"></i>&nbsp;恢复</a>
+			</#if>
+			<#if shiro.hasPermission("sys:schedule:run")>
+			<a class="btn btn-primary" @click="runOnce"><i class="fa fa-arrow-circle-right"></i>&nbsp;立即执行</a>
+			</#if>
+			<#if shiro.hasPermission("sys:schedule:log")>
+			<a class="btn btn-danger" style="float:right;" href="schedule_log.html">日志列表</a>
+			</#if>
+		</div>
+		<div style="padding: 0 10px">
+			<el-table
+					:data="dataPage.list"
+					border
+					size="small"
+					height="430"
+					:stripe="true"
+					style="width: 100%"
+					@selection-change="handleSelectionChange">
+				<el-table-column
+						type="selection"
+						width="50">
+				</el-table-column>
+				<el-table-column
+						label="序号"
+						:formatter="colIndex"
+						width="50"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="beanName"
+						label="bean名称"
+						:show-overflow-tooltip="true"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="params"
+						label="参数"
+						:show-overflow-tooltip="true"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="cronExpression"
+						label="cron表达式"
+						:show-overflow-tooltip="true"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="remark"
+						label="备注"
+						:show-overflow-tooltip="true"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="status"
+						label="状态"
+						:show-overflow-tooltip="true"
+						align="center">
+					<template slot-scope="scope">
+						<spanc v-if="scope.row.status == 0" class="status-nor">正常</spanc>
+						<span v-else="" class="status-pau">暂停</span>
+					</template>
+				</el-table-column>
+			</el-table>
+			<el-pagination
+					@size-change="handleSizeChange"
+					@current-change="handleCurrentChange"
+					:current-page="dataPage.currPage"
+					:page-size="dataPage.pageSize"
+					:page-sizes="[10, 20, 30]"
+					layout="total, sizes, prev, pager, next, jumper"
+					:total="dataPage.totalCount">
+			</el-pagination>
+		</div>
+	</div>
+
+	<div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">bean名称</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="schedule.beanName" placeholder="spring bean名称，如：testTask"/>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">参数</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="schedule.params" placeholder="参数"/>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">cron表达式</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="schedule.cronExpression" placeholder="如：0 0 12 * * ?"/>
+			    </div>
+			</div>
+			<div class="form-group">
+			   	<div class="col-sm-2 control-label">备注</div>
+			   	<div class="col-sm-10">
+			      <input type="text" class="form-control" v-model="schedule.remark" placeholder="备注"/>
+			    </div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div>
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reBack" value="返回"/>
+			</div>
+		</form>
+	</div>
+</div>
+
+<script src="${request.contextPath}/static/js/module/job/schedule.js?_${.now?long}"></script>
+</body>
+</html>

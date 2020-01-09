@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.dfjx.module.sys.dao.SysRoleDao">
+    <select id="queryRoleList" resultType="map">
+		select sr.*,bra.app_id
+		from sys_user_role sur
+		left join sys_role sr on sur.role_id = sr.role_id
+		left join bi_role_app bra on bra.role_id=sr.role_id
+		where user_id = #{value}
+	</select>
+
+</mapper>

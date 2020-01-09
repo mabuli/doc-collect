@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>表单设计</title>
+    <#include "/inc/header.html">
+
+    <style type="text/css">
+      .box{height: 95vh;position: relative;border: 1px solid #f4f4f4;}
+      .box-header {color: #444;display: block;padding: 8px 20px;position: relative;height:40px;}
+      .box-header > .box-tools {/*position: absolute;right: 10px;top: -4px;*/ display:flex;}
+      .box-header .box-title {display: inline-block;font-size: 14px;font-weight: 500;margin: 0;line-height: 30px;}
+      .box-tools .item{line-height:40px;height:40px;margin-right:5px;padding:0 5px;}
+      .box-body{margin:0 24px 0 10px;}
+      .custom-tree-node{display:flex;flex:1;align-items:center;justify-content: space-between;}
+      .custom-tree-node:hover .tool{display:inline;}
+      .custom-tree-node .tool{display:none;margin-right: 10px;}
+      .custom-tree-node .text{}
+      .custom-tree-node:hover .text{ width:140px; text-overflow: ellipsis;overflow: hidden;}
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div v-show="showList">
+        <el-row :gutter="24">
+            <el-col :span="6" style="padding:0 6px;">
+                <div class="box panel">
+                    <div class="box-header bg-purple">
+                        <h3 class="box-title">表单单元格</h3>
+                        <div class="box-tools pull-right">
+                          <el-button type="text" @click="add">
+                            <i class="el-icon-circle-plus-outline icon"><span class="el-icon-span">&nbsp;新增单元格</span></i>
+                          </el-button>
+                        </div>
+                    </div>
+                    <div class="box-body" props="tagProps">
+                      <el-scrollbar style="height:calc(95vh - 40px);" class="scroll-fix">
+                        <el-tree :data="formTree" @node-click="treeNodeClick" :props="tagProps"
+                                 ref="tree" v-loading="formListLoading" :highlight-current="true" :expand-on-click-node="false" :default-expand-all="true">
+                          <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <span class="text">
+                              <i :class="treeIcon(data)"></i>
+                              {{ node.label || ("(" + data.field + ")") }}
+                            </span>
+                            <span class="tool">
+                              <el-button type="text" size="mini" @click="() => update(data)">
+                                <i class="el-icon-edit"></i>
+                              </el-button>
+                              <el-button type="text" size="mini" @click="() => del(data)">
+                                <i class="el-icon-delete"></i>
+                              </el-button>
+                            </span>
+                          </span>
+                        </el-tree>
+                      </el-scrollbar>
+                    </div>
+                </div>
+            </el-col>
+            <el-col :span="18" style="padding:0 6px;">
+                <div class="box panel">
+                    <div class="box-header bg-purple">
+                        <h3 class="box-title">表单预览</h3>
+                    </div>
+                    <el-scrollbar style="height:calc(95vh - 40px);" class="scroll-fix box-body">
+                      <cmp ref="cmp" :column="formTree" :info="formValue"></cmp>
+                    </el-scrollbar>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
+    <el-dialog :title="title" :visible.sync="showForm" :close-on-click-modal="false">
+        <el-form ref="form" :model="form" label-width="120px">
+          <el-form-item label="类型">
+            <el-select v-model="form.tag" :disabled="isEdit" placeholder="请选择单元格类型" style="width: 100%;" @change="setTag">
+              <el-option v-for="item in store.tag" :key="item.value" :label="item.name" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item :label="tagChk(form,'标题列类型','输入框类型')">
+            <el-select v-model="form.type" :disabled="isEdit" :placeholder="tagChk(form,'请选择标题列类型','请选择输入框类型')" style="width: 100%;"  @change="setType">
+              <el-option v-for="item in store.type.curr" :key="item.value" :label="item.name" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="标题" required>
+            <el-input v-model="form.text"></el-input>
+          </el-form-item>
+          <el-form-item label="不显示标题" v-show="form.tag=='input' && form.type=='textarea'">
+            <el-switch v-model="form.notext"></el-switch>
+          </el-form-item>
+          <el-form-item label="上级标题" v-show="form.type!='section'">
+            <el-input readonly="readonly" v-model="parentName" :disabled="isEdit" clearable @focus="showLabel" >
+              <el-button slot="append" icon="el-icon-close" @click="clearLabel"></el-button>
+            </el-input>
+          </el-form-item>
+          <el-form-item label="宽度" v-show="form.tag=='input'">
+            <el-select v-model="form.span" style="width: 100%;">
+              <el-option v-for="item in store.span" :key="item.value" :label="item.name" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="选择项" v-show="form.type=='radio'||form.type=='select'">
+            <el-select v-model="form.source" style="width: 100%;" @change="linkSource">
+              <el-option v-for="item in store.dict" :key="item.value" :label="item.name" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <!--<el-form-item label="默认值" v-if="form.type=='radio'||form.type=='select'">
+            <el-select v-model="form.value" style="width: 100%;">
+              <el-option v-for="item in store.dictSub" :key="item.value" :label="item.name" :value="item.value"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="默认值" else>
+            <el-input v-model="form.value"></el-input>
+          </el-form-item>-->
+          <el-form-item label="数据字段名" v-show="form.tag=='input'">
+            <el-input v-model="form.field" :disabled="isEdit"></el-input>
+          </el-form-item>
+          <el-form-item label="数据长度" v-show="form.type=='text'">
+            <el-input type="number" v-model="form.data_len" :disabled="isEdit"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="saveForm">确定</el-button>
+            <el-button @click="backForm">返回</el-button>
+          </el-form-item>
+        </el-form>
+    </el-dialog>
+    <el-dialog title="上级标题" :visible.sync="showParent" :close-on-click-modal="false">
+      <el-scrollbar style="height:35vh;" class="scroll-fix">
+        <el-tree :data="labelTree" @node-click="labelTreeClick" :props="tagProps"
+                 :highlight-current="true" :expand-on-click-node="false" :default-expand-all="true">
+        </el-tree>
+      </el-scrollbar>
+      <el-row>
+        <el-col :span="24">
+          <el-button type="primary" @click="choseLabel">确定</el-button>
+          <el-button @click="closeLabel">返回</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
+</div>
+
+<script src="${request.contextPath}/static/js/module/fm/seavizForm.js?_${.now?long}"></script>
+<script src="${request.contextPath}/static/js/module/fm/designer.js?_${.now?long}"></script>
+</body>
+</html>
+<!--
+
+-->

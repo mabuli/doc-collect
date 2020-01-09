@@ -1,0 +1,76 @@
+body{background-color: #203140;font:12px/150% Arial,Verdana,"宋体";height: 100%;}
+li{list-style-type: none;}
+.nav{position:absolute;top:0px;left:0;background-image:url(top.png);width:100%;height:76px;z-index:2;overflow: hidden;}
+.bar {padding-left:15px;background-color:#efefef;width:100%;}
+.barbtn{margin:5px 0;}
+.apps{margin:20px;}
+.footer{background-color:#274360;color:#fff;width:100%;height:52px;z-index:2;}
+.main{background-color:#fff;margin:0 auto;width:90%;height:600px!important; min-height:100%;padding-top:76px;}
+.main:after {content:"";  visibility:hidden;  display:block;  clear:both;  height:0px;}
+.cell{float:left; padding: 10px;position: relative; }
+.box .cell{cursor:pointer;text-align:center;max-width:100%;}
+.cell .cell-ctx {z-index: 10;text-indent: 2px;overflow: hidden;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;}
+.cell .cell-remove {display: none;position: absolute;top:9px;right:12px;color:white;background: #101010;border-radius: 50%;font-size: 18px;height: 24px;width: 24px;line-height: 24px;z-index:300;}
+.cell .cell-bar{cursor:move;position: absolute;left:21px;z-index:12;font-size:12px;color:#fff;text-align:left;padding:2px 0 0 15px;width:320px;height: 20px;background-color:#00b3b6;}
+.cell .cell-barico{position: absolute;width:16px;height:16px;right:5px;top:5px;font-size: 12px;}
+.cell .cell-barico .dropdown-menu{left:auto;right:0;font-size:11px;min-width:100px;color:#000;}
+.cell .cell-nav{cursor:move;background-color:#00b3b6;margin-left:2px;width:320px;height: 20px;font-size:12px;color:#fff;text-align:left;padding:2px 0 0 15px;}
+.cell .cell-box{width:320px;height:160px;}
+.cell .cell-tool{}
+
+.shake {
+	-webkit-transform-origin: center center;
+	-webkit-animation-name: shake-rotate;
+	-webkit-animation-duration: 0.5s;
+	-webkit-animation-timing-function: linear;
+	-webkit-animation-iteration-count: 2;
+}
+.shakecontainer .img-container img { border: 1px solid #CCCCCC;  border-radius: 6px;}
+.shakecontainer .img-content {display: none;}
+.shakecontainer .cell-remove {display: block;}
+@-webkit-keyframes shake-rotate {
+	0% {  -webkit-transform: rotate(0deg);  }
+	12.5% {  -webkit-transform: rotate(1.25deg);  }
+	25% {  -webkit-transform: rotate(2.5deg);  }
+	37.5% {  -webkit-transform: rotate(1.25deg);  }
+	50% {  -webkit-transform: rotate(0deg);  }
+	62.5% {  -webkit-transform: rotate(-1.25deg);  }
+	75% {  -webkit-transform: rotate(-2.5deg);  }
+	87.5% {  -webkit-transform: rotate(-1.25deg);  }
+	100% {  -webkit-transform: rotate(0deg);  }
+}
+
+.box {width:95%;margin:0 auto;}
+.left{float:left;}
+.right{float:right;}
+.clear{clear:both;}
+.hide{display:none;}
+.show{display:block;}
+.white{color:#fff;}
+
+.ss32{width:360px;height:220px;}
+.ss31{width:300px;height:200px;}
+.ss34{width:300px;height:420px;}
+.ss62{width:600px;height:200px;}
+.ss21{width:320px; height:180px;}
+.ss24{width:250px; height:360px;}
+.sortable { /*margin: 0; padding: 0;*/ }
+.board {overflow: auto;position:relative;}
+.board canvas{}
+
+.panl{width:790px;height:550px;}
+.toolbar{height:40px;line-height:40px;padding-left: 0px;}
+.toolbar li{float:left;list-style-type:none;padding-right:10px;}
+.toolbar li img{width:24px;height:24px; margin-top: 5px;border-width: 1px;border-style: dashed;border-color: rgba(20, 126, 239, 0.5);}
+.toolbar li img.active{border-width: 2px; border-style: dashed; border-color: rgb(230,69,4); margin-top : 5px;}
+.btn-base1{color:#fff;background-color:#2ca4b0;}
+.btn-base2{color:#fff;background-color:#d7a303;}
+.btn:hover{color: #fff;background-color: #274360;border-color: #204d74;  }
+.pagination { display: inline-block; padding-left: 0; margin: 5px 0; border-radius: 4px; }
+.addwin .layui-layer-btn{text-align:center;background-color:#274360;}
+
+/* dropdown */
+#div_data .dropdown {padding:6px 5px;border:solid 1px #000;background:#fff;position:absolute;left: 20px;top:34px;z-index:100;}
+#div_data .dropdown .tit_filter {font-weight:700;background:#fff;font-size:14px;color:#000;height:10px;line-height:2px;margin:14px 5px;border-bottom:1px solid #000;}
+#div_data .dropdown li {float:left;width:calc(100%/4);padding:0 0 0 5px;font-size:14px;line-height:32px;height:32px;}
+#div_data input[type="radio"]{opacity: 0;}

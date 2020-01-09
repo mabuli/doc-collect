@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>项目管理</title>
+		<#include "/inc/header.html">
+    <style>
+        #app{padding:8px;}
+        .el-upload__input,input[type=file]{display:none;}
+        .doc-title{text-align:center;}
+        .doc-title h3{margin:9px 0;}
+        .doc-table{ border:2px solid #EBEEF5; margin:0 10px;background-color:#fff;   }
+        .doc-table .section{font-weight:bold;line-height:40px;padding:2px 5px;border-bottom:1px solid #EBEEF5;border-top:1px solid #EBEEF5;}
+        .doc-table .item{line-height:40px;padding:2px 5px; border-bottom:0px solid #EBEEF5;}
+        .doc-table .value{display:inline-block; width:calc(100% - 142px);border-right:0px solid #EBEEF5;}
+        .doc-table .label{ display:inline-block; width:140px;vertical-align: top;border-right: 0px solid #EBEEF5;}
+        .doc-table .cell{display:inline-block; width:calc(100% - 148px);}
+        .doc-table .el-input--mini .el-input__inner {
+          border-bottom:1px solid #DFE0E4;
+          border-left:none;
+          border-top:none;
+          border-right:none;
+          border-radius:0;
+        }
+    </style>
+</head>
+<body>
+<div id="app" v-cloak>
+    <div v-show="showList">
+        <el-row class="grid-btn">
+          <el-col :span="6">
+              <el-input v-model="q.project_name" @keyup.enter="query" clearable placeholder="项目名称"></el-input>
+          </el-col>
+          <el-col :span="4" :offset="1">
+            <el-input v-model="q.unit_name" @keyup.enter="query" clearable placeholder="单位名称"></el-input>
+          </el-col>
+          <el-col :span="11" :offset="2">
+              <el-button type="primary" @click="query"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+              <el-button type="primary" @click="upload"><i class="fa fa-cloud-upload"></i>&nbsp;上传</el-button>
+              <el-button type="primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</el-button>
+          </el-col>
+        </el-row>
+        <el-row :gutter="10">
+            <el-col :span="24">
+                <el-table
+                        :data="tablePage.list"
+                        border
+                        size="small"
+                        height="430"
+                        :stripe="true"
+                        style="width: 100%"
+                        highlight-current-row
+                        @row-click="tableClick">
+                    <el-table-column
+                            type="selection"
+                            width="50">
+                    </el-table-column>
+                    <el-table-column label="序号" width="50" :formatter="colIndex" align="center"></el-table-column>
+                    <el-table-column prop="project_no" label="备案号" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column prop="project_name" label="项目名称" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column prop="unit_name" label="单位名称" show-overflow-tooltip align="center"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="120">
+                        <template slot-scope="scope">
+                            <el-button @click="view(scope.row)" type="text" size="mini">查看</el-button>
+                            <el-button @click="update(scope.row)" type="text" size="mini">手工补录</el-button>
+                        </template>
+                    </el-table-column>
+                    <!--<el-table-column-->
+                            <!--prop="crtDate"-->
+                            <!--label="创建日期"-->
+                            <!--:show-overflow-tooltip="true"-->
+                            <!--width="120"-->
+                            <!--align="center">-->
+                        <!--<template slot-scope="scope">-->
+                            <!--<span>{{dateStr(scope.row.crtDate)}}</span>-->
+                        <!--</template>-->
+                    <!--</el-table-column>-->
+                </el-table>
+                <el-pagination
+                        :pager-count="5"
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="tablePage.currPage"
+                        :page-size="tablePage.pageSize"
+                        :page-sizes="[10, 20, 30]"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="tablePage.totalCount">
+                </el-pagination>
+            </el-col>
+        </el-row>
+    </div>
+
+    <div v-show="!showList" class="panel panel-default">
+        <div class="panel-heading">
+          <el-button type="primary" @click="reBack"><i class="fa fa-mail-reply"></i>&nbsp;返回</el-button>
+        </div>
+        <el-scrollbar style="height:calc(100vh - 40px);overflow-x: hidden;">
+            <el-row>
+            <el-col :span="24">
+                <div class="doc-title">
+                    <h3>北京市非政府投资工业和信息化固定资产投资项目</h3>
+                    <h3>备案证明</h3>
+                    <b>{{info.project_no}}</b>
+                </div>
+                <div style="text-align:right;">单位：资金（万元）面积（平方米）</div>
+            </el-col>
+        </el-row>
+            <el-row class="doc-table">
+              <el-col class="section" :span="24">一、企业基本情况</el-col>
+              <el-col :span="14"><div class="item"><div class="label">单位名称</div><div class="value"><el-input v-model="info.unit_name"  /></div></div></el-col>
+              <el-col :span="10"><div class="item"><div class="label">法定代表人</div><div class="value"><el-input v-model="info.unit_person"  /></div></div></el-col>
+              <el-col :span="14"><div class="item"><div class="label">统一社会信用代码</div><div class="value"><el-input v-model="info.unit_code"  /></div></div></el-col>
+              <el-col :span="10"><div class="item"><div class="label">企业登记注册类型</div><div class="value"><el-input v-model="info.unit_type"  /></div></div></el-col>
+              <el-col :span="14"><div class="item"><div class="label">联系人</div><div class="value"><el-input v-model="info.link_man"  /></div></div></el-col>
+              <el-col :span="10"><div class="item"><div class="label">联系电话</div><div class="value"><el-input v-model="info.link_mobile"  /></div></div></el-col>
+              <el-col class="section" :span="24">二、项目基本情况</el-col>
+              <el-col :span="24"><div class="item"><div class="label">1.项目名称</div><div class="value"><el-input v-model="info.project_name"  /></div></div></el-col>
+              <el-col :span="14"><div class="item"><div class="label">2.行业类别名称</div><div class="value"><el-input v-model="info.industry_name"  /></div></div></el-col>
+              <el-col :span="10"><div class="item"><div class="label">行业类别代码</div><div class="value"><el-input v-model="info.industry_code"  /></div></div></el-col>
+              <el-col :span="24"><div class="item"><div class="label">3.建设内容</div><div class="value"><el-input type="textarea" :rows="5" v-model="info.project_content"  /></div></div></el-col>
+              <el-col :span="24">
+                <div class="item">
+                  <div class="label">4.建设地点</div>
+                  <el-row class="cell">
+                    <el-col :span="12"><div class="item"><div class="label">区</div><div class="value"><el-input v-model="info.loc_dist"  /></div></div></el-col>
+                    <el-col :span="12"><div class="item"><div class="label">街道(乡镇)</div><div class="value"><el-input v-model="info.loc_street"  /></div></div></el-col>
+                    <el-col :span="24"><div class="item"><div class="label">详细地址</div><div class="value"><el-input v-model="info.loc_address"  /></div></div></el-col>
+                    <el-col :span="12"><div class="item"><div class="label">东至</div><div class="value"><el-input v-model="info.loc_eastto"  /></div></div></el-col>
+                    <el-col :span="12"><div class="item"><div class="label">西至</div><div class="value"><el-input v-model="info.loc_westto"  /></div></div></el-col>
+                    <el-col :span="12"><div class="item"><div class="label">南至</div><div class="value"><el-input v-model="info.loc_southto"  /></div></div></el-col>
+                    <el-col :span="12"><div class="item"><div class="label">北至</div><div class="value"><el-input v-model="info.loc_northto"  /></div></div></el-col>
+                  </el-row>
+                </div>
+              </el-col>
+              <el-col :span="24">
+              <div class="item">
+                <div class="label">5.建设规模</div>
+                <el-row class="cell">
+                  <el-col :span="12"><div class="item"><div class="label">总占地面积</div><div class="value"><el-input v-model="info.area_floor_total"  /></div></div></el-col>
+                  <el-col :span="12"><div class="item"><div class="label">其中：新增占地面积</div><div class="value"><el-input v-model="info.area_floor_new"  /></div></div></el-col>
+                  <el-col :span="12"><div class="item"><div class="label">总建筑面积</div><div class="value"><el-input v-model="info.area_building_total"  /></div></div></el-col>
+                  <el-col :span="12"><div class="item"><div class="label">其中：新增建筑面积</div><div class="value"><el-input v-model="info.area_building_new"  /></div></div></el-col>
+                </el-row>
+              </div>
+            </el-col>
+              <el-col :span="14"><div class="item"><div class="label">6.项目拟启动时间</div><div class="value"><el-input v-model="info.plan_start_date"  /></div></div></el-col>
+              <el-col :span="10"><div class="item"><div class="label">项目拟建成时间</div><div class="value"><el-input v-model="info.plan_end_date"  /></div></div></el-col>
+              <el-col class="section" :span="24">三、项目总投资额和资金来源意向</el-col>
+              <el-col :span="14"><div class="item"><div class="label">1.总投资额</div><div class="value"><el-input v-model="info.invest_total"  /></div></div></el-col>
+              <el-col :span="10"><div class="item"><div class="label">固定资产投资</div><div class="value"><el-input v-model="info.invest_fixed"  /></div></div></el-col>
+              <!--<el-col :span="24">-->
+                <!--<div class="item">-->
+                  <!--<div class="label">2.资金来源意向</div>-->
+                  <!--<el-row class="cell">-->
+                    <!--<el-col :span="24"><div class="item"><div class="label">自筹资金</div><div class="value"><el-input v-model="info.invest_source_self"  /></div></div></el-col>-->
+                    <!--<el-col :span="24"><div class="item"><div class="label">银行贷款</div><div class="value"><el-input v-model="info.invest_source_bank"  /></div></div></el-col>-->
+                    <!--<el-col :span="24"><div class="item"><div class="label">其它资金</div><div class="value"><el-input v-model="info.invest_source_other"  /></div></div></el-col>-->
+                  <!--</el-row>-->
+                <!--</div>-->
+              <!--</el-col>-->
+              <el-col :span="24">
+                <el-col class="label" :span="2"><div class="item">2.资金来源意向</div></el-col>
+                <el-col class="cell" :span="22">
+                  <el-col :span="24"><div class="item"><div class="label">自筹资金</div><div class="value"><el-input v-model="info.invest_source_self"  /></div></div></el-col>
+                  <el-col :span="24"><div class="item"><div class="label">银行贷款</div><div class="value"><el-input v-model="info.invest_source_bank"  /></div></div></el-col>
+                  <el-col :span="24"><div class="item"><div class="label">其它资金</div><div class="value"><el-input v-model="info.invest_source_other"  /></div></div></el-col>
+                </el-col>
+              </el-col>
+              <el-col class="section" :span="24">四、需要专门说明的其他内容</el-col>
+              <el-col :span="24"><el-input type="textarea" :rows="5" v-model="info.other_content"  /></el-col>
+              <el-col class="section" :span="24">五、注意事项</el-col>
+              <el-col :span="24"><el-input type="textarea" :rows="5" v-model="info.notice_content"  /></el-col>
+              <el-col class="section" :span="24">六、备案机关意见</el-col>
+              <el-col :span="24"><el-input type="textarea" :rows="5" v-model="info.org_record"  /></el-col>
+              <el-col :offset="14" :span="10"><div class="item"><div class="label">备案日期</div><div class="value"><el-input v-model="info.record_date"  /></div></div></el-col>
+              <el-col class="section" :span="24">扩展补录</el-col>
+            </el-row>
+        </el-scrollbar>
+    </div>
+    <el-dialog
+            title="数据上传"
+            :close-on-click-modal="false"
+            :visible.sync="showUpload">
+        <el-upload action="${request.contextPath}/fm/project/upload" ref="upload" :on-success="endUpload"
+                :multiple="false" accept=".doc,.docx" :auto-upload="false" :file-list="fileList">
+            <el-button slot="trigger" size="mini" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" size="mini" type="success" @click="startUpload">上传到服务器</el-button>
+            <div slot="tip" class="el-upload__tip">只能上传doc/docx文件</div>
+        </el-upload>
+    </el-dialog>
+</div>
+
+<script src="${request.contextPath}/static/js/module/fm/project.js?_${.now?long}"></script>
+<script>
+  var mode = {
+    config:[
+      {id:1,tag:'div',span:24,row:1,type:'section',text:'一、企业基本情况'},
+      {id:2,tag:'input',span:14,row:1,type:'text',text:'单位名称',field:'unit_name',data_len:'100'},
+      {id:3,tag:'input',span:10,row:1,type:'text',text:'法定代表人',field:'unit_person',data_len:'30'},
+      {id:4,tag:'input',span:14,row:1,type:'text',text:'统一社会信用代码',field:'unit_code',data_len:'30'},
+      {id:5,tag:'input',span:10,row:1,type:'text',text:'企业登记注册类型',field:'unit_type',data_len:'30'},
+      {id:6,tag:'input',span:14,row:1,type:'text',text:'联系人',field:'link_man',data_len:'30'},
+      {id:7,tag:'input',span:10,row:1,type:'text',text:'联系电话',field:'link_mobile',data_len:'30'},
+      {id:8,tag:'div',span:24,row:1,type:'section',text:'二、项目基本情况'},
+      {id:9,tag:'input',span:24,row:1,type:'text',text:'1.项目名称',field:'project_name',data_len:'200'},
+      {id:10,tag:'input',span:14,row:1,type:'text',text:'2.行业类别名称',field:'industry_name',data_len:'100'},
+      {id:11,tag:'input',span:10,row:1,type:'text',text:'行业类别代码',field:'industry_code',data_len:'30'},
+      {id:12,tag:'input',span:24,row:1,type:'textarea',text:'3.建设内容',field:'project_content',data_len:'4000'},
+      {id:13,tag:'div',span:24,row:1,type:'label',text:'4.建设地点',children:[
+          {id:14,tag:'input',span:12,row:1,type:'text',text:'区',field:'loc_dist',data_len:'30'},
+          {id:15,tag:'input',span:12,row:1,type:'text',text:'街道(乡镇)',field:'loc_street',data_len:'30'},
+          {id:16,tag:'input',span:24,row:1,type:'text',text:'详细地址',field:'loc_address',data_len:'100'},
+          {id:17,tag:'input',span:12,row:1,type:'text',text:'东至',field:'loc_eastto',data_len:'30'},
+          {id:18,tag:'input',span:12,row:1,type:'text',text:'西至',field:'loc_westto',data_len:'30'},
+          {id:19,tag:'input',span:12,row:1,type:'text',text:'南至',field:'loc_southto',data_len:'30'},
+          {id:20,tag:'input',span:12,row:1,type:'text',text:'北至',field:'loc_northto',data_len:'30'}
+        ]},
+      {id:21,tag:'div',span:24,row:1,type:'label',text:'5.建设规模',children:[
+          {id:22,tag:'input',span:12,row:1,type:'money',text:'总占地面积',field:'area_floor_total'},
+          {id:23,tag:'input',span:12,row:1,type:'money',text:'其中：新增占地面积',field:'area_floor_new'},
+          {id:24,tag:'input',span:12,row:1,type:'money',text:'总建筑面积',field:'area_building_total'},
+          {id:25,tag:'input',span:12,row:1,type:'money',text:'其中：新增建筑面积',field:'area_building_new'}
+        ]},
+      {id:26,tag:'input',span:14,row:1,type:'date',text:'6.项目拟启动时间',field:'plan_start_date'},
+      {id:27,tag:'input',span:10,row:1,type:'date',text:'项目拟建成时间',field:'plan_end_date'},
+      {id:28,tag:'div',span:24,row:1,type:'section',text:'三、项目总投资额和资金来源意向'},
+      {id:29,tag:'input',span:14,row:1,type:'money',text:'1.总投资额',field:'invest_total'},
+      {id:30,tag:'input',span:10,row:1,type:'money',text:'固定资产投资',field:'invest_fixed'},
+      {id:31,tag:'div',span:24,row:1,type:'label',text:'2.资金来源意向',children:[
+          {id:32,tag:'input',span:24,row:1,type:'money',text:'自筹资金',field:'invest_source_self'},
+          {id:33,tag:'input',span:24,row:1,type:'money',text:'银行贷款',field:'invest_source_bank'},
+          {id:34,tag:'input',span:24,row:1,type:'money',text:'其它资金',field:'invest_source_other'}
+        ]},
+      {id:35,tag:'div',span:24,row:1,type:'section',text:'四、需要专门说明的其他内容'},
+      {id:36,tag:'input',span:24,row:1,type:'textarea',notext:true,field:'other_content',data_len:'4000'},
+      {id:37,tag:'div',span:24,row:1,type:'section',text:'五、注意事项'},
+      {id:38,tag:'input',span:24,row:1,type:'textarea',notext:true,field:'notice_content',data_len:'4000'},
+      {id:39,tag:'div',span:24,row:1,type:'section',text:'六、备案机关意见'},
+      {id:40,tag:'input',span:24,row:1,type:'textarea',notext:true,field:'org_record',data_len:'4000'},
+      {id:41,tag:'input',span:10,row:1,type:'date',align:'right',text:'备案日期',field:'record_date'}
+    ],
+    list:[{id:1,tag:'div',span:24,row:1,type:'section',text:'一、企业基本情况'},
+      {id:2,tag:'input',span:14,row:1,type:'text',text:'单位名称',field:'unit_name',data_len:'100'},
+      {id:3,tag:'input',span:10,row:1,type:'text',text:'法定代表人',field:'unit_person',data_len:'30'},
+      {id:4,tag:'input',span:14,row:1,type:'text',text:'统一社会信用代码',field:'unit_code',data_len:'30'},
+      {id:5,tag:'input',span:10,row:1,type:'text',text:'企业登记注册类型',field:'unit_type',data_len:'30'},
+      {id:6,tag:'input',span:14,row:1,type:'text',text:'联系人',field:'link_man',data_len:'30'},
+      {id:7,tag:'input',span:10,row:1,type:'text',text:'联系电话',field:'link_mobile',data_len:'30'},
+      {id:8,tag:'div',span:24,row:1,type:'section',text:'二、项目基本情况'},
+      {id:9,tag:'input',span:24,row:1,type:'text',text:'1.项目名称',field:'project_name',data_len:'200'},
+      {id:10,tag:'input',span:14,row:1,type:'text',text:'2.行业类别名称',field:'industry_name',data_len:'100'},
+      {id:11,tag:'input',span:10,row:1,type:'text',text:'行业类别代码',field:'industry_code',data_len:'30'},
+      {id:12,tag:'input',span:24,row:1,type:'textarea',text:'3.建设内容',field:'project_content',data_len:'4000'},
+      {id:13,tag:'div',span:24,row:1,type:'label',text:'4.建设地点'},
+      {id:14,parentId:'13',tag:'input',span:12,row:1,type:'text',text:'区',field:'loc_dist',data_len:'30'},
+      {id:15,parentId:'13',tag:'input',span:12,row:1,type:'text',text:'街道(乡镇)',field:'loc_street',data_len:'30'},
+      {id:16,parentId:'13',tag:'input',span:24,row:1,type:'text',text:'详细地址',field:'loc_address',data_len:'200'},
+      {id:17,parentId:'13',tag:'input',span:12,row:1,type:'text',text:'东至',field:'loc_eastto',data_len:'30'},
+      {id:18,parentId:'13',tag:'input',span:12,row:1,type:'text',text:'西至',field:'loc_westto',data_len:'30'},
+      {id:19,parentId:'13',tag:'input',span:12,row:1,type:'text',text:'南至',field:'loc_southto',data_len:'30'},
+      {id:20,parentId:'13',tag:'input',span:12,row:1,type:'text',text:'北至',field:'loc_northto',data_len:'30'},
+      {id:21,tag:'div',span:24,row:1,type:'label',text:'5.建设规模'},
+      {id:22,parentId:'21',tag:'input',span:12,row:1,type:'money',text:'总占地面积',field:'area_floor_total'},
+      {id:23,parentId:'21',tag:'input',span:12,row:1,type:'money',text:'其中：新增占地面积',field:'area_floor_new'},
+      {id:24,parentId:'21',tag:'input',span:12,row:1,type:'money',text:'总建筑面积',field:'area_building_total'},
+      {id:25,parentId:'21',tag:'input',span:12,row:1,type:'money',text:'其中：新增建筑面积',field:'area_building_new'},
+      {id:26,tag:'input',span:14,row:1,type:'date',text:'6.项目拟启动时间',field:'plan_start_date'},
+      {id:27,tag:'input',span:10,row:1,type:'date',text:'项目拟建成时间',field:'plan_end_date'},
+      {id:28,tag:'div',span:24,row:1,type:'section',text:'三、项目总投资额和资金来源意向'},
+      {id:29,tag:'input',span:14,row:1,type:'money',text:'1.总投资额',field:'invest_total'},
+      {id:30,tag:'input',span:10,row:1,type:'money',text:'固定资产投资',field:'invest_fixed'},
+      {id:31,tag:'div',span:24,row:1,type:'label',text:'2.资金来源意向'},
+      {id:32,parentId:'31',tag:'input',span:24,row:1,type:'money',text:'自筹资金',field:'invest_source_self'},
+      {id:33,parentId:'31',tag:'input',span:24,row:1,type:'money',text:'银行贷款',field:'invest_source_bank'},
+      {id:34,parentId:'31',tag:'input',span:24,row:1,type:'money',text:'其它资金',field:'invest_source_other'},
+      {id:35,tag:'div',span:24,row:1,type:'section',text:'四、需要专门说明的其他内容'},
+      {id:36,tag:'input',span:24,row:1,type:'textarea',notext:true,field:'other_content',data_len:'4000'},
+      {id:37,tag:'div',span:24,row:1,type:'section',text:'五、注意事项'},
+      {id:38,tag:'input',span:24,row:1,type:'textarea',notext:true,field:'notice_content',data_len:'4000'},
+      {id:39,tag:'div',span:24,row:1,type:'section',text:'六、备案机关意见'},
+      {id:40,tag:'input',span:24,row:1,type:'textarea',notext:true,field:'org_record',data_len:'4000'},
+      {id:41,tag:'input',span:10,row:1,type:'date',align:'right',text:'备案日期',field:'record_date'}],
+    str1:"JTVCJTdCJTIyaWQlMjIlM0ExJTJDJTIydGFnJTIyJTNBJTIyZGl2JTIyJTJDJTIyc3BhbiUyMiUzQTI0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJzZWN0aW9uJTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNCVCOCU4MCVFMyU4MCU4MSVFNCVCQyU4MSVFNCVCOCU5QSVFNSU5RiVCQSVFNiU5QyVBQyVFNiU4MyU4NSVFNSU4NiVCNSUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMiUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTE0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNSU4RCU5NSVFNCVCRCU4RCVFNSU5MCU4RCVFNyVBNyVCMCUyMiUyQyUyMmZpZWxkJTIyJTNBJTIydW5pdF9uYW1lJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIxMDAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTMlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dCUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTYlQjMlOTUlRTUlQUUlOUElRTQlQkIlQTMlRTglQTElQTglRTQlQkElQkElMjIlMkMlMjJmaWVsZCUyMiUzQSUyMnVuaXRfcGVyc29uJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIzMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBNCUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTE0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNyVCQiU5RiVFNCVCOCU4MCVFNyVBNCVCRSVFNCVCQyU5QSVFNCVCRiVBMSVFNyU5NCVBOCVFNCVCQiVBMyVFNyVBMCU4MSUyMiUyQyUyMmZpZWxkJTIyJTNBJTIydW5pdF9jb2RlJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIzMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBNSUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTEwJTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNCVCQyU4MSVFNCVCOCU5QSVFNyU5OSVCQiVFOCVBRSVCMCVFNiVCMyVBOCVFNSU4NiU4QyVFNyVCMSVCQiVFNSU5RSU4QiUyMiUyQyUyMmZpZWxkJTIyJTNBJTIydW5pdF90eXBlJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIzMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBNiUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTE0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFOCU4MSU5NCVFNyVCMyVCQiVFNCVCQSVCQSUyMiUyQyUyMmZpZWxkJTIyJTNBJTIybGlua19tYW4lMjIlMkMlMjJkYXRhX2xlbiUyMiUzQSUyMjMwJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0E3JTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMTAlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMnRleHQlMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU4JTgxJTk0JUU3JUIzJUJCJUU3JTk0JUI1JUU4JUFGJTlEJTIyJTJDJTIyZmllbGQlMjIlM0ElMjJsaW5rX21vYmlsZSUyMiUyQyUyMmRhdGFfbGVuJTIyJTNBJTIyMzAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTglMkMlMjJ0YWclMjIlM0ElMjJkaXYlMjIlMkMlMjJzcGFuJTIyJTNBMjQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMnNlY3Rpb24lMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU0JUJBJThDJUUzJTgwJTgxJUU5JUExJUI5JUU3JTlCJUFFJUU1JTlGJUJBJUU2JTlDJUFDJUU2JTgzJTg1JUU1JTg2JUI1JTIyJTdEJTJDJTdCJTIyaWQlMjIlM0E5JTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMjQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMnRleHQlMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyMS4lRTklQTElQjklRTclOUIlQUUlRTUlOTAlOEQlRTclQTclQjAlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMnByb2plY3RfbmFtZSUyMiUyQyUyMmRhdGFfbGVuJTIyJTNBJTIyMjAwJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0ExMCUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTE0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMjIuJUU4JUExJThDJUU0JUI4JTlBJUU3JUIxJUJCJUU1JTg4JUFCJUU1JTkwJThEJUU3JUE3JUIwJTIyJTJDJTIyZmllbGQlMjIlM0ElMjJpbmR1c3RyeV9uYW1lJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIxMDAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTExJTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMTAlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMnRleHQlMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU4JUExJThDJUU0JUI4JTlBJUU3JUIxJUJCJUU1JTg4JUFCJUU0JUJCJUEzJUU3JUEwJTgxJTIyJTJDJTIyZmllbGQlMjIlM0ElMjJpbmR1c3RyeV9jb2RlJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIzMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMTIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0EyNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dGFyZWElMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyMy4lRTUlQkIlQkElRTglQUUlQkUlRTUlODYlODUlRTUlQUUlQjklMjIlMkMlMjJmaWVsZCUyMiUzQSUyMnByb2plY3RfY29udGVudCUyMiUyQyUyMmRhdGFfbGVuJTIyJTNBJTIyNDAwMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMTMlMkMlMjJ0YWclMjIlM0ElMjJkaXYlMjIlMkMlMjJzcGFuJTIyJTNBMjQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMmxhYmVsJTIyJTJDJTIydGV4dCUyMiUzQSUyMjQuJUU1JUJCJUJBJUU4JUFFJUJFJUU1JTlDJUIwJUU3JTgyJUI5JTIyJTdEJTJDJTdCJTIyaWQlMjIlM0ExNCUyQyUyMnBhcmVudElkJTIyJTNBJTIyMTMlMjIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMiUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dCUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTUlOEMlQkElMjIlMkMlMjJmaWVsZCUyMiUzQSUyMmxvY19kaXN0JTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIzMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMTUlMkMlMjJwYXJlbnRJZCUyMiUzQSUyMjEzJTIyJTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMTIlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMnRleHQlMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU4JUExJTk3JUU5JTgxJTkzKCVFNCVCOSVBMSVFOSU5NSU4NyklMjIlMkMlMjJmaWVsZCUyMiUzQSUyMmxvY19zdHJlZXQlMjIlMkMlMjJkYXRhX2xlbiUyMiUzQSUyMjMwJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0ExNiUyQyUyMnBhcmVudElkJTIyJTNBJTIyMTMlMjIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0EyNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dCUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTglQUYlQTYlRTclQkIlODYlRTUlOUMlQjAlRTUlOUQlODAlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMmxvY19hZGRyZXNzJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIyMDAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTE3JTJDJTIycGFyZW50SWQlMjIlM0ElMjIxMyUyMiUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTEyJTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNCVCOCU5QyVFOCU4NyVCMyUyMiUyQyUyMmZpZWxkJTIyJTNBJTIybG9jX2Vhc3R0byUyMiUyQyUyMmRhdGFfbGVuJTIyJTNBJTIyMzAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTE4JTJDJTIycGFyZW50SWQlMjIlM0ElMjIxMyUyMiUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTEyJTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFOCVBNSVCRiVFOCU4NyVCMyUyMiUyQyUyMmZpZWxkJTIyJTNBJTIybG9jX3dlc3R0byUyMiUyQyUyMmRhdGFfbGVuJTIyJTNBJTIyMzAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTE5JTJDJTIycGFyZW50SWQlMjIlM0ElMjIxMyUyMiUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTEyJTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJ0ZXh0JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNSU4RCU5NyVFOCU4NyVCMyUyMiUyQyUyMmZpZWxkJTIyJTNBJTIybG9jX3NvdXRodG8lMjIlMkMlMjJkYXRhX2xlbiUyMiUzQSUyMjMwJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0EyMCUyQyUyMnBhcmVudElkJTIyJTNBJTIyMTMlMjIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMiUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dCUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTUlOEMlOTclRTglODclQjMlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMmxvY19ub3J0aHRvJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjIzMCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMjElMkMlMjJ0YWclMjIlM0ElMjJkaXYlMjIlMkMlMjJzcGFuJTIyJTNBMjQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMmxhYmVsJTIyJTJDJTIydGV4dCUyMiUzQSUyMjUuJUU1JUJCJUJBJUU4JUFFJUJFJUU4JUE3JTg0JUU2JUE4JUExJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0EyMiUyQyUyMnBhcmVudElkJTIyJTNBJTIyMjElMjIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMiUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIybW9uZXklMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU2JTgwJUJCJUU1JThEJUEwJUU1JTlDJUIwJUU5JTlEJUEyJUU3JUE3JUFGJTIyJTJDJTIyZmllbGQlMjIlM0ElMjJhcmVhX2Zsb29yX3RvdGFsJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0EyMyUyQyUyMnBhcmVudElkJTIyJTNBJTIyMjElMjIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMiUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIybW9uZXklMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU1JTg1JUI2JUU0JUI4JUFEJUVGJUJDJTlBJUU2JTk2JUIwJUU1JUEyJTlFJUU1JThEJUEwJUU1JTlDJUIwJUU5JTlEJUEyJUU3JUE3JUFGJTIyJTJDJTIyZmllbGQlMjIlM0ElMjJhcmVhX2Zsb29yX25ldyUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMjQlMkMlMjJwYXJlbnRJZCUyMiUzQSUyMjIxJTIyJTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMTIlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMm1vbmV5JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNiU4MCVCQiVFNSVCQiVCQSVFNyVBRCU5MSVFOSU5RCVBMiVFNyVBNyVBRiUyMiUyQyUyMmZpZWxkJTIyJTNBJTIyYXJlYV9idWlsZGluZ190b3RhbCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMjUlMkMlMjJwYXJlbnRJZCUyMiUzQSUyMjIxJTIyJTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMTIlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMm1vbmV5JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNSU4NSVCNiVFNCVCOCVBRCVFRiVCQyU5QSVFNiU5NiVCMCVFNSVBMiU5RSVFNSVCQiVCQSVFNyVBRCU5MSVFOSU5RCVBMiVFNyVBNyVBRiUyMiUyQyUyMmZpZWxkJTIyJTNBJTIyYXJlYV9idWlsZGluZ19uZXclMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTI2JTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMTQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMmRhdGUlMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyNi4lRTklQTElQjklRTclOUIlQUUlRTYlOEIlOUYlRTUlOTAlQUYlRTUlOEElQTglRTYlOTclQjYlRTklOTclQjQlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMnBsYW5fc3RhcnRfZGF0ZSUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMjclMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIyZGF0ZSUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTklQTElQjklRTclOUIlQUUlRTYlOEIlOUYlRTUlQkIlQkElRTYlODglOTAlRTYlOTclQjYlRTklOTclQjQlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMnBsYW5fZW5kX2RhdGUlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTI4JTJDJTIydGFnJTIyJTNBJTIyZGl2JTIyJTJDJTIyc3BhbiUyMiUzQTI0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJzZWN0aW9uJTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNCVCOCU4OSVFMyU4MCU4MSVFOSVBMSVCOSVFNyU5QiVBRSVFNiU4MCVCQiVFNiU4QSU5NSVFOCVCNSU4NCVFOSVBMiU5RCVFNSU5MiU4QyVFOCVCNSU4NCVFOSU4NyU5MSVFNiU5RCVBNSVFNiVCQSU5MCVFNiU4NCU4RiVFNSU5MCU5MSUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMjklMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIybW9uZXklMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyMS4lRTYlODAlQkIlRTYlOEElOTUlRTglQjUlODQlRTklQTIlOUQlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMmludmVzdF90b3RhbCUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMzAlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0ExMCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIybW9uZXklMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU1JTlCJUJBJUU1JUFFJTlBJUU4JUI1JTg0JUU0JUJBJUE3JUU2JThBJTk1JUU4JUI1JTg0JTIyJTJDJTIyZmllbGQlMjIlM0ElMjJpbnZlc3RfZml4ZWQlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTMxJTJDJTIydGFnJTIyJTNBJTIyZGl2JTIyJTJDJTIyc3BhbiUyMiUzQTI0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJsYWJlbCUyMiUyQyUyMnRleHQlMjIlM0ElMjIyLiVFOCVCNSU4NCVFOSU4NyU5MSVFNiU5RCVBNSVFNiVCQSU5MCVFNiU4NCU4RiVFNSU5MCU5MSUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMzIlMkMlMjJwYXJlbnRJZCUyMiUzQSUyMjMxJTIyJTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMjQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMm1vbmV5JTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFOCU4NyVBQSVFNyVBRCVCOSVFOCVCNSU4NCVFOSU4NyU5MSUyMiUyQyUyMmZpZWxkJTIyJTNBJTIyaW52ZXN0X3NvdXJjZV9zZWxmJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0EzMyUyQyUyMnBhcmVudElkJTIyJTNBJTIyMzElMjIlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0EyNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIybW9uZXklMjIlMkMlMjJ0ZXh0JTIyJTNBJTIyJUU5JTkzJUI2JUU4JUExJThDJUU4JUI0JUI3JUU2JUFDJUJFJTIyJTJDJTIyZmllbGQlMjIlM0ElMjJpbnZlc3Rfc291cmNlX2JhbmslMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTM0JTJDJTIycGFyZW50SWQlMjIlM0ElMjIzMSUyMiUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTI0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJtb25leSUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTUlODUlQjYlRTUlQUUlODMlRTglQjUlODQlRTklODclOTElMjIlMkMlMjJmaWVsZCUyMiUzQSUyMmludmVzdF9zb3VyY2Vfb3RoZXIlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTM1JTJDJTIydGFnJTIyJTNBJTIyZGl2JTIyJTJDJTIyc3BhbiUyMiUzQTI0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJzZWN0aW9uJTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNSU5QiU5QiVFMyU4MCU4MSVFOSU5QyU4MCVFOCVBNiU4MSVFNCVCOCU5MyVFOSU5NyVBOCVFOCVBRiVCNCVFNiU5OCU4RSVFNyU5QSU4NCVFNSU4NSVCNiVFNCVCQiU5NiVFNSU4NiU4NSVFNSVBRSVCOSUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBMzYlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0EyNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dGFyZWElMjIlMkMlMjJub3RleHQlMjIlM0F0cnVlJTJDJTIyZmllbGQlMjIlM0ElMjJvdGhlcl9jb250ZW50JTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjI0MDAwJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0EzNyUyQyUyMnRhZyUyMiUzQSUyMmRpdiUyMiUyQyUyMnNwYW4lMjIlM0EyNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIyc2VjdGlvbiUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTQlQkElOTQlRTMlODAlODElRTYlQjMlQTglRTYlODQlOEYlRTQlQkElOEIlRTklQTElQjklMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTM4JTJDJTIydGFnJTIyJTNBJTIyaW5wdXQlMjIlMkMlMjJzcGFuJTIyJTNBMjQlMkMlMjJyb3clMjIlM0ExJTJDJTIydHlwZSUyMiUzQSUyMnRleHRhcmVhJTIyJTJDJTIybm90ZXh0JTIyJTNBdHJ1ZSUyQyUyMmZpZWxkJTIyJTNBJTIybm90aWNlX2NvbnRlbnQlMjIlMkMlMjJkYXRhX2xlbiUyMiUzQSUyMjQwMDAlMjIlN0QlMkMlN0IlMjJpZCUyMiUzQTM5JTJDJTIydGFnJTIyJTNBJTIyZGl2JTIyJTJDJTIyc3BhbiUyMiUzQTI0JTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJzZWN0aW9uJTIyJTJDJTIydGV4dCUyMiUzQSUyMiVFNSU4NSVBRCVFMyU4MCU4MSVFNSVBNCU4NyVFNiVBMSU4OCVFNiU5QyVCQSVFNSU4NSVCMyVFNiU4NCU4RiVFOCVBNyU4MSUyMiU3RCUyQyU3QiUyMmlkJTIyJTNBNDAlMkMlMjJ0YWclMjIlM0ElMjJpbnB1dCUyMiUyQyUyMnNwYW4lMjIlM0EyNCUyQyUyMnJvdyUyMiUzQTElMkMlMjJ0eXBlJTIyJTNBJTIydGV4dGFyZWElMjIlMkMlMjJub3RleHQlMjIlM0F0cnVlJTJDJTIyZmllbGQlMjIlM0ElMjJvcmdfcmVjb3JkJTIyJTJDJTIyZGF0YV9sZW4lMjIlM0ElMjI0MDAwJTIyJTdEJTJDJTdCJTIyaWQlMjIlM0E0MSUyQyUyMnRhZyUyMiUzQSUyMmlucHV0JTIyJTJDJTIyc3BhbiUyMiUzQTEwJTJDJTIycm93JTIyJTNBMSUyQyUyMnR5cGUlMjIlM0ElMjJkYXRlJTIyJTJDJTIyYWxpZ24lMjIlM0ElMjJyaWdodCUyMiUyQyUyMnRleHQlMjIlM0ElMjIlRTUlQTQlODclRTYlQTElODglRTYlOTclQTUlRTYlOUMlOUYlMjIlMkMlMjJmaWVsZCUyMiUzQSUyMnJlY29yZF9kYXRlJTIyJTdEJTVE"
+  }
+</script>
+</body>
+</html>
