@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>法人查询</title>
+  <#include "/inc/header.html">
+</head>
+<body>
+<div id="app" v-cloak>
+  <div>
+    <el-row class="grid-btn">
+      <el-col :span="4">
+        <el-input v-model="query.orgName" @keyup.enter="query" clearable placeholder="法人名称"></el-input>
+      </el-col>
+      <el-col :span="4" :offset="1">
+        <el-input v-model="query.orgCode" @keyup.enter="query" clearable placeholder="组织机构代码"></el-input>
+      </el-col>
+      <el-col :span="4" :offset="1">
+        <el-input v-model="query.credCode" @keyup.enter="query" clearable placeholder="信用代码"></el-input>
+      </el-col>
+      <el-col :span="4" :offset="1">
+        <el-input v-model="query.regAddr" @keyup.enter="query" clearable placeholder="注册地址"></el-input>
+      </el-col>
+      <el-col :span="4" :offset="1">
+        <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+      </el-col>
+    </el-row>
+    <el-row :gutter="10">
+      <el-col :span="24">
+
+      </el-col>
+    </el-row>
+  </div>
+ </div>
+<script src="${request.contextPath}/static/js/module/query/crop.js?_${.now?long}"></script>
+</body>
+</html>

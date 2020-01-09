@@ -241,7 +241,12 @@
             <artifactId>axis2-json</artifactId>
             <version>${axis2.version}</version>
         </dependency>
-        <!-- portal对接依赖 End -->
+      <dependency>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.8.1</version>
+      </dependency>
+      <!-- portal对接依赖 End -->
     </dependencies>
 
     <dependencyManagement>
