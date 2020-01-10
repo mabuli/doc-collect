@@ -1,24 +1,22 @@
 var vm = new Vue({
   el:'#app',
-  components:{
-
-  },
-  data() {
-    return {
+  components:{},
+  data :{
       query: {
         orgName:null,
         orgCode:null,
         credCode:null,
         regAddr:null,
-      }
-    }
+      },
+      list:[]
   },
   computed: {
   },
-  created: function(){
+  mounted:function(){
+    this.handleQuery();
   },
   methods: {
-    handleQuery: function() {
+    handleQuery () {
       let url = 'https://10.217.17.110:8243/corpration/v1.1/queryLegalByNmOrCd?orgName=' + this.query.orgName
           + '&orgCode=' + this.query.orgCode
           + '&credCode=' + this.query.credCode
@@ -31,6 +29,12 @@ var vm = new Vue({
         dataType:'json',
         success: function(resp){
           console.info(resp.data)
+          //vm.list = resp.data.Entries ? resp.data.Entries: []
+          if(resp.data.Entries) {
+            for(var i in resp.data.Entries) {
+              vm.list.push(resp.data.Entries[i])
+            }
+          }
         }
       });
     }
