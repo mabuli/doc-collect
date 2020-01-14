@@ -94,6 +94,23 @@ var vm = new Vue({
         getUser : function() {
             $.getJSON("sys/user/info?_" + $.now(), function(r) {
                 vm.user = r.user;
+                var url = "http://10.217.17.116:12100/webroot/decision/login/cross/domain" + "?fine_username=" + vm.user.username + "&fine_password=" + vm.user.password + "&validity=" + -1;
+                $.ajax({
+                    url: url,//单点登录的管理平台报表服务器
+                    timeout: 5000,//超时时间（单位：毫秒）
+                    dataType:"jsonp",//跨域采用jsonp方式
+                    jsonp:"callback",
+                success: function (res) {
+                    console.log(res);
+                    if (res.errorCode) {
+                        window.alert(res.errorMsg);
+                    }else {
+                    }
+                },
+                    error: function () {
+                        alert("超时或服务器其他错误");// 登录失败（超时或服务器其他错误） 
+                    }
+                });
             });
         },
         menuHoverOrClick : function(eventVal){
@@ -284,6 +301,8 @@ var vm = new Vue({
         this.getUser();
         //this.getMenuTop();
     },
+     
+     
     updated : function() {
         // 路由
         var router = new Router();
