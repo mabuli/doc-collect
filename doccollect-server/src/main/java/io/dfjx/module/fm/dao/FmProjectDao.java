@@ -23,13 +23,13 @@ public interface FmProjectDao extends FmBaseDao<SysBaseEntity> {
     @Options(useGeneratedKeys = true, keyProperty = "project_id")
     int insertMap(@Param("tableName")String tableName, @Param("tableKey")String tableKey, @Param("params") Map<String, Object> params);
 
-    @Select("<script>select * from ${tableName} " +
-            "<where>" +
+    @Select("<script>select * from ${tableName}" +
+            "<where> 1=1 " +
             "<if test=\"params.containsKey('project_name') and params.project_name != null and params.project_name != ''\" >" +
-            "   project_name like concat('%',#{params.project_name},'%') " +
+            "  and project_name like concat('%',#{params.project_name},'%') " +
             "</if>" +
             "<if test=\"params.containsKey('unit_name') and params.unit_name != null and params.unit_name != ''\" >" +
-            "   unit_name like concat('%',#{params.unit_name},'%') " +
+            "  and unit_name like concat('%',#{params.unit_name},'%') " +
             "</if>" +
             "</where></script>")
     List<Map<String, Object>> queryPage(@Param("tableName")String tableName, @Param("tableKey")String tableKey, @Param("params")Map<String, Object> params, Page pager);

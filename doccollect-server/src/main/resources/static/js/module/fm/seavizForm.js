@@ -61,7 +61,8 @@ const svf = {
     return svf.item(x, strin)
   },
   money(x){
-    let strin = `<el-input-number v-model="info.${x.field}" :controls="false" :precision="2" :step="1" />`
+    let strlen = 'maxlength="14"'
+    let strin = `<el-input-number v-model="info.${x.field}" ${strlen} :controls="false" :precision="2" :step="1" />`
     return svf.item(x, strin)
   },
   date(x){

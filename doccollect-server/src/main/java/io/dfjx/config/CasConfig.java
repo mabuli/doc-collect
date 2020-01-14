@@ -45,28 +45,29 @@ public class CasConfig {
     /**
      * 该过滤器用于实现单点登出功能，单点退出配置，一定要放在其他filter之前
      */
-//    @Bean
-//    public FilterRegistrationBean singleSignOutFilter() {
-//        FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
-//        filterRegistration.setFilter(new SingleSignOutFilter());
-//        filterRegistration.addUrlPatterns("/*");
-//        filterRegistration.addInitParameter("casServerUrlPrefix", casServerUrl + "/login?locale=zh_CN");
-//        filterRegistration.addInitParameter("serverName", casServerUrl);
-//        filterRegistration.setOrder(Integer.MAX_VALUE - 9);
-//        return filterRegistration;
-//    }
+    @Bean("casSignOutFilter")
+    public FilterRegistrationBean casSignOutFilter() {
+        FilterRegistrationBean filterRegistration = new FilterRegistrationBean();
+        filterRegistration.setFilter(new SingleSignOutFilter());
+        filterRegistration.addUrlPatterns("/*");
+        filterRegistration.addInitParameter("casServerUrlPrefix", casServerUrl + "/logout?locale=zh_CN");
+        //filterRegistration.addInitParameter("serverName", casServerUrl);
+        filterRegistration.setOrder(Integer.MAX_VALUE - 9);
+        return filterRegistration;
+    }
 
     /**
      * 该过滤器负责对Ticket的校验工作
      * @return
      */
-    @Bean
-    public FilterRegistrationBean ValidationFilterRegistrationBean(){
+    @Bean("casValidateFilter")
+    public FilterRegistrationBean casValidateFilter(){
         FilterRegistrationBean authenticationFilter = new FilterRegistrationBean();
         authenticationFilter.setFilter(new Cas30ProxyReceivingTicketValidationFilter());
         Map<String, String> initParameters = new HashMap<>();
         initParameters.put("casServerUrlPrefix", casServerUrl);
         initParameters.put("serverName", projectUrl);
+        initParameters.put("redirectAfterValidation",Boolean.TRUE.toString());//my
         authenticationFilter.setInitParameters(initParameters);
         authenticationFilter.setOrder(Integer.MAX_VALUE - 8);
         List<String> urlPatterns = new ArrayList<>();
@@ -78,8 +79,8 @@ public class CasConfig {
      * 该过滤器负责用户的认证工作
      * @return
      */
-    @Bean
-    public FilterRegistrationBean authenticationFilterRegistrationBean() {
+    @Bean("casAuthFilter")
+    public FilterRegistrationBean casAuthFilter() {
         FilterRegistrationBean authenticationFilter = new FilterRegistrationBean();
         authenticationFilter.setFilter(new AuthenticationFilter());
         Map<String, String> initParameters = new HashMap<>();
@@ -98,8 +99,8 @@ public class CasConfig {
      * 该过滤器对HttpServletRequest请求包装， 可通过HttpServletRequest的getRemoteUser()方法获得登录用户的登录名
      * @return
      */
-    @Bean
-    public FilterRegistrationBean casHttpServletRequestWrapperFilter(){
+    @Bean("casWrapperFilter")
+    public FilterRegistrationBean casWrapperFilter(){
         FilterRegistrationBean authenticationFilter = new FilterRegistrationBean();
         authenticationFilter.setFilter(new HttpServletRequestWrapperFilter());
         authenticationFilter.setOrder(Integer.MAX_VALUE - 6);

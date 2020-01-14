@@ -101,6 +101,23 @@ var vm = new Vue({
 			});
 		},
 		saveForm: function () {
+			if(!this.form.notext && !this.form.text){
+				alert("标题不能为空");
+				return;
+			}
+			if(!this.form.type){
+				alert(this.tagChk(this.form,'标题列类型','输入框类型')+"不能为空");
+				return;
+			}
+			if(this.form.tag=='input'&& !this.form.field){
+				alert("字段名不能为空");
+				return;
+			}
+			if(this.form.type=='text'&& !this.form.data_len){
+				alert("长度不能为空");
+				return;
+			}
+
 			let json = this.updateJson()
       let formInfo = Object.assign({tbl_name:'fm_project',json_config:json},vm.form);
 			var url = this.isEdit ? "sys/form/updatefld" : "sys/form/addfld";

@@ -17,8 +17,6 @@ package io.dfjx.module.sys.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -28,10 +26,8 @@ import javax.servlet.http.HttpServletResponse;
 import io.dfjx.common.utils.SpringContextUtils;
 import io.dfjx.common.utils.StringTools;
 import io.dfjx.config.SystemConfig;
-import io.dfjx.module.sys.entity.SysUserEntity;
 import io.dfjx.module.sys.service.SysRoleService;
-import io.dfjx.module.sys.sso.PortalFilter;
-import org.apache.shiro.SecurityUtils;
+import io.dfjx.module.sys.sso.CasFilter;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -126,30 +122,35 @@ public class SysLoginController {
 
     @RequestMapping("loginsso")
     public String loginsso(){
-        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
-            return "redirect:login.html";
-        }else{
-            return "redirect:"+getCasLogout();
-        }
+        return "redirect:"+getCasLogout();
+//        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
+//            return "redirect:login.html";
+//        }else{
+//            return "redirect:"+getCasLogout();
+//        }
 
     }
 
     @RequestMapping("indexsso")
     public String indexsso(HttpServletRequest request){
         String main = "index";
-        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
-            return main;
-        }
-        PortalFilter sso = new PortalFilter();
+//        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
+//            return main;
+//        }
+        CasFilter sso = new CasFilter();
         boolean isLogin = sso.doLogin(request);
         if(!isLogin){
-            return "redirect:"+getCasLogout();
+            return "redirect:"+getCasLogin();
         }
         return getIndexUrl();
     }
 
     private String getCasLogout(){
         String url = systemConfig.getCasServiceUrl() + "/logout?service=" + StringTools.urlEncode(systemConfig.getProjectUrl());
+        return url;
+    }
+    private String getCasLogin(){
+        String url = systemConfig.getCasServiceUrl() + "/login?service=" + StringTools.urlEncode(systemConfig.getProjectUrl());
         return url;
     }
 

@@ -177,5 +177,6 @@
     <orderEntry type="library" scope="RUNTIME" name="Maven: org.apache.ws.commons.axiom:axiom-dom:1.2.20" level="project" />
     <orderEntry type="library" name="Maven: org.apache.geronimo.specs:geronimo-activation_1.1_spec:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.5" level="project" />
+    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.8.1" level="project" />
   </component>
 </module>

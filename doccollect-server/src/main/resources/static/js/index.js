@@ -24,7 +24,12 @@ var menuItem = Vue.extend({
             return '';
         },
         toLink:function(url){
-            top.location.href = '#' + url
+            if(url && url.indexOf('http')==0){
+                vm.goUrl(url);
+            }else{
+                top.location.href = '#' + url
+            }
+
         }
     },
     template : '<div>\n' +
@@ -94,7 +99,7 @@ var vm = new Vue({
         getUser : function() {
             $.getJSON("sys/user/info?_" + $.now(), function(r) {
                 vm.user = r.user;
-                var url = "http://10.217.17.116:12100/webroot/decision/login/cross/domain" + "?fine_username=" + vm.user.username + "&fine_password=" + xmgladmin + "&validity=" + -1;
+                var url = "http://10.217.17.116:12100/webroot/decision/login/cross/domain" + "?fine_username=" + vm.user.username + "&fine_password=xmgladmin&validity=" + -1;
                 $.ajax({
                     url: url,//单点登录的管理平台报表服务器
                     timeout: 5000,//超时时间（单位：毫秒）
@@ -130,6 +135,9 @@ var vm = new Vue({
             }else{
                 this.$emit('changeTaijiMenuList',eventVal.name)
             }
+        },
+        goUrl: function(url){
+            this.main = url
         },
         updatePassword : function() {
             layer.open({
@@ -296,6 +304,10 @@ var vm = new Vue({
             });
         }
     },
+    watch:{
+        main:function(val){
+        }
+    },
     created : function() {
         this.getMenuList();
         this.getUser();
@@ -305,6 +317,7 @@ var vm = new Vue({
      
     updated : function() {
         // 路由
+        if(vm.main.indexOf('http')==0) return;
         var router = new Router();
         routerList(router, vm.menuList);
         router.start();
@@ -312,7 +325,7 @@ var vm = new Vue({
 });
 
 function routerList(router, menuList) {
-    for ( var key in menuList) {
+for ( var key in menuList) {
         var menu = menuList[key];
         if (menu.type == 0) {
             routerList(router, menu.list);
@@ -321,9 +334,12 @@ function routerList(router, menuList) {
             // $(".header").next().removeClass("active");
             // }
         } else if (menu.type == 1) {
-            router.add('#' + menu.url, function() {
+            let surl = menu.url.indexOf('http') == 0 ? menu.url : '#' + menu.url
+            if(menu.url.indexOf('http')==0){
+                continue;
+            }
+            router.add(surl, function() {
                 var url = window.location.hash;
-
                 // 替换iframe的url
                 vm.main = url.replace('#', '');
 

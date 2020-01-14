@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>大兴项目申报采集系统</title>
+<title>备案项目管理</title>
 <!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <link href="${request.contextPath}/favicon.ico" rel="shortcut icon">
@@ -51,6 +51,7 @@
       font-size: 14px;
       color:#fff;
     }
+    .logout{color:#fff;}
     .footer{
       width: 100%;
       height:116px ;
@@ -61,7 +62,6 @@
       margin: 0px auto;
       padding-top: 18px;
     }
-
     .bottom div{
       font-size: 14px;
       line-height: 28px;
@@ -69,6 +69,8 @@
       color: #2b9afe;
       text-align: center;
     }
+    .skin-blue .content-header{background:#f5f4f9;}
+    .content-header>.breadcrumb>li{float:left;}
   </style>
 </head>
 <!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->
@@ -78,7 +80,8 @@
     <header class="main-header">
       <el-row class="heafer-bg">
         <el-col :span="6">
-          <a :href="'#'+main" class="header-tile">大兴项目申报采集系统</a>
+          <a :href="'#'+main" class="header-tile">备案项目管理</a>
+          <!--<input type="text" :value="main" />-->
         </el-col>
         <el-col :span="16">
           <menu-item :data="menuList"></menu-item>
@@ -89,7 +92,11 @@
         <el-col :span="2">
           <div style="color: #ffffff;">
             <!--<span style="font-size: 16px">{{user.userRealName}}，欢迎您访问！</span>-->
-            <el-button type="text" class="quit" @click="logout()"><i class="el-icon-switch-button"></i>注销</el-button>
+            <!--<el-button type="text" class="quit" @click="logout()"><i class="el-icon-switch-button"></i>注销</el-button>-->
+            <a href="logout" class="logout">
+              <i class="fa fa-sign-out"></i>注销
+              &nbsp;
+            </a>
           </div>
         </el-col>
       </el-row>
@@ -97,6 +104,15 @@
 
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
+      <!--<section class="content-header">
+      <ol class="breadcrumb" id="nav_title" style="position: static; float: none;">
+        <li class="active">
+          <i class="fa fa-home" style="font-size: 20px; position: relative; top: 2px; left: -3px;"></i>
+          &nbsp; 首页
+        </li>
+        <li class="active">{{navTitle}}</li>
+      </ol>
+    </section>-->
       <!-- Main content -->
       <section class="content" >
         <iframe scrolling="yes" frameborder="0" style="width: 100%; height: 100%; overflow: visible;" :src="main"></iframe>
@@ -131,15 +147,6 @@
 
     <div class="footer">
       <div class="bottom">
-        <div class="">
-          建议使用360极速浏览器/IE9+浏览器    分辨率1280*768
-        </div>
-        <div class="">
-          北京市经济和信息化局主办      北京市信息资源管理中心承办
-        </div>
-        <div class="">
-          技术支持：平台运维组        联系电话：84371878
-        </div>
       </div>
     </div>
   </div>

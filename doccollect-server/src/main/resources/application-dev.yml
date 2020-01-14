@@ -3,9 +3,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://10.217.17.115:3306/doc_collect?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-      username: fbi
-      password: fbi
+      url: jdbc:mysql://localhost:3306/doc_collect?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: root
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -32,9 +32,9 @@ spring:
             multi-statement-allow: true
 system-config:
   #上传文件保存路径
-  file-dir: /usr/jar/D:/Project/doc-collect/collectfile/project
+  file-dir: D:/Project/doc-collect/collectfile/project
   # cas登录服务地址
-  cas-service-url: http://10.217.17.116:8094/cas
+  cas-service-url: https://127.0.0.1:8443/cas
   project-url: http://10.217.17.116:12100/doc-collect/
   portal-app: 备案项目管理
   portal-soap-url: http://10.217.17.116:18001/portal/intlDataSynchronizedService?wsdl

@@ -23,6 +23,7 @@ public interface IFmBaseService<T> extends IService<T> {
     int deleteMap(Collection<? extends Serializable> ids);
     Map<String, Object> queryById(Long id);
     PageUtils queryPage(Map<String, Object> params);
+    PageUtils queryList(Map<String, Object> params);
     List<Map<String, Object>> queryAll(Map<String, Object> params);
     //int upload(Map<String, Object> params);
 }
