@@ -69,6 +69,7 @@ public class WebClient {
             }
         } catch (Exception ex) {
             logger.error("get error", ex);
+            new RuntimeException(ex);
         }
         return data;
     }
@@ -90,6 +91,7 @@ public class WebClient {
             }
         } catch (Exception ex) {
             logger.error("get error", ex);
+            new RuntimeException(ex);
         }
         return data;
     }
@@ -131,6 +133,7 @@ public class WebClient {
             }
         } catch (Exception ex) {
             logger.error("post error", ex);
+            new RuntimeException(ex);
         }
 
         return data;
@@ -157,6 +160,7 @@ public class WebClient {
             }
         } catch (Exception e) {
             logger.error("post error", e);
+            new RuntimeException(e);
         }
         return data;
     }
