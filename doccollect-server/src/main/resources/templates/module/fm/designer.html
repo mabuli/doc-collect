@@ -74,7 +74,7 @@
               <el-option v-for="item in store.tag" :key="item.value" :label="item.name" :value="item.value"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item :label="tagChk(form,'标题列类型','输入框类型')">
+          <el-form-item :label="tagChk(form,'标题列类型','输入框类型')" required>
             <el-select v-model="form.type" :disabled="isEdit" :placeholder="tagChk(form,'请选择标题列类型','请选择输入框类型')" style="width: 100%;"  @change="setType">
               <el-option v-for="item in store.type.curr" :key="item.value" :label="item.name" :value="item.value"></el-option>
             </el-select>
@@ -108,10 +108,10 @@
           <el-form-item label="默认值" else>
             <el-input v-model="form.value"></el-input>
           </el-form-item>-->
-          <el-form-item label="数据字段名" v-show="form.tag=='input'">
+          <el-form-item label="数据字段名" v-show="form.tag=='input'" required>
             <el-input v-model="form.field" :disabled="isEdit"></el-input>
           </el-form-item>
-          <el-form-item label="数据长度" v-show="form.type=='text'">
+          <el-form-item label="数据长度" v-show="form.type=='text'" required>
             <el-input type="number" v-model="form.data_len" :disabled="isEdit"></el-input>
           </el-form-item>
           <el-form-item>

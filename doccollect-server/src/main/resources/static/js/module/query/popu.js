@@ -24,6 +24,7 @@ var vm = new Vue({
           + '&start=' + this.query.start
           + '&count=' + this.query.count;
       console.info('-- handleQuery --', url)
+      vm.list = []
       $.ajax({
         type: "GET",
         url: baseURL + '/proxy/get',

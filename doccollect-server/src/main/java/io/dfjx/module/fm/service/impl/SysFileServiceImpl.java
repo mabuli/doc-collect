@@ -30,6 +30,7 @@ public class SysFileServiceImpl extends FmBaseServiceImpl<FmComDao, SysBaseEntit
     @Override
     public String getWhere(Map<String, Object> params){
         String str = " and form_id='" + mstr(params, "f") + "'";
+        str += " and table_id='" + mstr(params, "t") + "'";
         return str;
     }
 

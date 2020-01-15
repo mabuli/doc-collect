@@ -74,6 +74,14 @@ public abstract class FmBaseServiceImpl<M extends FmBaseDao<T>, T> extends Servi
     }
 
     @Override
+    public PageUtils queryList(Map<String, Object> params){
+        String whereStr = getWhere(params);
+        Page pageParm = getPager(params);
+        List<Map<String, Object>> pageData = baseMapper.queryList(BaseTable, BaseKey, whereStr, pageParm);
+        return new PageUtils(pageData, (int)pageParm.getTotal(), (int)pageParm.getSize(), (int)pageParm.getCurrent());
+    }
+
+    @Override
     public int insertMap(Map<String, Object> params) {
         params.put("id", "");
         params.remove(BaseKey);

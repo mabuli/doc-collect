@@ -83,63 +83,71 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
     public R handerByDocxFile(InputStream is,Map<String, DocTableMapping> mapping) throws IOException {
         Map<String, Object> model = new LinkedHashMap<>();
         XWPFDocument xdoc = new XWPFDocument(is);
-        List<XWPFParagraph> paragraphs = xdoc.getParagraphs();
-        //备案号
-        int times = 0;
-        for(XWPFParagraph p : paragraphs){
-            String ss1 = p.getText().trim();
-            if(ss1.length()>2)
-                times++;
-            if(times==3) {
-                model.put("project_no", ss1);
-                break;
+        try{
+            List<XWPFParagraph> paragraphs = xdoc.getParagraphs();
+            //备案号
+            int times = 0;
+            for(XWPFParagraph p : paragraphs){
+                String ss1 = p.getText().trim();
+                if(ss1.length()>2)
+                    times++;
+                if(times==3) {
+                    model.put("project_no", ss1);
+                    break;
+                }
             }
-        }
-        List<XWPFTable> tables = xdoc.getTables();
-        for (XWPFTable table : tables) {
-            // 获取表格的行
-            List<XWPFTableRow> rows = table.getRows();
-            int i, j , trLen = rows.size();
-            for (i = 0; i < trLen; i++) {
-                XWPFTableRow tr = rows.get(i);
-                List<XWPFTableCell> cells = tr.getTableCells();
-                int tdLen = cells.size();
-                for (j = 0; j < tdLen; j++) {
-                    XWPFTableCell td = cells.get(j);//取得单元格
-                    String key = val(td.getText());
-                    if(mapping.containsKey(key)){
-                        int pos = mapping.get(key).getLinkPos();
-                        if(pos == 0){
-                            j = j + 1;
-                            if(j > tdLen - 1){
-                                continue;
+            List<XWPFTable> tables = xdoc.getTables();
+            for (XWPFTable table : tables) {
+                // 获取表格的行
+                List<XWPFTableRow> rows = table.getRows();
+                int i, j , trLen = rows.size();
+                for (i = 0; i < trLen; i++) {
+                    XWPFTableRow tr = rows.get(i);
+                    List<XWPFTableCell> cells = tr.getTableCells();
+                    int tdLen = cells.size();
+                    for (j = 0; j < tdLen; j++) {
+                        XWPFTableCell td = cells.get(j);//取得单元格
+                        String key = val(td.getText());
+                        if(mapping.containsKey(key)){
+                            int pos = mapping.get(key).getLinkPos();
+                            if(pos == 0){
+                                j = j + 1;
+                                if(j > tdLen - 1){
+                                    continue;
+                                }
+                                td = cells.get(j);
+                                model.put(mapping.get(key).getColumn(), td.getText().trim());
+                            }else if(pos == 1){
+                                i = i + 1;
+                                if(i > trLen - 1){
+                                    continue;
+                                }
+                                tr = rows.get(i);
+                                cells = tr.getTableCells();
+                                td = cells.get(0);
+                                model.put(mapping.get(key).getColumn(), td.getText().trim());
                             }
-                            td = cells.get(j);
-                            model.put(mapping.get(key).getColumn(), td.getText().trim());
-                        }else if(pos == 1){
-                            i = i + 1;
-                            if(i > trLen - 1){
-                                continue;
-                            }
-                            tr = rows.get(i);
-                            cells = tr.getTableCells();
-                            td = cells.get(0);
-                            model.put(mapping.get(key).getColumn(), td.getText().trim());
                         }
                     }
                 }
+//            for (XWPFTableRow row : rows) {
+//                // 获取表格的每个单元格
+//                List<XWPFTableCell> tableCells = row.getTableCells();
+//                for (XWPFTableCell cell : tableCells) {
+//                    // 获取单元格的内容
+//                    String text1 = cell.getText();
+//                    System.out.println(text1);
+//                }
+//            }
             }
-            for (XWPFTableRow row : rows) {
-                // 获取表格的每个单元格
-                List<XWPFTableCell> tableCells = row.getTableCells();
-                for (XWPFTableCell cell : tableCells) {
-                    // 获取单元格的内容
-                    String text1 = cell.getText();
-                    System.out.println(text1);
-                }
-            }
+            //其他信息解析
+            parsePubField(model);
+        }finally {
+            if(xdoc!=null)
+                xdoc.close();
         }
-        return R.ok();
+
+        return R.ok().put("info", model);
     }
     public R handlerByDocFile(InputStream is,Map<String, DocTableMapping> mapping) throws IOException {
         Map<String, Object> model = new LinkedHashMap<>();

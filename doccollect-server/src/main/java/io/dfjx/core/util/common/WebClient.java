@@ -11,6 +11,8 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -19,7 +21,12 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 import java.io.UnsupportedEncodingException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,7 +35,7 @@ import java.util.Map;
 public class WebClient {
 
     protected Logger logger = LoggerFactory.getLogger(getClass());
-    private Map<String, String> heads = new HashMap(){{
+    private Map<String, String> heads = new HashMap() {{
         put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36");
     }};
 
@@ -37,8 +44,33 @@ public class WebClient {
     public static final RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
             .setConnectionRequestTimeout(5000).build();
 
-    private static final CloseableHttpClient httpclient = HttpClients.custom()
-            .setDefaultRequestConfig(defaultRequestConfig).build();
+    private static CloseableHttpClient httpclient = null;
+
+    static {
+        try {
+            SSLContext ctx = SSLContext.getInstance("TLS");
+            X509TrustManager tm = new X509TrustManager() {
+                public X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+
+                public void checkClientTrusted(X509Certificate[] arg0,
+                                               String arg1) throws CertificateException {
+                }
+
+                public void checkServerTrusted(X509Certificate[] arg0,
+                                               String arg1) throws CertificateException {
+                }
+            };
+            ctx.init(null, new TrustManager[] { tm }, null);
+            SSLConnectionSocketFactory ssf = new SSLConnectionSocketFactory(
+                    ctx, NoopHostnameVerifier.INSTANCE);
+            httpclient = HttpClients.custom()
+                    .setSSLSocketFactory(ssf).build();;
+        } catch (Exception e) {
+            httpclient = HttpClients.createDefault();
+        }
+    }
 
     public String getCharset() {
         return charset;
@@ -154,7 +186,7 @@ public class WebClient {
             request.setEntity(s);
             CloseableHttpResponse response = httpclient.execute(request);
             HttpEntity entity = response.getEntity();
-            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 data = EntityUtils.toByteArray(entity);
                 EntityUtils.consume(entity);
             }

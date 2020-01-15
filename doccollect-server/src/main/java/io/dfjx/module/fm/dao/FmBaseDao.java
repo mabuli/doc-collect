@@ -62,6 +62,9 @@ public interface FmBaseDao<T> extends BaseMapper<T> {
     List<Map<String, Object>> queryPage(@Param("tableName")String tableName, @Param("tableKey")String tableKey, @Param("params")Map<String, Object> params, Page pager);
 
     @Select("<script>select * from ${tableName} where 1=1 ${tableWhere}</script>")
+    List<Map<String, Object>> queryList(@Param("tableName")String tableName, @Param("tableKey")String tableKey, @Param("tableWhere")String whereStr, Page pager);
+
+    @Select("<script>select * from ${tableName} where 1=1 ${tableWhere}</script>")
     List<Map<String, Object>> queryAll(@Param("tableName")String tableName, @Param("tableKey")String tableKey, @Param("tableWhere")String whereStr);
 
     @Select("<script>select count(*) from ${tableName} where 1=1 " +

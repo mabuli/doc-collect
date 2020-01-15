@@ -35,7 +35,7 @@ public class SysFileController extends AbstractController {
     @RequestMapping("/list")
     //@RequiresPermissions("sys:form:list")
     public R list(@RequestParam Map<String, Object> params){
-        PageUtils page = sysFileService.queryPage(params);
+        PageUtils page = sysFileService.queryList(params);
         return R.ok().put("page", page);
     }
 

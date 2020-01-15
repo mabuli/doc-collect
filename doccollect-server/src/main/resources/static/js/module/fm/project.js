@@ -57,7 +57,8 @@ var vm = new Vue({
               data: this.q,
               success: function(r){
                   if(r.code === 0){
-                      vm.tablePage = r.page;
+                      vm.tablePage.list = r.page.list;
+                      vm.tablePage.totalCount = r.page.totalCount;
                   }
               }
           });
@@ -82,16 +83,16 @@ var vm = new Vue({
           vm.showList = true;
       },
       handleSizeChange(val) {
-          vm.tablePage.pageSize = val
-          vm.tablePage.currPage = 1;
+          vm.q.limit = val
+          vm.q.page = 1;
           vm.query();
       },
       handleCurrentChange(val) {
-          vm.tablePage.currPage = val;
+          vm.q.page = val;
           vm.query();
       },
       colIndex(row, column, cellValue, index) {
-          return (vm.tablePage.currPage - 1) * vm.tablePage.pageSize + index + 1
+          return (vm.q.page - 1) * vm.q.limit + index + 1
       },
       upload(){
           this.fileList = [];
@@ -119,6 +120,10 @@ var vm = new Vue({
         vm.multipleSelection = val;
       },
       startUpload(){
+          if(this.fileList.length>1){
+            alert("一次只能上传一个文档");
+            return;
+          }
           this.$refs.upload.submit();
       },
       endUpload(res){
@@ -137,15 +142,9 @@ var vm = new Vue({
           return ;
         }
         var ids = vm.multipleSelection.map(x=>{return x.project_id})
-        confirm('确定要删除选中的用户？', function(){
-          postdata(baseURL + "fm/project/delete", ids, function(){
-            if(r.code == 0){
-              alert('操作成功', function(){
-                vm.query(true);
-              });
-            }else{
-              alert(r.msg);
-            }
+        confirm('确定要删除选中的项目？', function(){
+          postdata("fm/project/delete", ids, function(){
+            vm.query(true);
           });
         });
       },
@@ -154,15 +153,17 @@ var vm = new Vue({
               this.$forceUpdate();
           })
       },
-      queryFile(){
-        $.get(baseURL + "sys/file/list?f=1",function(r){
+      queryFile(x){
+        $.get(baseURL + "sys/file/list?f=1&t=" + x.project_id,function(r){
             if(isok(r) && r.page){
               vm.filePage.list = r.page.list;
             }
         });
       },
       listFile(row){
-        this.queryFile()
+        this.info = row
+        this.filePage.uplist = []
+        this.queryFile(row)
         this.showFile = true
         this.filePage.parm.table_id = row.project_id
       },
@@ -175,17 +176,18 @@ var vm = new Vue({
       delFile(row){
         var ids = [row.id]
         postdata("sys/file/delete", ids, function(r){
-          vm.queryFile();
+          vm.queryFile(vm.info);
         });
       },
       startFileUpload(){
         this.$refs.fileUpload.submit();
+        setTimeout(()=>{
+          vm.$message('上传成功');
+        },800)
       },
       endFileUpload(res){
         if(res && res.code == '0'){
-          alert("上传成功",()=>{
-            this.queryFile();
-          });
+          this.queryFile(this.info);
         }else{
           alert("【错误】" + (res.msg || res));
         }

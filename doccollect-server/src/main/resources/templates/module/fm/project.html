@@ -31,7 +31,7 @@
                         :data="tablePage.list"
                         border
                         size="small"
-                        height="430"
+                        height="510"
                         :stripe="true"
                         style="width: 100%"
                         highlight-current-row
@@ -51,23 +51,12 @@
                             <el-button @click="listFile(scope.row)" type="text" size="mini">附件列表</el-button>
                         </template>
                     </el-table-column>
-                    <!--<el-table-column-->
-                            <!--prop="crtDate"-->
-                            <!--label="创建日期"-->
-                            <!--:show-overflow-tooltip="true"-->
-                            <!--width="120"-->
-                            <!--align="center">-->
-                        <!--<template slot-scope="scope">-->
-                            <!--<span>{{dateStr(scope.row.crtDate)}}</span>-->
-                        <!--</template>-->
-                    <!--</el-table-column>-->
                 </el-table>
                 <el-pagination
-                        :pager-count="5"
                         @size-change="handleSizeChange"
                         @current-change="handleCurrentChange"
-                        :current-page="tablePage.currPage"
-                        :page-size="tablePage.pageSize"
+                        :current-page="q.page"
+                        :page-size="q.limit"
                         :page-sizes="[10, 20, 30]"
                         layout="total, sizes, prev, pager, next, jumper"
                         :total="tablePage.totalCount">
@@ -97,10 +86,10 @@
     </div>
     <el-dialog title="数据上传" :close-on-click-modal="false" :visible.sync="showUpload">
         <el-upload action="${request.contextPath}/fm/project/upload" ref="upload" :on-success="endUpload"
-                :multiple="false" accept=".doc,.docx" :auto-upload="false" :file-list="fileList">
+                :multiple="false" :limit="1" accept=".doc,.docx" :auto-upload="false" :file-list="fileList">
             <el-button slot="trigger" size="mini" type="primary">选取文件</el-button>
             <el-button style="margin-left: 10px;" size="mini" type="success" @click="startUpload">上传到服务器</el-button>
-            <div slot="tip" class="el-upload__tip">只能上传doc/docx文件</div>
+            <div slot="tip" class="el-upload__tip">只能上传doc/docx文件<br/>一次只能上传一个文件</div>
         </el-upload>
     </el-dialog>
     <el-dialog title="数据上传" :close-on-click-modal="false" :visible.sync="showFile" width="500px">
@@ -110,7 +99,7 @@
                         :data="filePage.list"
                         border
                         size="mini"
-                        height="250px"
+                        height="260px"
                         :stripe="true"
                         style="width: 450px"
                         highlight-current-row>
