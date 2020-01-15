@@ -22,6 +22,7 @@ var vm = new Vue({
           + '&credCode=' + this.query.credCode
           + '&regAddr=' + this.query.regAddr;
       console.info('-- handleQuery --', url)
+      vm.list = []
       $.ajax({
         type: "GET",
         url: baseURL + '/proxy/get',
