@@ -20,6 +20,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -33,6 +34,7 @@ import java.util.Date;
  * @date 2019-03-08 10:40:56
  */
 @Data
+@Accessors(chain=true)
 @TableName("sys_log")
 public class SysLogEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -42,10 +44,8 @@ public class SysLogEntity implements Serializable {
 	private String username;
 	//用户操作
 	private String operation;
-	//请求方法
-	private String method;
-	//请求参数
-	private String params;
+	//返回结果
+	private String result;
 	//执行时长(毫秒)
 	private Long time;
 	//IP地址
