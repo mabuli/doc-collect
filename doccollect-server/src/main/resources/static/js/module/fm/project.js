@@ -31,9 +31,11 @@ var vm = new Vue({
             filePage : {
               list: [],
               uplist:[],
-              parm:{},
-              currPage: 1,
-              pageSize: 30,
+              parm:{
+                table_id:'',
+                page: 1,
+                limit: 30,
+              },
               totalCount: 0
             },
             info:{},
@@ -154,9 +156,10 @@ var vm = new Vue({
           })
       },
       queryFile(x){
-        $.get(baseURL + "sys/file/list?f=1&t=" + x.project_id,function(r){
+        $.get(baseURL + `sys/file/list?f=1&t=${x.project_id}&page=${vm.filePage.parm.page}&limit=${vm.filePage.parm.limit}`,function(r){
             if(isok(r) && r.page){
               vm.filePage.list = r.page.list;
+              vm.filePage.totalCount = r.page.totalCount
             }
         });
       },
@@ -191,6 +194,15 @@ var vm = new Vue({
         }else{
           alert("【错误】" + (res.msg || res));
         }
+      },
+      handleSizeChange2(val) {
+        vm.filePage.parm.limit = val
+        vm.filePage.parm.page = 1;
+        vm.queryFile(vm.info);
+      },
+      handleCurrentChange2(val) {
+        vm.filePage.parm.page = val;
+        vm.queryFile(vm.info);
       },
 	}
 });

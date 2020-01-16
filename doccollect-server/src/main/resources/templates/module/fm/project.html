@@ -92,7 +92,7 @@
             <div slot="tip" class="el-upload__tip">只能上传doc/docx文件<br/>一次只能上传一个文件</div>
         </el-upload>
     </el-dialog>
-    <el-dialog title="数据上传" :close-on-click-modal="false" :visible.sync="showFile" width="500px">
+    <el-dialog title="附件列表" :close-on-click-modal="false" :visible.sync="showFile" width="500px">
         <el-row>
             <el-col :span="24">
                 <el-table
@@ -112,6 +112,15 @@
                         </template>
                     </el-table-column>
                 </el-table>
+                <el-pagination
+                        @size-change="handleSizeChange2"
+                        @current-change="handleCurrentChange2"
+                        :current-page="filePage.parm.page"
+                        :page-size="filePage.parm.limit"
+                        :page-sizes="[10, 20, 30]"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="filePage.totalCount">
+                </el-pagination>
             </el-col>
             <el-col :span="24">
                 <el-upload action="${request.contextPath}/sys/file/save" ref="fileUpload" :on-success="endFileUpload"
