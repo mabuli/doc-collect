@@ -85,12 +85,13 @@ public class ProxyAspect {
         // 记录开始时间
         long start = System.currentTimeMillis();
         // 执行目标方法
-        String result = null;
+        Object result = null;
+        String resultTxt = null;
         try{
-            proceedingJoinPoint.proceed();
-            result = "成功";
+            result = proceedingJoinPoint.proceed();
+            resultTxt = "成功";
         } catch (Throwable t) {
-            result = "失败";
+            resultTxt = "失败";
         }
         long end = System.currentTimeMillis();
 
@@ -108,7 +109,7 @@ public class ProxyAspect {
         //执行插入数据库
         SysLogEntity log = new SysLogEntity();
         log .setOperation(operation)
-            .setResult(result)
+            .setResult(resultTxt)
             .setTime(end-start)
             .setIp(ip)
             .setCreateDate(new Date());
