@@ -3,10 +3,10 @@ var vm = new Vue({
   components:{},
   data :{
       query: {
-        orgName:null,
-        orgCode:null,
-        credCode:null,
-        regAddr:null,
+        orgName:'',
+        orgCode:'',
+        credCode:'',
+        regAddr:'',
       },
       list:[]
   },
@@ -17,10 +17,11 @@ var vm = new Vue({
   },
   methods: {
     handleQuery () {
-      let url = 'https://10.217.17.110:8243/corpration/v1.1/queryLegalByNmOrCd?orgName=' + this.query.orgName
-          + '&orgCode=' + this.query.orgCode
-          + '&credCode=' + this.query.credCode
-          + '&regAddr=' + this.query.regAddr;
+      let url = 'https://10.217.17.110:8243/corpration/v1.1/queryLegalByNmOrCd?1=1'
+      + (this.query.orgName == '' ? '' : '&orgName=' + this.query.orgName)
+      + (this.query.orgCode == '' ? '' : '&orgCode=' + this.query.orgCode)
+      + (this.query.credCode == '' ? '' : '&credCode=' + this.query.credCode)
+      + (this.query.regAddr == '' ? '' : '&regAddr=' + this.query.regAddr);
       console.info('-- handleQuery --', url)
       vm.list = []
       $.ajax({

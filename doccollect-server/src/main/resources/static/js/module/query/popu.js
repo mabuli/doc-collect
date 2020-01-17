@@ -3,9 +3,9 @@ var vm = new Vue({
   components:{},
   data :{
       query: {
-        housAddr:null,
-        currAddr:null,
-        hltySituCd:null,
+        housAddr:'',
+        currAddr:'',
+        hltySituCd:'',
         start:1,
         count:10
       },
@@ -18,11 +18,12 @@ var vm = new Vue({
   },
   methods: {
     handleQuery () {
-      let url = 'https://10.217.17.110:8243/query/v1.0/querySixtyPopusByNameOrNum?housAddr=' + this.query.housAddr
-          + '&currAddr=' + this.query.currAddr
-          + '&hltySituCd=' + this.query.hltySituCd
-          + '&start=' + this.query.start
-          + '&count=' + this.query.count;
+      let url = 'https://10.217.17.110:8243/query/v1.0/querySixtyPopusByNameOrNum?1=1'
+          + (this.query.housAddr == '' ? '' : '&housAddr=' + this.query.housAddr)
+          + (this.query.currAddr == '' ? '' : '&currAddr=' + this.query.currAddr)
+          + (this.query.hltySituCd == '' ? '' : '&hltySituCd=' + this.query.hltySituCd)
+          + (this.query.start == '' ? '' : '&start=' + this.query.start)
+          + (this.query.count == '' ? '' : '&count=' + this.query.count);
       console.info('-- handleQuery --', url)
       vm.list = []
       $.ajax({
