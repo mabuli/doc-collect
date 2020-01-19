@@ -34,7 +34,8 @@ import java.util.Map;
 
 public class WebClient {
 
-    protected Logger logger = LoggerFactory.getLogger(getClass());
+    protected static Logger logger = LoggerFactory.getLogger(WebClient.class);
+
     private Map<String, String> heads = new HashMap() {{
         put("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36");
     }};
@@ -93,6 +94,7 @@ public class WebClient {
             }
         });
 
+        logger.debug(url);
         try (CloseableHttpResponse response = httpclient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (null != entity) {
@@ -115,6 +117,7 @@ public class WebClient {
             }
         });
 
+        logger.debug(url);
         try (CloseableHttpResponse response = httpclient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (null != entity) {
@@ -155,6 +158,7 @@ public class WebClient {
             }
         });
 
+        logger.debug(url);
         try {
             request.setEntity(new UrlEncodedFormEntity(nvps, charset));
             CloseableHttpResponse response = httpclient.execute(request);
@@ -180,6 +184,7 @@ public class WebClient {
             }
         });
 
+        logger.debug(url);
         try {
             StringEntity s = new StringEntity(content, "utf-8");
             s.setContentType("application/json");//发送json数据需要设置contentType
