@@ -28,8 +28,10 @@ var vm = new Vue({
         type: "GET",
         url: baseURL + '/proxy/get',
         data: {url:url},
-        dataType:'json',
+        dataType: 'text',
         success: function(resp){
+          resp = resp.replace(/"uni_soci_cred_code":(\d+)/g, '"uni_soci_cred_code":"$1"');
+          resp = JSON.parse(resp);
           console.info(resp.data)
           //vm.list = resp.data.Entries ? resp.data.Entries: []
           if(resp.data.Entries) {
