@@ -4,98 +4,112 @@
   <title>人口查询</title>
   <#include "/inc/header.html">
   <style>
-    #app{padding:8px;}
+    #app {
+      padding: 8px;
+    }
   </style>
 </head>
 <body>
 <div id="app" v-cloak>
   <div>
     <el-row class="grid-btn">
-      <el-col :span="3">
-        <el-input v-model="query.housAddr" @keyup.enter="query" clearable placeholder="户口地址"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model="query.currAddr" @keyup.enter="query" clearable placeholder="现地址"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model="query.hltySituCd" @keyup.enter="query" clearable placeholder="健康状态"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model.number="query.start" @keyup.enter="query" clearable placeholder="开始数"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model.number="query.count" @keyup.enter="query" clearable placeholder="返回数"></el-input>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-      </el-col>
+      <el-form ref="queryForm" :rules="queryRule" :model="query" :inline="true" label-width="140px">
+        <el-col :span="3">
+          <el-form-item prop="housAddr" size="mini">
+            <el-input v-model="query.housAddr" @keyup.enter="query" clearable placeholder="户口地址"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3" :offset="1">
+          <el-form-item prop="currAddr" size="mini">
+            <el-input v-model="query.currAddr" @keyup.enter="query" clearable placeholder="现地址"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="3" :offset="1">
+          <el-select v-model="query.hltySituCd" placeholder="请选择">
+            <el-option
+                v-for="item in hltySituCds"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+            </el-option>
+          </el-select>
+        </el-col>
+        <el-col :span="3" :offset="1">
+          <el-input v-model.number="query.start" @keyup.enter="query" clearable placeholder="开始数"></el-input>
+        </el-col>
+        <el-col :span="3" :offset="1">
+          <el-input v-model.number="query.count" @keyup.enter="query" clearable placeholder="返回数"></el-input>
+        </el-col>
+        <el-col :span="4" :offset="1">
+          <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+        </el-col>
     </el-row>
     <el-row :gutter="10">
       <el-col :span="24">
         <el-table
-          :data="list"
-          border
-          size="small"
-          :stripe="true"
-          style="width: 100%"
-          :fit="true"
-          highlight-current-row
-          height="430">
+            :data="list"
+            border
+            size="small"
+            :stripe="true"
+            style="width: 100%"
+            :fit="true"
+            highlight-current-row
+            height="430">
           <el-table-column
-            label="序号"
-            width="50"
-            type="index"
-            align="center">
+              label="序号"
+              width="50"
+              type="index"
+              align="center">
           </el-table-column>
           <el-table-column
-            prop="name"
-            label="姓名"
-            align="center">
+              prop="name"
+              label="姓名"
+              align="center">
           </el-table-column>
           <el-table-column
-            prop="gender_cd"
-            label="性别代码"
-            align="center">
+              prop="gender_cd"
+              label="性别"
+              align="center">
           </el-table-column>
           <el-table-column
-            prop="age"
-            label="年龄"
-            align="center">
+              prop="age"
+              label="年龄"
+              align="center">
           </el-table-column>
           <el-table-column
-            prop="nation_cd"
-            label="民族代码"
-            align="center"
-            :show-overflow-tooltip="true">
+              prop="nation_cd"
+              label="民族"
+              align="center"
+              :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column
-            prop="iden_docu_type_cd"
-            label="配偶身份证件类型代码"
-            align="center"
-            :show-overflow-tooltip="true">
+              prop="iden_docu_type_cd"
+              label="证件类型"
+              align="center"
+              :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column
-            prop="iden_docu_num"
-            label="配偶身份证件号码"
-            align="center">
+              prop="iden_docu_num"
+              label="证件号码"
+              align="center">
           </el-table-column>
           <el-table-column
-            prop="hous_reg_loc_dtl_addr"
-            label="户籍所在地详细地址"
-            align="center"
-            :show-overflow-tooltip="true">
+              prop="hous_reg_loc_dtl_addr"
+              label="户籍所在地详细地址"
+              align="center"
+              :show-overflow-tooltip="true">
           </el-table-column>
           <el-table-column
-            prop="curr_resi_dtl_addr"
-            label="现居住地详细地址"
-            align="center"
-            :show-overflow-tooltip="true">
+              prop="curr_resi_dtl_addr"
+              label="现居住地详细地址"
+              align="center"
+              :show-overflow-tooltip="true">
           </el-table-column>
         </el-table>
       </el-col>
     </el-row>
   </div>
- </div>
+</div>
 <script src="${request.contextPath}/static/js/module/query/popu.js?_${.now?long}"></script>
 </body>
 </html>
