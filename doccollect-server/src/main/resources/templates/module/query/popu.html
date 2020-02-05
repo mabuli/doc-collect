@@ -13,32 +13,16 @@
 <div id="app" v-cloak>
   <div>
     <el-row class="grid-btn">
-      <el-form ref="queryForm" :rules="queryRule" :model="query" :inline="true" label-width="140px">
+      <el-form ref="queryForm" :model="query" :inline="true">
         <el-col :span="3">
-          <el-form-item prop="housAddr" size="mini">
+          <el-form-item size="mini">
             <el-input v-model="query.housAddr" @keyup.enter="query" clearable placeholder="户口地址"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="3" :offset="1">
-          <el-form-item prop="currAddr" size="mini">
+          <el-form-item size="mini">
             <el-input v-model="query.currAddr" @keyup.enter="query" clearable placeholder="现地址"></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="3" :offset="1">
-          <el-select v-model="query.hltySituCd" placeholder="请选择">
-            <el-option
-                v-for="item in hltySituCds"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
-        <el-col :span="3" :offset="1">
-          <el-input v-model.number="query.start" @keyup.enter="query" clearable placeholder="开始数"></el-input>
-        </el-col>
-        <el-col :span="3" :offset="1">
-          <el-input v-model.number="query.count" @keyup.enter="query" clearable placeholder="返回数"></el-input>
         </el-col>
         <el-col :span="4" :offset="1">
           <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
