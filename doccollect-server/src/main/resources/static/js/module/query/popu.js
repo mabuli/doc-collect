@@ -5,7 +5,7 @@ var vm = new Vue({
     query: {
       housAddr: '',
       currAddr: '',
-      hltySituCd: null,
+      hltySituCd: 0,
       start: 1,
       count: 10
     },
