@@ -9,7 +9,7 @@ var vm = new Vue({
       regAddr: '',
     },
     list: [],
-    showNoData: false,
+    showNoData: true,
   },
   computed: {},
   mounted: function () {
