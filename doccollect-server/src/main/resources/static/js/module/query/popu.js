@@ -23,7 +23,8 @@ var vm = new Vue({
     hltySituCds: [{
       value: '0',
       label: '健康'
-    }]
+    }],
+    showNoData: true,
   },
   computed: {},
   mounted: function () {
@@ -53,7 +54,13 @@ var vm = new Vue({
         dataType: 'json',
         success: function (resp) {
           console.info(resp.data)
-          vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
+
+          if (resp.data.Pops) {
+            vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
+            vm.showNoData = false
+          } else {
+            vm.showNoData = true
+          }
         }
       });
     }

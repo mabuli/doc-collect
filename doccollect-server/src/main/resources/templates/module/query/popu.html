@@ -42,6 +42,12 @@
       background-color: #ffffff;
       border: 1px solid #e8f0f7;
     }
+
+    .b-header {
+      background-color: #f7f8f9;
+      padding: 18px;
+      margin: 0 0 10px 0;
+    }
   </style>
 </head>
 <body>
@@ -64,7 +70,10 @@
   </div>
 
   <div class="bottom">
-    <table v-for="item in list">
+    <div class="b-header" v-if="showNoData">
+      无数据
+    </div>
+    <table v-for="item in list" v-if="!showNoData">
       <tr bgcolor="#f5fbff">
         <td width=""><label>姓名：</label><b>{{item.name}}</b></td>
         <td><label>性别：</label><b>{{item.gender_cd}}</b></td>
