@@ -93,6 +93,11 @@ var vm = new Vue({
 		},
 		del: function (data) {
 			confirm('确定要删除选中的单元格？', function(){
+				let lst = vm.findItemChildren(vm.formList,data.id)
+				if(lst.length>0){
+					alert("该单元格有子节点，请先删除所有子节点");
+					return;
+				}
 				let json = vm.updateJson(data)
 				let formInfo = Object.assign({tbl_name:'fm_project',json_config:json},vm.form);
 				postdata("sys/form/delfld", formInfo, function(){
@@ -179,6 +184,8 @@ var vm = new Vue({
 		},
 		treeIcon(x){
 			if(x.tag == 'div'){
+				if(x.type=='section')
+					return 'fa fa-header'
 				if(x.children)
 					return 'fa fa-folder-o'
 				else
@@ -265,6 +272,61 @@ var vm = new Vue({
 		clearLabel(){
 			this.form.parentId = ''
 			this.parentName = ''
+		},
+		handleDragEnd(dragNode, dropNode, dropType, ev) {
+			return true
+		},
+		dropResort(draggingNode, dropNode, dropType, ev){
+			let formList = this.fromTreeData(this.formTree)
+			if(formList.length != this.formList.length){
+				var arr = this.formList.filter((a)=>{return formList.findIndex(b=>{return b.id==a.id})==-1;});
+				console.log(JSON.stringify(arr))
+				alert("拖放不正确"+formList.length+','+this.formList.length);
+				return
+			}
+			let json = svh.encode(formList)
+			let formInfo = Object.assign({tbl_name:'fm_project',json_config:json},vm.form);
+			postdata("sys/form/updatefm", formInfo, function(){
+				vm.queryForm()
+			});
+		},
+		allowDrop(dragNode, dropNode, dropType) {
+			if(dropNode.data.tag=='input'&&dropType=='inner'){
+				return false
+			}
+			if((dragNode.data.type=='section'||dropNode.data.type=='section')&&dropType=='inner'){
+				return false
+			}
+			return true;
+		},
+		allowDrag(draggingNode) {
+			return true;
+		},
+		fromTreeData(d){
+			let res = []
+			findChildren({id:null}, d, vm.formList, res)
+			return res
+			function findChildren(root, dt, srcs, res){
+				dt.forEach(x=>{
+					if(x.children && x.children.length>0){
+						addItem(srcs, x.id)
+						findChildren(x, x.children, srcs, res)
+					}
+					else{
+						addItem(srcs, x.id)
+					}
+				})
+			}
+			function addItem(ls, id){
+				let y = vm.findItem(ls, id)
+				res.push(y)
+			}
+		},
+		findItem(ls, id){
+			return ls.find(x=>{return x.id == id})
+		},
+		findItemChildren(ls, id){
+			return ls.filter(x=>{return x.parentId == id})
 		}
 	}
 });

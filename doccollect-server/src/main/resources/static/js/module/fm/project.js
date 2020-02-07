@@ -96,6 +96,9 @@ var vm = new Vue({
       colIndex(row, column, cellValue, index) {
           return (vm.q.page - 1) * vm.q.limit + index + 1
       },
+      colIndex2(row, column, cellValue, index) {
+        return (vm.filePage.parm.page - 1) * vm.filePage.parm.limit + index + 1
+      },
       upload(){
           this.fileList = [];
           this.showUpload = true;

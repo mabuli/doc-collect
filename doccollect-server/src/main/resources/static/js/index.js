@@ -28,6 +28,7 @@ var menuItem = Vue.extend({
                 vm.goUrl(url);
             }else{
                 top.location.href = '#' + url
+                vm.initUrl(true);
             }
 
         }
@@ -122,6 +123,13 @@ var vm = new Vue({
         },
         goUrl: function(url){
             this.main = url
+        },
+        initUrl:function(b){
+            // 路由
+            if(vm.main.indexOf('http')==0&& !b) return;
+            var router = new Router();
+            routerList(router, vm.menuList);
+            router.start();
         },
         updatePassword : function() {
             layer.open({
@@ -297,14 +305,8 @@ var vm = new Vue({
         this.getUser();
         //this.getMenuTop();
     },
-     
-     
     updated : function() {
-        // 路由
-        if(vm.main.indexOf('http')==0) return;
-        var router = new Router();
-        routerList(router, vm.menuList);
-        router.start();
+        vm.initUrl();
     }
 });
 
@@ -341,4 +343,12 @@ for ( var key in menuList) {
 // 首页
 function firstPage() {
     window.location.href = "index.html";
+}
+window.onerror = function(msg,url,l){
+    var txt="There was an error on this page.\n\n"
+    txt+="Error: " + msg + "\n"
+    txt+="URL: " + url + "\n"
+    txt+="Line: " + l + "\n\n"
+    console.error(txt)
+    return true
 }

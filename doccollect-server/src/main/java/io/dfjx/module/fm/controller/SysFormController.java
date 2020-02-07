@@ -102,21 +102,15 @@ public class SysFormController extends AbstractController {
         if(!res.isok())
             return res;
         //更新表格
-        res = updatefld(params);
+        res = updatefm(params);
         return res;
     }
 
     @RequestMapping("/updatefld")
     //@RequiresPermissions("sys:form:list")
     public R updatefld(@RequestBody Map<String, Object> params){
-        R res = R.ok();
-        String json = params.get("json_config").toString();
         //更新表格
-        Map<String, Object> map = new HashMap<>();
-        map.put("json_config", json);
-        map.put("id", 1);
-        sysFormService.updateMap(map);
-        return res;
+        return updatefm(params);
     }
 
     @RequestMapping("/delfld")
@@ -128,7 +122,18 @@ public class SysFormController extends AbstractController {
         if(!res.isok())
             return res;
         //更新表格
-        res = updatefld(params);
+        res = updatefm(params);
+        return res;
+    }
+    @RequestMapping("/updatefm")
+    public R updatefm(@RequestBody Map<String, Object> params){
+        R res = R.ok();
+        String json = params.get("json_config").toString();
+        //更新表格
+        Map<String, Object> map = new HashMap<>();
+        map.put("json_config", json);
+        map.put("id", 1);
+        sysFormService.updateMap(map);
         return res;
     }
 }

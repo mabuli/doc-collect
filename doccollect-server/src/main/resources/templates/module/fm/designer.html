@@ -34,8 +34,8 @@
                     </div>
                     <div class="box-body" props="tagProps">
                       <el-scrollbar style="height:calc(95vh - 40px);" class="scroll-fix">
-                        <el-tree :data="formTree" @node-click="treeNodeClick" :props="tagProps"
-                                 ref="tree" v-loading="formListLoading" :highlight-current="true" :expand-on-click-node="false" :default-expand-all="true">
+                        <el-tree :data="formTree" @node-click="treeNodeClick" :props="tagProps" ref="tree" v-loading="formListLoading" :allow-drop="allowDrop" :allow-drag="allowDrag"
+                                 :highlight-current="true" :expand-on-click-node="false" :default-expand-all="true" draggable @node-drag-end="handleDragEnd" @node-drop="dropResort">
                           <span class="custom-tree-node" slot-scope="{ node, data }">
                             <span class="text">
                               <i :class="treeIcon(data)"></i>

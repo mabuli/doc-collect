@@ -94,4 +94,5 @@ tbody > tr > th {font-weight: normal; }
 	border-right:none;
 	border-radius:0;
 }
-.scroll-fix .el-scrollbar__wrap{overflow-y:scroll;overflow-x:hidden;}
+.scroll-fix-show{overflow:visible;position:static;}
+.scroll-fix .el-scrollbar__wrap,.scroll-fix-show .el-scrollbar__wrap{overflow-y:scroll;overflow-x:hidden;}
