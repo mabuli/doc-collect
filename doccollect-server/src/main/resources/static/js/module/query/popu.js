@@ -25,6 +25,9 @@ var vm = new Vue({
       label: '健康'
     }],
     showNoData: true,
+    pageIndex: 1,
+    pageSize: 10,
+    totalCount: 0,
   },
   computed: {},
   mounted: function () {
@@ -39,12 +42,15 @@ var vm = new Vue({
         });
         return;
       }
+      this.query.start = (this.pageIndex - 1) * this.pageSize;
+      this.query.count = this.pageSize;
+
       let url = 'https://10.217.17.110:8243/query/v1.0/querySixtyPopusByNameOrNum?1=1'
         + (this.query.housAddr == '' ? '' : '&housAddr=' + this.query.housAddr)
         + (this.query.currAddr == '' ? '' : '&currAddr=' + this.query.currAddr)
         + (this.query.hltySituCd == '' ? '' : '&hltySituCd=' + this.query.hltySituCd)
-        + (this.query.start == '' ? '' : '&start=' + this.query.start)
-        + (this.query.count == '' ? '' : '&count=' + this.query.count);
+        + '&start=' + this.query.start
+        + '&count=' + this.query.count;
       console.info('-- handleQuery --', url)
       vm.list = []
       $.ajax({
@@ -57,12 +63,20 @@ var vm = new Vue({
 
           if (resp.data.Pops) {
             vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
+            if (vm.list.length != 0) {
+              vm.totalCount = vm.list[0].ct.cnt || 0;
+            }
             vm.showNoData = false
           } else {
             vm.showNoData = true
           }
         }
       });
-    }
+    },
+    onCurrentChangeHandle(pi) {
+      this.pageIndex = pi;
+      console.info('onCurrentChangeHandle', pi);
+      this.handleQuery();
+    },
   }
 });

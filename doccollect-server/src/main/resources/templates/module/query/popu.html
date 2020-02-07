@@ -75,18 +75,26 @@
     </div>
     <table v-for="item in list" v-if="!showNoData">
       <tr bgcolor="#f5fbff">
-        <td width=""><label>姓名：</label><b>{{item.name}}</b></td>
-        <td><label>性别：</label><b>{{item.gender_cd}}</b></td>
-        <td><label>年龄：</label><b>{{item.age}}</b></td>
-        <td><label>民族：</label><b>{{item.nation_cd}}</b></td>
+        <td width=""><label>姓名：</label><b>{{item.p.name}}</b></td>
+        <td><label>性别：</label><b>{{item.p.gender_cd}}</b></td>
+        <td><label>年龄：</label><b>{{item.p.age}}</b></td>
+        <td><label>民族：</label><b>{{item.p.nation_cd}}</b></td>
       </tr>
       <tr>
-        <td><label>证件类型：</label><b>{{item.iden_docu_type_cd}}</b></td>
-        <td><label>证件号码：</label><b>{{item.iden_docu_num}}</b></td>
-        <td><label>户籍地址：</label><b>{{item.hous_reg_loc_dtl_addr}}</b></td>
-        <td><label>现住地址：</label><b>{{item.curr_resi_dtl_addr}}</b></td>
+        <td><label>证件类型：</label><b>{{item.p.iden_docu_type_cd}}</b></td>
+        <td><label>证件号码：</label><b>{{item.p.iden_docu_num}}</b></td>
+        <td><label>户籍地址：</label><b>{{item.p.hous_reg_loc_dtl_addr}}</b></td>
+        <td><label>现住地址：</label><b>{{item.p.curr_resi_dtl_addr}}</b></td>
       </tr>
     </table>
+    <el-pagination
+        @current-change="onCurrentChangeHandle"
+        :current-page="pageIndex"
+        :page-size="pageSize"
+        :total="totalCount"
+        :pager-count="5"
+        layout="total, prev, pager, next">
+    </el-pagination>
   </div>
 
 </div>
