@@ -4,98 +4,100 @@
   <title>人口查询</title>
   <#include "/inc/header.html">
   <style>
-    #app{padding:8px;}
+    #app {
+      padding: 0 20px;
+      box-sizing:border-box;
+    }
+
+    table {
+      width: 100%;
+      border: 1px solid #e8f0f7;
+      margin: 10px 0 0 0;
+    }
+
+    table tr {
+      height: 34px;
+    }
+
+    table tr td {
+      padding: 0 20px;
+      width: 25%;
+      border-left: 1px solid #e8f0f7;
+    }
+
+    table tr td label {
+      color: #70706f;
+    }
+
+    .top {
+      margin: 20px 0 0 0;
+      padding: 15px 0 0 10px;
+      background-color: #ffffff;
+      border: 1px solid #e8f0f7;
+    }
+
+    .bottom {
+      margin: 20px 0;
+      padding: 15px 10px 15px 10px;
+      background-color: #ffffff;
+      border: 1px solid #e8f0f7;
+    }
+
+    .b-header {
+      background-color: #f7f8f9;
+      padding: 18px;
+      margin: 0 0 10px 0;
+    }
   </style>
 </head>
 <body>
 <div id="app" v-cloak>
-  <div>
-    <el-row class="grid-btn">
-      <el-col :span="3">
-        <el-input v-model="query.housAddr" @keyup.enter="query" clearable placeholder="户口地址"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model="query.currAddr" @keyup.enter="query" clearable placeholder="现地址"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model="query.hltySituCd" @keyup.enter="query" clearable placeholder="健康状态"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model.number="query.start" @keyup.enter="query" clearable placeholder="开始数"></el-input>
-      </el-col>
-      <el-col :span="3" :offset="1">
-        <el-input v-model.number="query.count" @keyup.enter="query" clearable placeholder="返回数"></el-input>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :span="24">
-        <el-table
-          :data="list"
-          border
-          size="small"
-          :stripe="true"
-          style="width: 100%"
-          :fit="true"
-          highlight-current-row
-          height="430">
-          <el-table-column
-            label="序号"
-            width="50"
-            type="index"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="name"
-            label="姓名"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="gender_cd"
-            label="性别代码"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="age"
-            label="年龄"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="nation_cd"
-            label="民族代码"
-            align="center"
-            :show-overflow-tooltip="true">
-          </el-table-column>
-          <el-table-column
-            prop="iden_docu_type_cd"
-            label="配偶身份证件类型代码"
-            align="center"
-            :show-overflow-tooltip="true">
-          </el-table-column>
-          <el-table-column
-            prop="iden_docu_num"
-            label="配偶身份证件号码"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="hous_reg_loc_dtl_addr"
-            label="户籍所在地详细地址"
-            align="center"
-            :show-overflow-tooltip="true">
-          </el-table-column>
-          <el-table-column
-            prop="curr_resi_dtl_addr"
-            label="现居住地详细地址"
-            align="center"
-            :show-overflow-tooltip="true">
-          </el-table-column>
-        </el-table>
-      </el-col>
-    </el-row>
+
+
+  <div class="top">
+    <el-form ref="queryForm" :model="query" :inline="true">
+      <el-form-item size="mini" label="户籍地址：">
+        <el-input v-model="query.housAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+      </el-form-item>
+
+      <el-form-item size="mini" label="户籍地址：">
+        <el-input v-model="query.currAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+      </el-form-item>
+
+      <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+    </el-form>
+
   </div>
- </div>
+
+  <div class="bottom">
+    <div class="b-header" v-if="showNoData">
+      无数据
+    </div>
+    <table v-for="item in list" v-if="!showNoData">
+      <tr bgcolor="#f5fbff">
+        <td width=""><label>姓名：</label><b>{{item.p.name}}</b></td>
+        <td><label>性别：</label><b>{{item.p.gender_cd}}</b></td>
+        <td><label>年龄：</label><b>{{item.p.age}}</b></td>
+        <td><label>民族：</label><b>{{item.p.nation_cd}}</b></td>
+      </tr>
+      <tr>
+        <td><label>证件类型：</label><b>{{item.p.iden_docu_type_cd}}</b></td>
+        <td><label>证件号码：</label><b>{{item.p.iden_docu_num}}</b></td>
+        <td><label>户籍地址：</label><b>{{item.p.hous_reg_loc_dtl_addr}}</b></td>
+        <td><label>现住地址：</label><b>{{item.p.curr_resi_dtl_addr}}</b></td>
+      </tr>
+    </table>
+    <el-pagination
+        @current-change="onCurrentChangeHandle"
+        :current-page="pageIndex"
+        :page-size="pageSize"
+        :total="totalCount"
+        :pager-count="5"
+        layout="total, prev, pager, next">
+    </el-pagination>
+  </div>
+
+</div>
 <script src="${request.contextPath}/static/js/module/query/popu.js?_${.now?long}"></script>
 </body>
 </html>

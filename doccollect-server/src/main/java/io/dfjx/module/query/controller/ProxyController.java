@@ -1,7 +1,6 @@
 package io.dfjx.module.query.controller;
 
 import com.alibaba.fastjson.JSONObject;
-
 import io.dfjx.common.utils.R;
 import io.dfjx.core.util.common.WebClient;
 import org.springframework.web.bind.annotation.*;

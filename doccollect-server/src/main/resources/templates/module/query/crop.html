@@ -4,186 +4,190 @@
   <title>法人查询</title>
   <#include "/inc/header.html">
   <style>
-    #app{padding:8px;}
+    #app {
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    table {
+      width: 100%;
+      border: 1px solid #e8f0f7;
+    }
+
+    table tr {
+      height: 34px;
+    }
+
+    table tr td {
+      padding: 0 20px;
+      width: 25%;
+      border-left: 1px solid #e8f0f7;
+    }
+
+
+    table tr td label {
+      color: #70706f;
+    }
+
+    table tr td b {
+      color: #414141;
+      font-weight: normal;
+    }
+
+
+    .top {
+      margin: 20px 18px 0 18px;
+      padding: 10px 18px;
+      background-color: #ffffff;
+      border: 1px solid #e8f0f7;
+    }
+
+    .bottom {
+      margin: 10px 18px;
+      padding: 10px 18px;
+      background-color: #ffffff;
+      border: 1px solid #e8f0f7;
+    }
+
+    .b-header {
+      background-color: #f7f8f9;
+      padding: 18px;
+      margin: 0 0 10px 0;
+    }
+
+    .el-form-item__label {
+      color: #414141;
+    }
+
+    .el-input--mini .el-input__inner {
+      height: 38px;
+      background-color: #f7f8f9;
+    }
+
+    .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
+      margin: 0;
+    }
   </style>
 </head>
 <body>
 <div id="app" v-cloak>
-  <div>
-    <el-row class="grid-btn">
-      <el-col :span="4">
-        <el-input v-model="query.orgName" @keyup.enter="query" clearable placeholder="法人名称"></el-input>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-input v-model="query.orgCode" @keyup.enter="query" clearable placeholder="组织机构代码"></el-input>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-input v-model="query.credCode" @keyup.enter="query" clearable placeholder="信用代码"></el-input>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-input v-model="query.regAddr" @keyup.enter="query" clearable placeholder="注册地址"></el-input>
-      </el-col>
-      <el-col :span="4" :offset="1">
-        <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :span="24">
-        <el-table
-          :data="list"
-          border
-          size="mini"
-          :stripe="true"
-          height="510"
-          style="width: 100%"
-          highlight-current-row>
-          <el-table-column
-            label="序号"
-            width="50"
-            type="index"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="uni_soci_cred_code"
-            label="统一社会信用代码"
-            align="center"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="org_nm"
-            label="机构名称"
-            :show-overflow-tooltip="true"
-            align="center"
-            width="180">
-          </el-table-column>
-          <el-table-column
-            prop="corp_type_cd"
-            label="法人类型代码"
-            align="center"
-            width="100">
-          </el-table-column>
-          <el-table-column
-            prop="econ_type_cd"
-            label="经济类型代码"
-            align="center"
-            width="100">
-          </el-table-column>
-          <el-table-column
-            prop="org_code"
-            label="组织机构代码"
-            align="center"
-            width="100">
-          </el-table-column>
-          <el-table-column
-            prop="reg_num"
-            label="注册号"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="tax_reg_cert_num"
-            label="税务登记证号"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="nati_econ_indu_cd"
-            label="国民经济行业代码"
-            align="center"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="busi_scope"
-            label="经营范围"
-            width="230"
-            :show-overflow-tooltip="true"
-            align="center">
-          </el-table-column>
-          <el-table-column
-            prop="reg_cap"
-            label="注册资金"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="legal_pers_name"
-            label="法定代表人姓名"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="esta_dt"
-            label="成立日期"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="reg_addr"
-            label="注册地址"
-            align="center"
-            :show-overflow-tooltip="true"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="mang_stat_cd"
-            label="经营状态代码"
-            align="center"
-            width="100">
-          </el-table-column>
-          <el-table-column
-            prop="taxp_stat_cd"
-            label="纳税人状态代码"
-            align="center"
-            width="120">
-          </el-table-column>
-          <el-table-column
-            prop="open_reg_dt"
-            label="开业登记日期"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="revk_dt"
-            label="注吊销日期"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="cert_dt"
-            label="发证日期"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="valid_start_end"
-            label="有效日期"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="cert_org_nm"
-            label="发证机构名称"
-            align="center"
-            :show-overflow-tooltip="true"
-            width="150">
-          </el-table-column>
-          <el-table-column
-            prop="cont_tel"
-            label="联系电话"
-            align="center"
-            width="130">
-          </el-table-column>
-          <el-table-column
-            prop="contact"
-            label="联系人"
-            align="center"
-            width="100">
-          </el-table-column>
-        </el-table>
-      </el-col>
-    </el-row>
+  <div class="top">
+    <el-form ref="queryForm" :model="query" :inline="true">
+      <el-row>
+        <el-col :span="5">
+          <el-form-item size="mini" label="法人名称：">
+            <el-input v-model="query.orgName" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item size="mini" label="组织机构代码：">
+            <el-input v-model="query.orgCode" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item size="mini" label="信用代码：">
+            <el-input v-model="query.credCode" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item size="mini" label="注册地址：">
+            <el-input v-model="query.regAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="4"><br/>
+          <el-form-item size="mini">
+            <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+
+    </el-form>
   </div>
- </div>
+
+  <div class="bottom">
+
+    <div class="b-header" v-if="showNoData">
+      无数据
+    </div>
+
+    <div v-for="item in list" v-if="!showNoData">
+      <div class="b-header">
+        {{item.org_nm}}
+      </div>
+
+      <table>
+        <tr bgcolor="#f5fbff">
+          <td><label>注册号：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.reg_num}}</b></td>
+          <td><label>统一社会信用代码：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.uni_soci_cred_code}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>组织机构代码：</label></td>
+          <td bgcolor="#FFFFFF" colspan="3"><b>{{item.org_code}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>营业状态：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.mang_stat_cd}}</b></td>
+          <td><label>成立时间：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.esta_dt}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>注册地址：</label></td>
+          <td bgcolor="#FFFFFF" colspan="3"><b>{{item.reg_addr}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>纳税人状态：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.taxp_stat_cd}}</b></td>
+          <td><label>纳税登记号：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.tax_reg_cert_num}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>法人类型：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.corp_type_cd}}</b></td>
+          <td><label>经济类型：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.econ_type_cd}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>国民经济行业：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.nati_econ_indu_cd}}</b></td>
+          <td><label>注册资金：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.reg_cap}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>法定代表人：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.legal_pers_name}}</b></td>
+          <td><label>开业登记日期：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.open_reg_dt}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>联系人：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.contact}}</b></td>
+          <td><label>联系电话：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.cont_tel}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>发证日期：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.cert_dt}}</b></td>
+          <td><label>有效期：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.valid_start_end}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>注吊销日期：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.revk_dt}}</b></td>
+          <td><label>发证机构名称：</label></td>
+          <td bgcolor="#FFFFFF"><b>{{item.cert_org_nm}}</b></td>
+        </tr>
+        <tr bgcolor="#f5fbff">
+          <td><label>经营范围：</label></td>
+          <td bgcolor="#FFFFFF" colspan="3"><b>{{item.busi_scope}}</b></td>
+        </tr>
+
+      </table>
+    </div>
+  </div>
+</div>
 <script src="${request.contextPath}/static/js/module/query/crop.js?_${.now?long}"></script>
 </body>
 </html>
