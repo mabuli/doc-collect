@@ -53,6 +53,7 @@ var vm = new Vue({
         + '&count=' + this.query.count;
       console.info('-- handleQuery --', url)
       vm.list = []
+      vm.totalCount = 0
       $.ajax({
         type: "GET",
         url: baseURL + '/proxy/get',
@@ -64,6 +65,15 @@ var vm = new Vue({
           if (resp.data.Pops) {
             vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
             if (vm.list.length != 0) {
+              if (vm.list['p'] != undefined) {
+                var list = [
+                  {
+                    'p':vm.list['p'],
+                    'ct':vm.list['ct'],
+                  }
+                ];
+                vm.list = list;
+              }
               vm.totalCount = vm.list[0].ct.cnt || 0;
             }
             vm.showNoData = false
