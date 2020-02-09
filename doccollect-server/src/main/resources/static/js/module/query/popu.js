@@ -35,6 +35,11 @@ var vm = new Vue({
   },
   methods: {
     handleQuery() {
+      vm.pageIndex = 1;
+      vm.totalCount = 0;
+      this.doQuery();
+    },
+    doQuery() {
       if (this.query.housAddr == '' && this.query.currAddr == '') {
         this.$message({
           message: '户口地址 和 现地址 至少输入一个',
@@ -53,7 +58,7 @@ var vm = new Vue({
         + '&count=' + this.query.count;
       console.info('-- handleQuery --', url)
       vm.list = []
-      vm.totalCount = 0
+   
       $.ajax({
         type: "GET",
         url: baseURL + '/proxy/get',
@@ -86,7 +91,7 @@ var vm = new Vue({
     onCurrentChangeHandle(pi) {
       this.pageIndex = pi;
       console.info('onCurrentChangeHandle', pi);
-      this.handleQuery();
+      this.doQuery();
     },
   }
 });
