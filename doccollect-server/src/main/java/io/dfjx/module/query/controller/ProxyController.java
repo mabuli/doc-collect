@@ -17,7 +17,7 @@ public class ProxyController {
         JSONObject json = client.getJSONObject(url.replace("&amp;", "&"));
         return R.ok().put("data", json);
 
-//        String str = "{\"Pops\":{\"pop\":{\"ct\":{\"cnt\":1},\"p\":{\"name\":\"张德印\",\"age\":63,\"gender_cd\":\"男性\",\"nation_cd\":\"汉族\",\"iden_docu_type_cd\":\"身份证\",\"iden_docu_num\":110224195701214010,\"hous_reg_loc_dtl_addr\":\"南成庄\",\"curr_resi_dtl_addr\":\"南成庄\"}}}}";
+//        String str = "";
 //        JSONObject json = JSON.parseObject(str);
 //        return R.ok().put("data", json);
     }

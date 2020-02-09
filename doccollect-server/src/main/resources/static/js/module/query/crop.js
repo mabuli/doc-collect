@@ -36,8 +36,10 @@ var vm = new Vue({
           //vm.list = resp.data.Entries ? resp.data.Entries: []
           if (resp.data.Entries) {
             vm.showNoData = false
-            for (var i in resp.data.Entries) {
-              vm.list.push(resp.data.Entries[i])
+            if (resp.data.Entries.Entry.length == undefined) {
+              vm.list.push(resp.data.Entries.Entry)
+            } else {
+              vm.list = resp.data.Entries.Entry
             }
           } else {
             vm.showNoData = true
