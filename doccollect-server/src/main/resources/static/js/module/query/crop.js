@@ -30,7 +30,7 @@ var vm = new Vue({
         data: {url: url},
         dataType: 'text',
         success: function (resp) {
-          resp = resp.replace(/"uni_soci_cred_code":(\d+)/g, '"uni_soci_cred_code":"$1"');
+          //resp = resp.replace(/"uni_soci_cred_code":(\d+)/g, '"uni_soci_cred_code":"$1"');
           resp = JSON.parse(resp);
           console.info(resp.data)
           //vm.list = resp.data.Entries ? resp.data.Entries: []
