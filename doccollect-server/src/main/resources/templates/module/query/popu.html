@@ -57,11 +57,17 @@
   <div class="top">
     <el-form ref="queryForm" :model="query" :inline="true">
       <el-form-item size="mini" label="户籍地址：">
-        <el-input v-model="query.housAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+        <el-select v-model="query.housAddr" filterable remote reserve-keyword placeholder="---请输入---" :remote-method="doQueryAddr" :loading="loading">
+          <el-option v-for="item in address" :key="item.hous_reg_loc_dtl_addr" :label="item.hous_reg_loc_dtl_addr" :value="item.hous_reg_loc_dtl_addr">
+          </el-option>
+        </el-select>
       </el-form-item>
 
       <el-form-item size="mini" label="现居住地址：">
-        <el-input v-model="query.currAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+        <el-select v-model="query.currAddr" filterable remote reserve-keyword placeholder="---请输入---" :remote-method="doQueryAddr" :loading="loading">
+          <el-option v-for="item in address" :key="item.curr_resi_dtl_addr" :label="item.curr_resi_dtl_addr" :value="item.curr_resi_dtl_addr">
+          </el-option>
+        </el-select>
       </el-form-item>
 
       <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
@@ -73,7 +79,7 @@
     <div class="b-header" v-if="showNoData">
       无数据
     </div>
-    <table v-for="item in list" v-if="!showNoData">
+    <table v-for="item in list" v-if="!showNoData" v-loading="loading">
       <tr bgcolor="#f5fbff">
         <td width=""><label>姓名：</label><b>{{item.p.name}}</b></td>
         <td><label>性别：</label><b>{{item.p.gender_cd}}</b></td>

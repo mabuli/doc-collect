@@ -28,6 +28,8 @@ var vm = new Vue({
     pageIndex: 1,
     pageSize: 10,
     totalCount: 0,
+    loading: false,
+    address:[],
   },
   computed: {},
   mounted: function () {
@@ -49,6 +51,7 @@ var vm = new Vue({
       }
       this.query.start = (this.pageIndex - 1) * this.pageSize;
       this.query.count = this.pageSize;
+      this.loading = true;
 
       let url = 'https://10.217.17.110:8243/query/v1.0/querySixtyPopusByNameOrNum?1=1'
         + (this.query.housAddr == '' ? '' : '&housAddr=' + this.query.housAddr)
@@ -58,7 +61,7 @@ var vm = new Vue({
         + '&count=' + this.query.count;
       console.info('-- handleQuery --', url)
       vm.list = []
-   
+
       $.ajax({
         type: "GET",
         url: baseURL + '/proxy/get',
@@ -66,7 +69,7 @@ var vm = new Vue({
         dataType: 'json',
         success: function (resp) {
           console.info(resp.data)
-
+          vm.loading = false;
           if (resp.data.Pops) {
             vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
             if (vm.list.length != 0) {
@@ -92,6 +95,32 @@ var vm = new Vue({
       this.pageIndex = pi;
       console.info('onCurrentChangeHandle', pi);
       this.doQuery();
+    },
+
+    doQueryAddr(query) {
+      console.info('doQueryAddr', query)
+        if (query.length >= 3) {
+          let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?housAddr=' + query;
+          $.ajax({
+            type: "GET",
+            url: baseURL + '/proxy/get',
+            data: {url: url},
+            dataType: 'json',
+            success: function (resp) {
+              console.info(resp.data)
+              vm.loading = false;
+              if (resp.data.addrs) {
+                if (resp.data.addrs.addr.length == undefined) {
+                  vm.address.push(resp.data.addrs.addr)
+                } else {
+                  vm.address = resp.data.addrs.addr
+                }
+              } else {
+
+              }
+            }
+          });
+        }
     },
   }
 });
