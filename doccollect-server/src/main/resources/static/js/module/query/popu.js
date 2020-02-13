@@ -149,5 +149,13 @@ var vm = new Vue({
         });
       }
     },
+
+    clear1() {
+      vm.address1 = []
+    },
+
+    clear2() {
+      vm.address2 = []
+    },
   }
 });
