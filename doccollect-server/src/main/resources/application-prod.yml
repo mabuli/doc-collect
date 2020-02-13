@@ -36,5 +36,5 @@ system-config:
   # cas登录服务地址
   cas-service-url: http://10.217.17.116:8094/cas
   project-url: http://10.217.17.116:12100/doc-collect/
-  portal-app: 备案项目管理
+  portal-app: 数据查询服务
   portal-soap-url: http://10.217.17.116:18001/portal/intlDataSynchronizedService?wsdl

@@ -53,19 +53,18 @@
 <body>
 <div id="app" v-cloak>
 
-
   <div class="top">
     <el-form ref="queryForm" :model="query" :inline="true">
       <el-form-item size="mini" label="户籍地址：">
-        <el-select v-model="query.housAddr" clearable filterable remote reserve-keyword placeholder="---请输入---" :remote-method="doQueryAddr" :loading="loading">
-          <el-option v-for="item in address" :key="item.hous_reg_loc_dtl_addr" :label="item.hous_reg_loc_dtl_addr" :value="item.hous_reg_loc_dtl_addr">
+        <el-select v-model="query.housAddr" clearable filterable remote reserve-keyword placeholder="---请输入---" :remote-method="doQueryAddr1" :loading="loading">
+          <el-option v-for="item in address1" :key="item.hous_reg_loc_dtl_addr" :label="item.hous_reg_loc_dtl_addr" :value="item.hous_reg_loc_dtl_addr">
           </el-option>
         </el-select>
       </el-form-item>
 
       <el-form-item size="mini" label="现居住地址：">
-        <el-select v-model="query.currAddr" clearable  filterable remote reserve-keyword placeholder="---请输入---" :remote-method="doQueryAddr" :loading="loading">
-          <el-option v-for="item in address" :key="item.curr_resi_dtl_addr" :label="item.curr_resi_dtl_addr" :value="item.curr_resi_dtl_addr">
+        <el-select v-model="query.currAddr" clearable  filterable remote reserve-keyword placeholder="---请输入---" :remote-method="doQueryAddr2" :loading="loading">
+          <el-option v-for="item in address2" :key="item.curr_resi_dtl_addr" :label="item.curr_resi_dtl_addr" :value="item.curr_resi_dtl_addr">
           </el-option>
         </el-select>
       </el-form-item>

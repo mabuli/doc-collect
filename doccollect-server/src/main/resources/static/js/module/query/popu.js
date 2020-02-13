@@ -29,7 +29,8 @@ var vm = new Vue({
     pageSize: 10,
     totalCount: 0,
     loading: false,
-    address:[],
+    address1:[],
+    address2:[],
   },
   computed: {},
   mounted: function () {
@@ -97,7 +98,7 @@ var vm = new Vue({
       this.doQuery();
     },
 
-    doQueryAddr(query) {
+    doQueryAddr1(query) {
       console.info('doQueryAddr', query)
         if (query.length >= 3) {
           let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?housAddr=' + query;
@@ -111,9 +112,9 @@ var vm = new Vue({
               vm.loading = false;
               if (resp.data.addrs) {
                 if (resp.data.addrs.addr.length == undefined) {
-                  vm.address.push(resp.data.addrs.addr)
+                  vm.address1.push(resp.data.addrs.addr)
                 } else {
-                  vm.address = resp.data.addrs.addr
+                  vm.address1 = resp.data.addrs.addr
                 }
               } else {
 
@@ -121,6 +122,32 @@ var vm = new Vue({
             }
           });
         }
+    },
+
+    doQueryAddr2(query) {
+      console.info('doQueryAddr', query)
+      if (query.length >= 3) {
+        let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?currAddr=' + query;
+        $.ajax({
+          type: "GET",
+          url: baseURL + '/proxy/get',
+          data: {url: url},
+          dataType: 'json',
+          success: function (resp) {
+            console.info(resp.data)
+            vm.loading = false;
+            if (resp.data.addrs) {
+              if (resp.data.addrs.addr.length == undefined) {
+                vm.address2.push(resp.data.addrs.addr)
+              } else {
+                vm.address2 = resp.data.addrs.addr
+              }
+            } else {
+
+            }
+          }
+        });
+      }
     },
   }
 });
