@@ -101,6 +101,7 @@ var vm = new Vue({
     doQueryAddr1(query) {
       console.info('doQueryAddr', query)
         if (query.length >= 3) {
+          vm.address1 = []
           let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?housAddr=' + query;
           $.ajax({
             type: "GET",
@@ -127,6 +128,7 @@ var vm = new Vue({
     doQueryAddr2(query) {
       console.info('doQueryAddr', query)
       if (query.length >= 3) {
+        vm.address2 = []
         let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?currAddr=' + query;
         $.ajax({
           type: "GET",
