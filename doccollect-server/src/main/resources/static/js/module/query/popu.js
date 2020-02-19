@@ -31,6 +31,8 @@ var vm = new Vue({
     loading: false,
     address1:[],
     address2:[],
+    q1loading: false,
+    q2loading: false,
   },
   computed: {},
   mounted: function () {
@@ -100,7 +102,8 @@ var vm = new Vue({
 
     doQueryAddr1(query) {
       console.info('doQueryAddr', query)
-        if (query.length >= 3) {
+        if (query.length >= 2) {
+          vm.loading = vm.q1loading = true;
           vm.address1 = []
           let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?housAddr=' + query;
           $.ajax({
@@ -110,7 +113,7 @@ var vm = new Vue({
             dataType: 'json',
             success: function (resp) {
               console.info(resp.data)
-              vm.loading = false;
+              vm.loading = vm.q1loading = false;
               if (resp.data.addrs) {
                 if (resp.data.addrs.addr.length == undefined) {
                   vm.address1.push(resp.data.addrs.addr)
@@ -127,7 +130,8 @@ var vm = new Vue({
 
     doQueryAddr2(query) {
       console.info('doQueryAddr', query)
-      if (query.length >= 3) {
+      if (query.length >= 2) {
+        vm.loading = vm.q2loading = true;
         vm.address2 = []
         let url = 'https://10.217.17.110:8243/query/v1.0/queryPopAddrs?currAddr=' + query;
         $.ajax({
@@ -137,7 +141,7 @@ var vm = new Vue({
           dataType: 'json',
           success: function (resp) {
             console.info(resp.data)
-            vm.loading = false;
+            vm.loading = vm.q2loading = false;
             if (resp.data.addrs) {
               if (resp.data.addrs.addr.length == undefined) {
                 vm.address2.push(resp.data.addrs.addr)
