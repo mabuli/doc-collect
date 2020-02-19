@@ -67,41 +67,43 @@
     .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item {
       margin: 0;
     }
+
+    .el-input--suffix .el-input__inner {
+      padding: 0;
+    }
+
+    .el-form-item__label {
+      padding: 4px 0 0 0;
+    }
+
+    .el-button {
+      margin: 4px 0 0 10px;
+    }
   </style>
 </head>
 <body>
 <div id="app" v-cloak>
   <div class="top">
     <el-form ref="queryForm" :model="query" :inline="true">
-      <el-row>
-        <el-col :span="5">
-          <el-form-item size="mini" label="法人名称：">
-            <el-input v-model="query.orgName" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item size="mini" label="组织机构代码：">
-            <el-input v-model="query.orgCode" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item size="mini" label="信用代码：">
-            <el-input v-model="query.credCode" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="5">
-          <el-form-item size="mini" label="注册地址：">
-            <el-input v-model="query.regAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="4"><br/>
-          <el-form-item size="mini">
-            <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
-          </el-form-item>
-        </el-col>
-      </el-row>
+      <el-form-item label="法人名称：">
+        <el-input v-model="query.orgName" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+      </el-form-item>
 
+      <el-form-item label="组织机构代码：">
+        <el-input v-model="query.orgCode" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+      </el-form-item>
 
+      <el-form-item label="信用代码：">
+        <el-input v-model="query.credCode" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+      </el-form-item>
+
+      <el-form-item label="注册地址：">
+        <el-input v-model="query.regAddr" @keyup.enter="query" clearable placeholder="---请输入---"></el-input>
+      </el-form-item>
+
+      <el-form-item size="mini" class="submit-item">
+        <el-button type="primary" @click="handleQuery"><i class="fa fa-search"></i>&nbsp;查询</el-button>
+      </el-form-item>
     </el-form>
   </div>
 
