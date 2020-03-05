@@ -16,10 +16,6 @@ public class ProxyController {
         WebClient client = new WebClient();
         JSONObject json = client.getJSONObject(url.replace("&amp;", "&"));
         return R.ok().put("data", json);
-
-//        String str = "";
-//        JSONObject json = JSON.parseObject(str);
-//        return R.ok().put("data", json);
     }
 
     @PostMapping("/post")

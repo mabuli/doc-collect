@@ -15,24 +15,14 @@
 package io.dfjx.module.sys.controller;
 
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import io.dfjx.common.utils.SpringContextUtils;
+import com.google.code.kaptcha.Constants;
+import com.google.code.kaptcha.Producer;
+import io.dfjx.common.utils.R;
 import io.dfjx.common.utils.StringTools;
 import io.dfjx.config.SystemConfig;
 import io.dfjx.module.sys.service.SysRoleService;
-import io.dfjx.module.sys.sso.CasFilter;
-import org.apache.shiro.authc.AuthenticationException;
-import org.apache.shiro.authc.IncorrectCredentialsException;
-import org.apache.shiro.authc.LockedAccountException;
-import org.apache.shiro.authc.UnknownAccountException;
-import org.apache.shiro.authc.UsernamePasswordToken;
+import io.dfjx.module.sys.shiro.ShiroUtils;
+import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -40,11 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.code.kaptcha.Constants;
-import com.google.code.kaptcha.Producer;
-
-import io.dfjx.common.utils.R;
-import io.dfjx.module.sys.shiro.ShiroUtils;
+import javax.imageio.ImageIO;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 /**
  * 登录相关
@@ -137,11 +128,11 @@ public class SysLoginController {
 //        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
 //            return main;
 //        }
-        CasFilter sso = new CasFilter();
-        boolean isLogin = sso.doLogin(request);
-        if(!isLogin){
-            return "redirect:"+getCasLogin();
-        }
+//        CasFilter sso = new CasFilter();
+//        boolean isLogin = sso.doLogin(request);
+//        if(!isLogin){
+//            return "redirect:"+getCasLogin();
+//        }
         return getIndexUrl();
     }
 
