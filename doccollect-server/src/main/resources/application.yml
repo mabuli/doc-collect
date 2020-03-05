@@ -12,6 +12,8 @@ template:
     cache: false
 
 spring:
+  application:
+    name: jx-etl
   profiles:
     active: dev
   jackson:
@@ -47,6 +49,8 @@ spring:
       number_format: '0.####'   #数字格式化，无小数点
   mvc:
     static-path-pattern: /static/**
+  main:
+    allow-bean-definition-overriding: true
     
 #mybatis
 mybatis-plus:
@@ -83,3 +87,19 @@ logging:
   level.io.dfjx: debug
   path: logs/
   file: admin.log
+
+seaboxdata:
+  auth:
+    hostname:
+
+dfjinxin:
+  core:
+    idgenerator:
+      mode: snowflake
+      datacenter: 1
+      worker: 1
+  auth:
+    url: http://auth-server
+
+cookie:
+  access-cookie-time: 864000

@@ -20,6 +20,7 @@ package io.dfjx.module.sys.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import io.dfjx.module.sys.entity.SysMenuEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 
@@ -53,7 +54,7 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 	/**
 	 * 获取用户菜单列表
 	 */
-	List<SysMenuEntity> getUserMenuList(Long userId);
+	List<SysMenuEntity> getUserMenuList(HttpServletRequest request, Long userId);
 
 	/**
 	 * 删除

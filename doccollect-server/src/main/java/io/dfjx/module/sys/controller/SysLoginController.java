@@ -17,14 +17,18 @@ package io.dfjx.module.sys.controller;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
+import io.dfjx.common.utils.Constant;
+import io.dfjx.common.utils.CookieUtils;
 import io.dfjx.common.utils.R;
 import io.dfjx.common.utils.StringTools;
 import io.dfjx.config.SystemConfig;
 import io.dfjx.module.sys.service.SysRoleService;
 import io.dfjx.module.sys.shiro.ShiroUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -111,39 +115,39 @@ public class SysLoginController {
         //return "redirect:login.html";
 	}
 
-    @RequestMapping("loginsso")
-    public String loginsso(){
-        return "redirect:"+getCasLogout();
-//        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
-//            return "redirect:login.html";
-//        }else{
-//            return "redirect:"+getCasLogout();
-//        }
+//    @RequestMapping("loginsso")
+//    public String loginsso(){
+//        return "redirect:xxx";
+////        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
+////            return "redirect:login.html";
+////        }else{
+////            return "redirect:"+getCasLogout();
+////        }
+//
+//    }
 
-    }
+//    @RequestMapping("indexsso")
+//    public String indexsso(HttpServletRequest request){
+//        String main = "index";
+////        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
+////            return main;
+////        }
+////        CasFilter sso = new CasFilter();
+////        boolean isLogin = sso.doLogin(request);
+////        if(!isLogin){
+////            return "redirect:"+getCasLogin();
+////        }
+//        return getIndexUrl();
+//    }
 
-    @RequestMapping("indexsso")
-    public String indexsso(HttpServletRequest request){
-        String main = "index";
-//        if(SYSTEM_PROFILE.equals(SpringContextUtils.getActiveProfile())){
-//            return main;
-//        }
-//        CasFilter sso = new CasFilter();
-//        boolean isLogin = sso.doLogin(request);
-//        if(!isLogin){
-//            return "redirect:"+getCasLogin();
-//        }
-        return getIndexUrl();
-    }
-
-    private String getCasLogout(){
-        String url = systemConfig.getCasServiceUrl() + "/logout?service=" + StringTools.urlEncode(systemConfig.getProjectUrl());
-        return url;
-    }
-    private String getCasLogin(){
-        String url = systemConfig.getCasServiceUrl() + "/login?service=" + StringTools.urlEncode(systemConfig.getProjectUrl());
-        return url;
-    }
+//    private String getCasLogout(){
+//        String url = systemConfig.getCasServiceUrl() + "/logout?service=" + StringTools.urlEncode(systemConfig.getProjectUrl());
+//        return url;
+//    }
+//    private String getCasLogin(){
+//        String url = systemConfig.getCasServiceUrl() + "/login?service=" + StringTools.urlEncode(systemConfig.getProjectUrl());
+//        return url;
+//    }
 
 	private String getIndexUrl(){
         return URL_ADMIN_INDEX;
@@ -163,6 +167,25 @@ public class SysLoginController {
 //        }
 //        return URL_ADMIN_INDEX;
     }
+
+    @Value("${auth.login.url}")
+    private String loginUrl;
+
+    @RequestMapping("logincas")
+    public String logincas() {
+        return "redirect:" + loginUrl;
+    }
+
+    @RequestMapping("loginback")
+    public String loginback(HttpServletRequest request, HttpServletResponse response){
+        String token = request.getParameter("ucToken");
+        if (StringUtils.isNotEmpty(token)) {
+            CookieUtils.set(response, Constant.ACCESS_TOKEN, "bearer" + token.substring(7), 60 * 60 * 12 * 2 * 7);
+            return "redirect:/";
+        }
+        return "redirect:"+loginUrl;
+    }
+
 
     private static final String URL_ADMIN_INDEX = "index.html";//"index";//
     private static final String URL_USER_INDEX = "app.html";

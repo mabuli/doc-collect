@@ -18,6 +18,11 @@ public class Constant {
 	public static final int SUPER_ADMIN = 1;
     /** 数据权限过滤 */
 	public static final String SQL_FILTER = "sql_filter";
+
+    public static String APP_NAME = "DOCCOLLETC";
+
+    public static String ACCESS_TOKEN = "access_token";
+
     /**
      * 当前页码
      */

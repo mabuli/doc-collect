@@ -19,19 +19,25 @@ package io.dfjx.module.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.dfjinxin.commons.auth.compoment.OauthUserTemplate;
 import io.dfjx.common.utils.Constant;
+import io.dfjx.common.utils.CookieUtils;
 import io.dfjx.common.utils.MapUtils;
+import io.dfjx.common.utils.TagUserUtils;
 import io.dfjx.module.sys.dao.SysMenuDao;
 import io.dfjx.module.sys.entity.SysMenuEntity;
 import io.dfjx.module.sys.entity.SysRoleMenuEntity;
 import io.dfjx.module.sys.service.SysMenuService;
 import io.dfjx.module.sys.service.SysRoleMenuService;
 import io.dfjx.module.sys.service.SysUserService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service("sysMenuService")
@@ -40,7 +46,10 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	private SysUserService sysUserService;
 	@Autowired
 	private SysRoleMenuService sysRoleMenuService;
-	
+
+	@Autowired
+	private OauthUserTemplate oauthUserTemplate;
+
 	@Override
 	public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
 		List<SysMenuEntity> menuList = queryListParentId(parentId);
@@ -68,15 +77,23 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	}
 
 	@Override
-	public List<SysMenuEntity> getUserMenuList(Long userId) {
+	public List<SysMenuEntity> getUserMenuList(HttpServletRequest request, Long userId) {
 		//系统管理员，拥有最高权限
 		/*if(userId == Constant.SUPER_ADMIN){
 			return getAllMenuList(null);
 		}*/
 		
-		//用户菜单列表
-		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
-		return getAllMenuList(menuIdList);
+//		//用户菜单列表
+//		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+//		return getAllMenuList(menuIdList);
+
+		String token = CookieUtils.get(request, Constant.ACCESS_TOKEN).getValue();
+		if(StringUtils.isNotBlank(token)){
+			token = token.toLowerCase().replace("bearer", "");
+		}
+		Map<Long, String> mapCodes = oauthUserTemplate.selectPermissionsByUserIdAndSystem(TagUserUtils.userId(), Constant.APP_NAME, token);
+		List<SysMenuEntity> menuIdList = baseMapper.queryByPermsCode(mapCodes);
+		return menuIdList;
 	}
 
 	@Override

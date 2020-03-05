@@ -16,13 +16,19 @@
 
 package io.dfjx.module.sys.controller;
 
+import io.dfjx.common.utils.Constant;
+import io.dfjx.common.utils.CookieUtils;
 import io.dfjx.common.utils.StringTools;
+import io.dfjx.config.SystemConfig;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 系统页面视图
@@ -33,7 +39,10 @@ import javax.servlet.http.HttpServletRequest;
  */
 @Controller
 public class SysPageController {
-	
+
+	@Value("${auth.login.url}")
+	private String loginUrl;
+
 	@RequestMapping("module/{module}/{url}.html")
 	public String module(@PathVariable("module") String module, @PathVariable("url") String url){
 		return "module/" + module + "/" + url;
@@ -41,7 +50,7 @@ public class SysPageController {
 
 	@RequestMapping(value = {"/"})
 	public String index(){
-		return "indexsso";
+		return "index";
 	}
 
 	@RequestMapping("index.html")
@@ -73,4 +82,5 @@ public class SysPageController {
 	public String app(){
 		return "app";
 	}
+
 }

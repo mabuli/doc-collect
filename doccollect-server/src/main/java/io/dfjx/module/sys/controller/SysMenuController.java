@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -49,8 +50,8 @@ public class SysMenuController extends AbstractController {
 	 * 导航菜单
 	 */
 	@RequestMapping("/nav")
-	public R nav(){
-		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
+	public R nav(HttpServletRequest request){
+		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(request, getUserId());
 		return R.ok().put("menuList", menuList);
 	}
 	

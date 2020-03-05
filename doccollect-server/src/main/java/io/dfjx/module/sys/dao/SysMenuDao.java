@@ -19,9 +19,11 @@ package io.dfjx.module.sys.dao;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.dfjx.module.sys.entity.SysMenuEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 菜单管理
@@ -49,4 +51,7 @@ public interface SysMenuDao extends BaseMapper<SysMenuEntity> {
 	 * 查询用户的所有菜单ID
 	 */
 	List<Long> queryAllMenuId(Long userId);
+
+	List<SysMenuEntity> queryByPermsCode(@Param("map") Map<Long, String> map);
+
 }
