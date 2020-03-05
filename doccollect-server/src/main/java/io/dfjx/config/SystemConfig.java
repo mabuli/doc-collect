@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component;
 public class SystemConfig {
 
 	private String fileDir;	//文件保存目录
-	private String casServiceUrl;	//cas服务目录
+//	private String casServiceUrl;	//cas服务目录
 	private String projectUrl;	//本系统登录地址
-	private String portalApp;	//portal注册系统名称
-	private String portalSoapUrl;	//portal服务地址
+//	private String portalApp;	//portal注册系统名称
+//	private String portalSoapUrl;	//portal服务地址
 }
