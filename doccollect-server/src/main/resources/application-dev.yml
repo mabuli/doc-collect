@@ -37,7 +37,7 @@ system-config:
 
 auth:
   login:
-    url: http://123.207.126.81:30002/login/toLogin?redirect_url=http%3a%2f%2f127.0.0.1%3a12100%2fdoc-collect%2Floginback
+    url: http://123.207.126.81:30001/frontier/auth/toLogin?redirect_url=http%3a%2f%2f127.0.0.1%3a12100%2fdoc-collect%2Floginback
 
 auth-server-url: http://123.207.126.81:30002
 

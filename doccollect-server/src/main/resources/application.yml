@@ -13,7 +13,7 @@ template:
 
 spring:
   application:
-    name: jx-etl
+    name: DATAQUERY
   profiles:
     active: dev
   jackson:

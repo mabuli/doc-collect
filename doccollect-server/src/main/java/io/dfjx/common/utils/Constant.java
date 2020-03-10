@@ -19,7 +19,7 @@ public class Constant {
     /** 数据权限过滤 */
 	public static final String SQL_FILTER = "sql_filter";
 
-    public static String APP_NAME = "DOCCOLLETC";
+    public static String APP_NAME = "DATAQUERY";
 
     public static String ACCESS_TOKEN = "access_token";
 
