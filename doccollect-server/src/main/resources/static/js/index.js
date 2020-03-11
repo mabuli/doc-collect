@@ -72,7 +72,7 @@ var vm = new Vue({
     data : {
         user : {},
         menuList : {},
-        main : "module/fm/project.html",
+        main : "main.html",
         password : '',
         newPassword : '',
         navTitle : "项目列表",
