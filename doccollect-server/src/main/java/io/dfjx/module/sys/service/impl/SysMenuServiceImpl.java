@@ -111,7 +111,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 				}
 			}
 		}
-		return menuIdList;
+		return rootTrees;
 	}
 
 	@Override
