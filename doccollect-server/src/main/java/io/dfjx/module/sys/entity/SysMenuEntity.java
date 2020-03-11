@@ -91,6 +91,6 @@ public class SysMenuEntity implements Serializable {
 	private Boolean open;
 
 	@TableField(exist=false)
-	private List<?> list;
+	private List<SysMenuEntity> list;
 
 }

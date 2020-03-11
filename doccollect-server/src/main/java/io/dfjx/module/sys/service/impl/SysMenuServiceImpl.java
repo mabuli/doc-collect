@@ -93,6 +93,24 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		}
 		Map<Long, String> mapCodes = oauthUserTemplate.selectPermissionsByUserIdAndSystem(TagUserUtils.userId(), Constant.APP_NAME, token);
 		List<SysMenuEntity> menuIdList = baseMapper.queryByPermsCode(mapCodes);
+
+		List<SysMenuEntity> rootTrees = new ArrayList<SysMenuEntity>();
+		for (SysMenuEntity tree : menuIdList) {
+			if(tree.getParentId() == 0){
+				rootTrees.add(tree);
+			}
+			for (SysMenuEntity t : menuIdList) {
+				if(t.getParentId() == tree.getMenuId()){
+					if(tree.getList() == null){
+						List<SysMenuEntity> myChildrens = new ArrayList<SysMenuEntity>();
+						myChildrens.add(t);
+						tree.setList(myChildrens);
+					}else{
+						tree.getList().add(t);
+					}
+				}
+			}
+		}
 		return menuIdList;
 	}
 
