@@ -26,7 +26,7 @@ var vm = new Vue({
       vm.list = []
       $.ajax({
         type: "GET",
-        url: baseURL + '/proxy/get',
+        url: baseURL + 'proxy/get',
         data: {url: url},
         dataType: 'text',
         success: function (resp) {
