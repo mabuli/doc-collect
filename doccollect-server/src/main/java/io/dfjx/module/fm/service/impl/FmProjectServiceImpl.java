@@ -6,23 +6,26 @@ import io.dfjx.module.fm.dao.FmBaseDao;
 import io.dfjx.module.fm.dao.FmProjectDao;
 import io.dfjx.module.fm.entity.DocTableMapping;
 import io.dfjx.module.fm.service.IFmProjectService;
+import io.dfjx.module.fm.service.ISysFormFldService;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
 import org.apache.poi.hwpf.HWPFDocument;
 import org.apache.poi.hwpf.usermodel.*;
 import org.apache.poi.xwpf.usermodel.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Service("fmProjectService")
 public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBaseEntity> implements IFmProjectService {
+
+    @Autowired
+    private ISysFormFldService sysFormFldService;
 
     public FmProjectServiceImpl(){
         BaseTable = "fm_project";
@@ -33,6 +36,32 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
     public int insertMap(Map<String, Object> params) {
         int c = baseMapper.insertMap(BaseTable, BaseKey, params);
         return c;
+    }
+
+    @Override
+    public R validValue(Map<String, Object> params){
+        //检测日期是否输入合法
+        String errStr = "";
+        Map<String, Object> m = new HashMap<>();
+        m.put("form_id", "1");
+        List<Map<String,Object>> list = sysFormFldService.queryAll(m);
+        List<Map<String,Object>> dates = list.stream().filter(x-> "date".equals(x.get("data_type").toString())).collect(Collectors.toList());
+        for(Map<String,Object> date : dates){
+            String name = date.get("fld_name").toString();
+            if(!params.containsKey(name))
+                continue;
+            String val = mstr(params, name);
+            if(val.length() == 0)
+                continue;
+            String str1 = dateStr(val);
+            if(str1.length()!=10 && str1.indexOf("-") == -1){
+                errStr += date.get("fld_comment").toString() + "填写内容不正确，格式应该为2020-03-08<br/>";
+            }
+        }
+        if(errStr.length()>0){
+            return R.error(errStr);
+        }
+        return R.ok();
     }
 
     @Override

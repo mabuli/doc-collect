@@ -75,6 +75,8 @@ public class FmProjectController extends AbstractController {
     @RequestMapping("/update")
     @RequiresPermissions("fm:project:update")
     public R update(@RequestBody Map<String, Object> fmProject){
+        R r = fmProjectService.validValue(fmProject);
+        if(!r.isok()) return r;
 		fmProjectService.updateMap(fmProject);
 
         return R.ok();
