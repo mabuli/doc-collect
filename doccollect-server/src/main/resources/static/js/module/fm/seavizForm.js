@@ -66,7 +66,7 @@ const svf = {
     return svf.item(x, strin)
   },
   date(x){
-    let strin = `<el-date-picker type="date" v-model="info.${x.field}" />`
+    let strin = `<el-date-picker type="date" value-format="yyyy-MM-dd" v-model="info.${x.field}" />`
     return svf.item(x, strin)
   },
   month(x){
