@@ -54,10 +54,12 @@ public interface SysMenuService extends IService<SysMenuEntity> {
 	/**
 	 * 获取用户菜单列表
 	 */
-	List<SysMenuEntity> getUserMenuList(HttpServletRequest request, Long userId);
+	List<SysMenuEntity> getUserMenuList(Long userId);
 
 	/**
 	 * 删除
 	 */
 	void delete(Long menuId);
+
+	List<SysMenuEntity> queryByPermsCode(List<String> codes);
 }

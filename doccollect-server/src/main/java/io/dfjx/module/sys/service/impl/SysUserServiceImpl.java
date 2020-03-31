@@ -20,11 +20,8 @@ package io.dfjx.module.sys.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dfjinxin.commons.auth.compoment.OauthUserTemplate;
-import com.seaboxdata.auth.api.dto.OauthUserDTO;
 import io.dfjx.common.annotation.DataFilter;
 import io.dfjx.common.utils.Constant;
-import io.dfjx.common.utils.CookieUtils;
 import io.dfjx.common.utils.PageUtils;
 import io.dfjx.common.utils.Query;
 import io.dfjx.module.sys.dao.SysUserDao;
@@ -42,7 +39,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -61,10 +57,6 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
 	private SysUserRoleService sysUserRoleService;
 	@Autowired
 	private SysDeptService sysDeptService;
-	@Resource
-	private HttpServletRequest request;
-	@Autowired
-	private OauthUserTemplate oauthUserTemplate;
 
 	@Override
 	public List<Long> queryAllMenuId(Long userId) {
@@ -128,19 +120,4 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUserEntity> i
         return this.update(userEntity,
         	new QueryWrapper<SysUserEntity>().eq("user_id", userId).eq("password", password));
     }
-
-	@Override
-	public SysUserEntity getById(Serializable id) {
-		String token = CookieUtils.get(request, Constant.ACCESS_TOKEN).getValue();
-		if(StringUtils.isNotBlank(token)){
-			token = token.toLowerCase().replace("bearer", "");
-		}
-		SysUserEntity sysUserEntity = new SysUserEntity();
-		List<OauthUserDTO> userDTOS = oauthUserTemplate.queryUsersByIds((Long)id, token);
-		if(!userDTOS.isEmpty()){
-			sysUserEntity.setUserId(userDTOS.get(0).getId());
-			sysUserEntity.setUsername(userDTOS.get(0).getUsername());
-		}
-		return sysUserEntity;
-	}
 }

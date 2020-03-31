@@ -19,25 +19,18 @@ package io.dfjx.module.sys.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.dfjinxin.commons.auth.compoment.OauthUserTemplate;
 import io.dfjx.common.utils.Constant;
-import io.dfjx.common.utils.CookieUtils;
-import io.dfjx.common.utils.MapUtils;
-import io.dfjx.common.utils.TagUserUtils;
 import io.dfjx.module.sys.dao.SysMenuDao;
 import io.dfjx.module.sys.entity.SysMenuEntity;
 import io.dfjx.module.sys.entity.SysRoleMenuEntity;
 import io.dfjx.module.sys.service.SysMenuService;
 import io.dfjx.module.sys.service.SysRoleMenuService;
 import io.dfjx.module.sys.service.SysUserService;
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 
 @Service("sysMenuService")
@@ -46,9 +39,6 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 	private SysUserService sysUserService;
 	@Autowired
 	private SysRoleMenuService sysRoleMenuService;
-
-	@Autowired
-	private OauthUserTemplate oauthUserTemplate;
 
 	@Override
 	public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
@@ -76,42 +66,56 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		return baseMapper.queryNotButtonList();
 	}
 
+//	@Override
+//	public List<SysMenuEntity> getUserMenuList(HttpServletRequest request, Long userId) {
+//		//系统管理员，拥有最高权限
+//		/*if(userId == Constant.SUPER_ADMIN){
+//			return getAllMenuList(null);
+//		}*/
+//
+////		//用户菜单列表
+////		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+////		return getAllMenuList(menuIdList);
+//
+//		String token = CookieUtils.get(request, Constant.ACCESS_TOKEN).getValue();
+//		if(StringUtils.isNotBlank(token)){
+//			token = token.toLowerCase().replace("bearer", "");
+//		}
+//		Map<Long, String> mapCodes = oauthUserTemplate.selectPermissionsByUserIdAndSystem(TagUserUtils.userId(), Constant.APP_NAME, token);
+//		List<SysMenuEntity> menuIdList = baseMapper.queryByPermsCode(mapCodes);
+//
+//		List<SysMenuEntity> rootTrees = new ArrayList<SysMenuEntity>();
+//		for (SysMenuEntity tree : menuIdList) {
+//			if(tree.getParentId() == 0){
+//				rootTrees.add(tree);
+//			}
+//			for (SysMenuEntity t : menuIdList) {
+//				if(t.getParentId() == tree.getMenuId()){
+//					if(tree.getList() == null){
+//						List<SysMenuEntity> myChildrens = new ArrayList<SysMenuEntity>();
+//						myChildrens.add(t);
+//						tree.setList(myChildrens);
+//					}else{
+//						tree.getList().add(t);
+//					}
+//				}
+//			}
+//		}
+//		return rootTrees;
+//	}
+
+
 	@Override
-	public List<SysMenuEntity> getUserMenuList(HttpServletRequest request, Long userId) {
-		//系统管理员，拥有最高权限
-		/*if(userId == Constant.SUPER_ADMIN){
-			return getAllMenuList(null);
-		}*/
-		
-//		//用户菜单列表
-//		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
-//		return getAllMenuList(menuIdList);
+	public List<SysMenuEntity> getUserMenuList(Long userId) {
+		return getAllMenuList(null);
+	}
 
-		String token = CookieUtils.get(request, Constant.ACCESS_TOKEN).getValue();
-		if(StringUtils.isNotBlank(token)){
-			token = token.toLowerCase().replace("bearer", "");
+	@Override
+	public List<SysMenuEntity> queryByPermsCode(List<String> codes) {
+		if (codes.size() == 0) {
+			return new ArrayList<>();
 		}
-		Map<Long, String> mapCodes = oauthUserTemplate.selectPermissionsByUserIdAndSystem(TagUserUtils.userId(), Constant.APP_NAME, token);
-		List<SysMenuEntity> menuIdList = baseMapper.queryByPermsCode(mapCodes);
-
-		List<SysMenuEntity> rootTrees = new ArrayList<SysMenuEntity>();
-		for (SysMenuEntity tree : menuIdList) {
-			if(tree.getParentId() == 0){
-				rootTrees.add(tree);
-			}
-			for (SysMenuEntity t : menuIdList) {
-				if(t.getParentId() == tree.getMenuId()){
-					if(tree.getList() == null){
-						List<SysMenuEntity> myChildrens = new ArrayList<SysMenuEntity>();
-						myChildrens.add(t);
-						tree.setList(myChildrens);
-					}else{
-						tree.getList().add(t);
-					}
-				}
-			}
-		}
-		return rootTrees;
+		return baseMapper.queryByPermsCode(codes);
 	}
 
 	@Override

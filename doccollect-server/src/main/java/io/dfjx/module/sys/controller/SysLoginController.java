@@ -20,7 +20,6 @@ import com.google.code.kaptcha.Producer;
 import io.dfjx.common.utils.Constant;
 import io.dfjx.common.utils.CookieUtils;
 import io.dfjx.common.utils.R;
-import io.dfjx.common.utils.StringTools;
 import io.dfjx.config.SystemConfig;
 import io.dfjx.module.sys.service.SysRoleService;
 import io.dfjx.module.sys.shiro.ShiroUtils;
@@ -178,12 +177,15 @@ public class SysLoginController {
 
     @RequestMapping("loginback")
     public String loginback(HttpServletRequest request, HttpServletResponse response){
-        String token = request.getParameter("ucToken");
-        if (StringUtils.isNotEmpty(token)) {
-            CookieUtils.set(response, Constant.ACCESS_TOKEN, "bearer" + token.substring(7), 60 * 60 * 12 * 2 * 7);
-            return "redirect:/";
+        String access_token = request.getParameter("access_token");
+        String refresh_token = request.getParameter("refresh_token");
+        if (StringUtils.isNotEmpty(access_token)) {
+            CookieUtils.set(response, Constant.ACCESS_TOKEN, access_token, 60 * 60 * 12 * 2 * 7);
         }
-        return "redirect:"+loginUrl;
+        if (StringUtils.isNotEmpty(refresh_token)) {
+            CookieUtils.set(response, Constant.REFRESH_TOKEN, refresh_token, 60 * 60 * 12 * 2 * 7);
+        }
+        return "redirect:/";
     }
 
 

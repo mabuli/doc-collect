@@ -20,6 +20,8 @@ import io.dfjx.common.annotation.SysLog;
 import io.dfjx.common.exception.RRException;
 import io.dfjx.common.utils.Constant;
 import io.dfjx.common.utils.R;
+import io.dfjx.module.auth.utils.UserThreadLocal;
+import io.dfjx.module.auth.vo.OnlineUser;
 import io.dfjx.module.sys.entity.SysMenuEntity;
 import io.dfjx.module.sys.service.SysMenuService;
 import org.apache.commons.lang.StringUtils;
@@ -31,7 +33,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 系统菜单
@@ -51,8 +55,19 @@ public class SysMenuController extends AbstractController {
 	 */
 	@RequestMapping("/nav")
 	public R nav(HttpServletRequest request){
-		List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(request, getUserId());
-		return R.ok().put("menuList", menuList);
+		OnlineUser onlineUser = UserThreadLocal.get();
+		if (!onlineUser.isIaAuth()) {
+			List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(null);
+			return R.ok().put("menuList", menuList);
+		}
+		Set<String> paramCode = onlineUser.getPermissions();
+		if (paramCode.size() > 0) {
+			List<String> permissionList = new ArrayList<>(paramCode);
+			List<SysMenuEntity> menuList = sysMenuService.queryByPermsCode(permissionList);
+			return R.ok().put("menuList", menuList).put("permission",permissionList);
+		} else {
+			throw new RRException("没有访问权限，请联系管理员");
+		}
 	}
 	
 	/**
