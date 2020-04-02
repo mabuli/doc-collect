@@ -7,6 +7,7 @@ package io.dfjx;
  *
  */
 
+import io.dfjx.event.listener.ApplicationPreparedListener;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,6 +30,7 @@ public class DfjxApplication extends SpringBootServletInitializer {
 	public static void main(String[] args) {
 		SpringApplication app = new SpringApplication(DfjxApplication.class);
 		app.addListeners(
+				new ApplicationPreparedListener()
 		);
 		app.run(args);
 	}
