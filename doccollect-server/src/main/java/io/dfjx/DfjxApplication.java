@@ -15,9 +15,9 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
-@SpringBootApplication(scanBasePackages = "io.dfjx")
-@MapperScan(basePackages = {"io.dfjx.module.*.dao"})
+@SpringBootApplication
 @EnableTransactionManagement
+@MapperScan(basePackages = {"io.dfjx.module.*.dao"})
 public class DfjxApplication extends SpringBootServletInitializer {
 
 	@Override

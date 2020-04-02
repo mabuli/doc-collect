@@ -8,6 +8,7 @@
 
 package io.dfjx.common.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -19,16 +20,19 @@ import org.springframework.stereotype.Component;
  * @author Mark mazong@gmail.com
  */
 @Component
+@Slf4j
 public class SpringContextUtils implements ApplicationContextAware {
 	public static ApplicationContext applicationContext; 
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationContext)
 			throws BeansException {
+		log.info("---setApplicationContext---");
 		SpringContextUtils.applicationContext = applicationContext;
 	}
 
 	public static Object getBean(String name) {
+		log.info("---getBean---");
 		return applicationContext.getBean(name);
 	}
 
