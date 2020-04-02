@@ -27,7 +27,10 @@ public class DfjxApplication extends SpringBootServletInitializer {
 	}
 
 	public static void main(String[] args) {
-		SpringApplication.run(DfjxApplication.class, args);
+		SpringApplication app = new SpringApplication(DfjxApplication.class);
+		app.addListeners(
+		);
+		app.run(args);
 	}
 
 }
