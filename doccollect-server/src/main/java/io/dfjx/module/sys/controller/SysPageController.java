@@ -16,10 +16,17 @@
 
 package io.dfjx.module.sys.controller;
 
+import io.dfjx.common.utils.Constant;
+import io.dfjx.common.utils.CookieUtils;
+import io.dfjx.module.auth.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 系统页面视图
@@ -33,6 +40,12 @@ public class SysPageController {
 
 	@Value("${auth.login.url}")
 	private String loginUrl;
+
+	@Autowired
+	private AuthService authService;
+
+	@Value("${auth.logout.url}")
+	private String logoutUrl;
 
 	@RequestMapping("module/{module}/{url}.html")
 	public String module(@PathVariable("module") String module, @PathVariable("url") String url){
@@ -72,6 +85,14 @@ public class SysPageController {
 	@RequestMapping("app.html")
 	public String app(){
 		return "app";
+	}
+
+	@RequestMapping("ca/logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response){
+		CookieUtils.set(response, Constant.ACCESS_TOKEN, null, 0);
+		CookieUtils.set(response, Constant.REFRESH_TOKEN, null, 0);
+		authService.loginOut(request);
+		return "redirect:"+logoutUrl;
 	}
 
 }

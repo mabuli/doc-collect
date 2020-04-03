@@ -115,7 +115,25 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 		if (codes.size() == 0) {
 			return new ArrayList<>();
 		}
-		return baseMapper.queryByPermsCode(codes);
+		List<SysMenuEntity> menuIdList = baseMapper.queryByPermsCode(codes);
+		List<SysMenuEntity> rootTrees = new ArrayList<SysMenuEntity>();
+		for (SysMenuEntity tree : menuIdList) {
+			if(tree.getParentId() == 0){
+				rootTrees.add(tree);
+			}
+			for (SysMenuEntity t : menuIdList) {
+				if(t.getParentId() == tree.getMenuId()){
+					if(tree.getList() == null){
+						List<SysMenuEntity> myChildrens = new ArrayList<SysMenuEntity>();
+						myChildrens.add(t);
+						tree.setList(myChildrens);
+					}else{
+						tree.getList().add(t);
+					}
+				}
+			}
+		}
+		return rootTrees;
 	}
 
 	@Override
