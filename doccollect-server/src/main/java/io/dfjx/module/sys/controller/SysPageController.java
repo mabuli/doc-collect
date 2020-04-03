@@ -87,7 +87,7 @@ public class SysPageController {
 		return "app";
 	}
 
-	@RequestMapping("ca/logout")
+	@RequestMapping("logout.html")
 	public String logout(HttpServletRequest request, HttpServletResponse response){
 		CookieUtils.set(response, Constant.ACCESS_TOKEN, null, 0);
 		CookieUtils.set(response, Constant.REFRESH_TOKEN, null, 0);
