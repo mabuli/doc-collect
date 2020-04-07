@@ -93,7 +93,12 @@ var vm = new Vue({
     },
     methods : {
         getMenuList : function(event) {
+            console.info('getMenuList')
             $.getJSON("sys/menu/nav?_" + $.now(), function(r) {
+                if (r.code == 500) {
+                    window.location = '/doc-collect/noaccess.html';
+                    return false;
+                }
                 vm.menuList = r.menuList;
             });
         },

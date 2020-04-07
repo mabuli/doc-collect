@@ -55,19 +55,21 @@ public class SysMenuController extends AbstractController {
 	 */
 	@RequestMapping("/nav")
 	public R nav(HttpServletRequest request){
-		OnlineUser onlineUser = UserThreadLocal.get();
-		if (!onlineUser.isIaAuth()) {
-			List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(null);
-			return R.ok().put("menuList", menuList);
-		}
-		Set<String> paramCode = onlineUser.getPermissions();
-		if (paramCode.size() > 0) {
-			List<String> permissionList = new ArrayList<>(paramCode);
-			List<SysMenuEntity> menuList = sysMenuService.queryByPermsCode(permissionList);
-			return R.ok().put("menuList", menuList).put("permission",permissionList);
-		} else {
-			throw new RRException("没有访问权限，请联系管理员");
-		}
+//		OnlineUser onlineUser = UserThreadLocal.get();
+//		if (!onlineUser.isIaAuth()) {
+//			List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(null);
+//			return R.ok().put("menuList", menuList);
+//		}
+//		Set<String> paramCode = onlineUser.getPermissions();
+//		if (paramCode.size() > 0) {
+//			List<String> permissionList = new ArrayList<>(paramCode);
+//			List<SysMenuEntity> menuList = sysMenuService.queryByPermsCode(permissionList);
+//			return R.ok().put("menuList", menuList).put("permission",permissionList);
+//		} else {
+//			throw new RRException("没有访问权限，请联系管理员");
+//		}
+
+		throw new RRException("没有访问权限，请联系管理员");
 	}
 	
 	/**
