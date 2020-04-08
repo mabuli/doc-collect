@@ -15,6 +15,9 @@ public class ProxyController {
     public R get(@RequestParam("url") String url) {
         WebClient client = new WebClient();
         JSONObject json = client.getJSONObject(url.replace("&amp;", "&"));
+        if (json == null) {
+            return R.error("server error");
+        }
         return R.ok().put("data", json);
     }
 

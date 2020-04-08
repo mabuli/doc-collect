@@ -73,7 +73,9 @@ var vm = new Vue({
         success: function (resp) {
           console.info(resp.data)
           vm.loading = false;
-          if (resp.data.Pops) {
+          if (resp.code == 500) {
+            alert('服务器错误');
+          } else if (resp.data.Pops) {
             vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
             if (vm.list.length != 0) {
               if (vm.list['p'] != undefined) {

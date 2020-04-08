@@ -126,13 +126,16 @@ public class WebClient {
             }
         } catch (Exception ex) {
             logger.error("get error", ex);
-            new RuntimeException(ex);
+            return null;
         }
         return data;
     }
 
     public JSONObject getJSONObject(String url) {
         String content = getString(url);
+
+        if (content == null)
+            return null;
 
         return JSONObject.parseObject(content);
     }
