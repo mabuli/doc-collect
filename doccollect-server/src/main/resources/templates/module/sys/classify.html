@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>人口分类管理</title>
+<#include "/header.html">
+<link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap-table.min.css">
+<link rel="stylesheet" href="${request.contextPath}/static/lib/treegrid/jquery.treegrid.css">
+<script src="${request.contextPath}/static/lib/bootstrap-table.min.js"></script>
+<script src="${request.contextPath}/static/lib/treegrid/jquery.treegrid.min.js"></script>
+<script src="${request.contextPath}/static/lib/treegrid/jquery.treegrid.bootstrap3.js"></script>
+<script src="${request.contextPath}/static/lib/treegrid/jquery.treegrid.extension.js"></script>
+<script src="${request.contextPath}/static/lib/treegrid/tree.table.js"></script>
+<style type="text/css">
+#rrapp {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+.el-checkbox:last-of-type{margin-bottom: 0}
+	.dept-table{padding: 0 10px}
+	.dept-table .el-button--mini, .dept-table .el-button--mini.is-round{padding: 0 15px}
+</style>
+</head>
+<body>
+<div id="rrapp" v-cloak>
+	<div v-show="showList">
+		<div class="grid-btn" style="margin-bottom:5px;">
+			<div class="col-sm-2">
+				<input type="text" class="form-control" v-model="classifyName" @keyup.enter="query" placeholder="分类名称" style="height: 34px">
+			</div>
+			<a class="btn btn-default" @click="query(true)"><i class="fa fa-search"></i>&nbsp;查询</a>
+
+			<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+
+		</div>
+
+		<div class="dept-table">
+			<el-table
+					:data="dataPage.list"
+					border
+					size="small"
+					height="455"
+					:stripe="true"
+					style="width: 100%"
+					@selection-change="handleSelectionChange"
+      >
+				<el-table-column
+						type="selection"
+						width="50">
+				</el-table-column>
+				<el-table-column
+						label="序号"
+						:formatter="colIndex"
+						width="50"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="classifyName"
+						label="分类名称"
+						:show-overflow-tooltip="true"
+						align="center">
+				</el-table-column>
+				<el-table-column
+						prop="serviceApi"
+						label="接口服务"
+						:show-overflow-tooltip="true"
+						align="center">
+				</el-table-column>
+				<el-table-column
+								prop="roleIds"
+								label="关联角色"
+								:show-overflow-tooltip="true"
+								align="center">
+				</el-table-column>
+				<el-table-column
+						prop="orderNum"
+						label="显示顺序"
+						:show-overflow-tooltip="true"
+						width="100"
+						align="center">
+				</el-table-column>
+
+<!--				<el-table-column-->
+<!--						prop="checkExpr"-->
+<!--						label="操作"-->
+<!--						:show-overflow-tooltip="true"-->
+<!--						width="150"-->
+<!--						align="center">-->
+<!--					<template slot-scope="scope">-->
+<!--						<el-button type="text" size="mini">查看</el-button>-->
+<!--						<el-button type="text" size="mini">删除</el-button>-->
+<!--					</template>-->
+<!--				</el-table-column>-->
+
+			</el-table>
+			<el-pagination
+					@size-change="handleSizeChange"
+					@current-change="handleCurrentChange"
+					:current-page="dataPage.currPage"
+					:page-size="dataPage.pageSize"
+					:page-sizes="[10, 20, 30]"
+					layout="total, sizes, prev, pager, next, jumper"
+					:total="dataPage.totalCount">
+			</el-pagination>
+		</div>
+	</div>
+
+	<div v-show="!showList" class="panel panel-default">
+		<div class="panel-heading">{{title}}</div>
+		<form class="form-horizontal">
+			<div class="form-group">
+				<div class="col-sm-2 control-label">分类名称</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="classify.classifyName" placeholder="分类名称"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">接口服务</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="classify.serviceApi" placeholder="接口服务"/>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-sm-2 control-label">显示位置</div>
+				<div class="col-sm-10">
+					<input type="text" class="form-control" v-model="classify.orderNum" placeholder="显示位置"/>
+				</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-2 control-label">关联角色</div>
+			</div>
+
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div>
+				<div class="col-sm-10">
+						<div class="panel panel-default">
+							<div class="panel-body" style="overflow-y: scroll;height: 300px;">
+								角色列表
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Default</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox" checked>Primary</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Default</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox" checked>Primary</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Default</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox" checked>Primary</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Default</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox" checked>Primary</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+								<div class="checkbox">
+									<label><input class="styled" type="checkbox">Success</label>
+								</div>
+							</div>
+						</div>
+				</div>
+	    </div>
+
+
+
+      <!--			关联角色-->
+			<div class="form-group">
+				<div class="col-sm-2 control-label"></div>
+				<input type="button" class="btn btn-primary" @click="saveOrUpdate" value="确定"/>
+				&nbsp;&nbsp;<input type="button" class="btn btn-warning" @click="reBack" value="取消"/>
+			</div>
+		</form>
+	</div>
+
+
+</div>
+
+<!-- 选择部门 -->
+<div id="deptLayer" style="display: none;padding:10px;">
+	<ul id="deptTree" class="ztree"></ul>
+</div>
+
+<script src="${request.contextPath}/static/js/module/sys/classify.js?_${.now?long}"></script>
+</body>
+</html>

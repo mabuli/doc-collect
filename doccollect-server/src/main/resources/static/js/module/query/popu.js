@@ -55,8 +55,8 @@ var vm = new Vue({
       this.query.start = (this.pageIndex - 1) * this.pageSize;
       this.query.count = this.pageSize;
       this.loading = true;
-
-      let url = 'https://10.217.17.110:8243/query/v1.0/querySixtyPopusByNameOrNum?1=1'
+      //    https://10.217.17.110:8243/query/v1.0/querySixtyPopusByNameOrNum?1=1
+      let url = 'https://172.21.10.33:8243/query/v1.0/querySixtyPopusByNameOrNum?1=1'
         + (this.query.housAddr == '' ? '' : '&housAddr=' + this.query.housAddr)
         + (this.query.currAddr == '' ? '' : '&currAddr=' + this.query.currAddr)
         + (this.query.hltySituCd == '' ? '' : '&hltySituCd=' + this.query.hltySituCd)
