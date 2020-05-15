@@ -21,7 +21,6 @@ import io.dfjx.common.utils.PageUtils;
 import io.dfjx.common.utils.R;
 import io.dfjx.common.validator.ValidatorUtils;
 import io.dfjx.module.sys.entity.SysClassifyEntity;
-import io.dfjx.module.sys.entity.SysConfigEntity;
 import io.dfjx.module.sys.service.SysClassifyService;
 import io.dfjx.module.sys.service.SysRoleService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -29,6 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,9 +45,6 @@ public class SysClassifyController extends AbstractController {
 	@Autowired
 	private SysClassifyService sysClassifyService;
 
-	@Autowired
-	private SysRoleService sysRoleService;
-
 	/**
 	 * 分页列出人口分类
 	 */
@@ -57,6 +54,15 @@ public class SysClassifyController extends AbstractController {
 		PageUtils page = sysClassifyService.queryPage(params);
 
 		return R.ok().put("page", page);
+	}
+
+	/**
+	 * 所有分类
+	 */
+	@RequestMapping("/select")
+	public R select(){
+		List<SysClassifyEntity> list = sysClassifyService.list();
+		return R.ok().put("list", list);
 	}
 
 	/**

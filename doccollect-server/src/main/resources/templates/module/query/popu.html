@@ -55,10 +55,21 @@
 
   <div class="top">
     <el-form ref="queryForm" :model="query" :inline="true">
+      <el-form-item size="mini" label="查询类型：">
+        <el-select v-model="value" placeholder="请选择">
+          <el-option
+                  v-for="item in classifyOptions"
+                  :key="item.classifyId"
+                  :label="item.classifyName"
+                  :value="item.serviceApi"
+                  :disabled="item.disabled">
+          </el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item size="mini" label="户籍地址：">
         <el-select v-model="query.housAddr" clearable filterable remote reserve-keyword placeholder="---请输入---"
                    :remote-method="doQueryAddr1" :loading="loading" @clear="clear1" :loading="q1loading">
-          <el-option v-for="item in address1" :key="item.hous_reg_loc_dtl_addr" :label="item.hous_reg_loc_dtl_addr" :value="item.hous_reg_loc_dtl_addr">
+          <el-option v-for="item in address1" :key="item.addr_id" :label="item.addr_nm" :value="item.addr_id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -66,7 +77,7 @@
       <el-form-item size="mini" label="现居住地址：">
         <el-select v-model="query.currAddr" clearable  filterable remote reserve-keyword placeholder="---请输入---"
                    :remote-method="doQueryAddr2" :loading="loading" @clear="clear2" :loading="q2loading">
-          <el-option v-for="item in address2" :key="item.curr_resi_dtl_addr" :label="item.curr_resi_dtl_addr" :value="item.curr_resi_dtl_addr">
+          <el-option v-for="item in address2" :key="item.addr_id" :label="item.addr_nm" :value="item.addr_id">
           </el-option>
         </el-select>
       </el-form-item>
@@ -82,16 +93,16 @@
     </div>
     <table v-for="item in list" v-if="!showNoData" v-loading="loading">
       <tr bgcolor="#f5fbff">
-        <td width=""><label>姓名：</label><b>{{item.p.name}}</b></td>
-        <td><label>性别：</label><b>{{item.p.gender_cd}}</b></td>
-        <td><label>年龄：</label><b>{{item.p.age}}</b></td>
-        <td><label>民族：</label><b>{{item.p.nation_cd}}</b></td>
+        <td width=""><label>姓名：</label><b>{{item.name}}</b></td>
+        <td><label>性别：</label><b>{{item.gender_cd}}</b></td>
+        <td><label>年龄：</label><b>{{item.age}}</b></td>
+        <td><label>民族：</label><b>{{item.nation_cd}}</b></td>
       </tr>
       <tr>
-        <td><label>证件类型：</label><b>{{item.p.iden_docu_type_cd}}</b></td>
-        <td><label>证件号码：</label><b>{{item.p.iden_docu_num}}</b></td>
-        <td><label>户籍地址：</label><b>{{item.p.hous_reg_loc_dtl_addr}}</b></td>
-        <td><label>现住地址：</label><b>{{item.p.curr_resi_dtl_addr}}</b></td>
+        <td><label>证件类型：</label><b>{{item.iden_docu_type_cd}}</b></td>
+        <td><label>证件号码：</label><b>{{item.iden_docu_num}}</b></td>
+        <td><label>户籍地址：</label><b>{{item.hous_reg_loc_dtl_addr}}</b></td>
+        <td><label>现住地址：</label><b>{{item.curr_resi_dtl_addr}}</b></td>
       </tr>
     </table>
     <el-pagination

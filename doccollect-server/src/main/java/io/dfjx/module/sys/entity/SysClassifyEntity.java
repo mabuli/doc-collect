@@ -17,10 +17,12 @@
 package io.dfjx.module.sys.entity;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -34,6 +36,7 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_classify")
+@Accessors(chain = true)
 public class SysClassifyEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -57,6 +60,11 @@ public class SysClassifyEntity implements Serializable {
 	 * 关联角色
 	 */
 	private String roleIds;
+	/**
+	 * 关联角色名称
+	 */
+	@TableField(exist = false)
+	private String roleNames ="";
 
 	/**
 	 * 删除标记  -1：已删除  0：正常

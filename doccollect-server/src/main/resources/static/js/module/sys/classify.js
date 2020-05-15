@@ -8,13 +8,18 @@ var vm = new Vue({
         multipleSelection:[],
         classify:{},
         title:null,
-        roleList: []
+        roleList: [],
+        checkList: []
     },
     mounted(){
         this.query(true);
         this.getRoles();
     },
     methods: {
+        formatter(row, column) {
+            let ayy=row.roleIds.split(",")
+            return ayy[0];
+        },
         initPage(){
             this.dataPage = {
                 list: [],
@@ -40,7 +45,6 @@ var vm = new Vue({
                 }
             });
         },
-
         handleSizeChange(val) {
             vm.dataPage.pageSize = val
             vm.dataPage.currPage = 1;
@@ -87,6 +91,7 @@ var vm = new Vue({
             vm.showList = false;
             vm.title = "新增";
             vm.classify = {};
+            vm.checkList= []
         },
 
         update: function () {
@@ -103,12 +108,17 @@ var vm = new Vue({
                 vm.showList = false;
                 vm.title = "修改";
                 vm.classify = r.classify;
+                vm.checkList= []
+                if(r.classify.roleIds!=''){
+                    vm.checkList = r.classify.roleIds.split(",").map(Number);
+                }
             });
         },
 
 
         saveOrUpdate: function (event) {
             var url = vm.classify.classifyId == null ? "sys/classify/save" : "sys/classify/update";
+            vm.classify.roleIds=vm.checkList.join();
             $.ajax({
                 type: "POST",
                 url: baseURL + url,
@@ -134,7 +144,7 @@ var vm = new Vue({
         getRoles: function () {
             $.get(baseURL + "sys/role/select", function(r){
                 console.log(r.list);
-                roleList = r.list;
+                vm.roleList = r.list;
             });
         },
 
