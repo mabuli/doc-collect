@@ -5,7 +5,7 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://localhost:3306/doc_collect?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
-      password: 1234
+      password: root
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -34,7 +34,10 @@ system-config:
   #上传文件保存路径
   file-dir: D:/Project/doc-collect/collectfile/project
   project-url: http://127.0.0.1:12100/doc-collect/
-
+# 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹
+server:
+  tomcat:
+    basedir: D:/Project/doc-collect/collectfile/tmp
 #统一认证
 auth:
   client:

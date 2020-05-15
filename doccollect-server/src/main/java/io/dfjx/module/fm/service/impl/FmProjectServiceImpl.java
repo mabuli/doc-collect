@@ -1,5 +1,6 @@
 package io.dfjx.module.fm.service.impl;
 
+import io.dfjx.common.utils.PageUtils;
 import io.dfjx.common.utils.R;
 import io.dfjx.core.base.SysBaseEntity;
 import io.dfjx.module.fm.dao.FmBaseDao;
@@ -40,11 +41,9 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
 
     @Override
     public R validValue(Map<String, Object> params){
-        //检测日期是否输入合法
         String errStr = "";
-        Map<String, Object> m = new HashMap<>();
-        m.put("form_id", "1");
-        List<Map<String,Object>> list = sysFormFldService.queryAll(m);
+        List<Map<String,Object>> list = this.getFormFields("1");
+        //检测日期是否输入合法
         List<Map<String,Object>> dates = list.stream().filter(x-> "date".equals(x.get("data_type").toString())).collect(Collectors.toList());
         for(Map<String,Object> date : dates){
             String name = date.get("fld_name").toString();
@@ -58,10 +57,24 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
                 errStr += date.get("fld_comment").toString() + "填写内容不正确，格式应该为2020-03-08<br/>";
             }
         }
+
         if(errStr.length()>0){
             return R.error(errStr);
         }
         return R.ok();
+    }
+
+    public void formatValue(List<Map<String,Object>> flds, Map<String, Object> params) {
+        //数字类型去掉空字符串
+        List<Map<String,Object>> nums = flds.stream().filter(x-> "decimal".equals(x.get("data_type").toString())).collect(Collectors.toList());
+        for(Map<String,Object> num : nums){
+            String name = num.get("fld_name").toString();
+            if(!params.containsKey(name))
+                continue;
+            String val = mstr(params, name);
+            if(val.length() == 0)
+                params.put(name, null);
+        }
     }
 
     @Override
@@ -93,6 +106,9 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
                 R chk = valid(model);
                 if(!chk.isok())
                     return chk;
+                List<Map<String,Object>> flds = this.getFormFields("1");
+                //格式处理
+                formatValue(flds, model);
                 this.insertMap(model);
                 return R.ok("保存成功").put("info", model);
             }else{
@@ -104,6 +120,14 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
             return R.error("解析文档失败，" + e.getMessage());
         }
     }
+
+    @Override
+    public PageUtils queryPage(Map<String, Object> params){
+        PageUtils page = super.queryPage(params);
+        retValue(page);
+        return page;
+    }
+
     public R valid(Map<String, Object> model){
         int c = baseMapper.countWhere(BaseTable, " and project_no='" + model.get("project_no") + "'");
         if(c>0) return R.error("验证失败：备案号已存在，请不要重复导入");
@@ -251,6 +275,23 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
             model.put("plan_end_date", dateStr(model.get("plan_end_date").toString()));
         }
     }
+    private List<Map<String,Object>> getFormFields(String formId){
+        Map<String, Object> m = new HashMap<>();
+        m.put("form_id", formId);
+        List<Map<String,Object>> list = sysFormFldService.queryAll(m);
+        return list;
+    }
+    private void retValue(PageUtils page){
+        List<Map<String,Object>> list = (List<Map<String,Object>>)page.getList();
+        for(Map<String,Object> m : list){
+            for(Map.Entry<String,Object> me : m.entrySet()){
+                Object val = me.getValue();
+                if(val != null && val instanceof Date){
+                    m.put(me.getKey(), dateStr(val.toString()));
+                }
+            }
+        }
+    }
     private String val(String str){
         return str.trim();
     }
@@ -274,7 +315,6 @@ public class FmProjectServiceImpl extends FmBaseServiceImpl<FmProjectDao, SysBas
         }
         return res;
     }
-
     private String numStr(String str){
 //        if(NumberUtils.isNumber(str))
 //            return str;

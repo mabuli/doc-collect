@@ -34,7 +34,10 @@ system-config:
   #上传文件保存路径
   file-dir: /usr/jar/D:/Project/doc-collect/collectfile/project
   project-url: http://10.217.17.116:12100/doc-collect/
-
+# 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹
+server:
+  tomcat:
+    basedir: /usr/jar/Project/doc-collect/collectfile/tmp
 
 auth-url: http://172.25.13.75:31234
 auth-frontier-url: http://auth-frontier.jxwda.bjdx.gov.cn
