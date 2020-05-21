@@ -138,7 +138,7 @@
 				<div class="col-sm-2 control-label">关联角色</div>
 				<div class="col-sm-10" >
 					<el-checkbox-group  v-model="checkList">
-						<el-checkbox  v-for="item in roleList" :key="item.roleId" :label="item.roleId" >{{item.roleName}}</el-checkbox>
+						<el-checkbox  v-for="item in roleList" :key="item.id" :label="item.id" >{{item.roleName}}</el-checkbox>
 					</el-checkbox-group>
 				</div>
 			</div>

@@ -1,5 +1,6 @@
 package io.dfjx.module.auth.utils;
 
+
 public enum UrlEnum {
 
     //oauth2登录
@@ -12,7 +13,9 @@ public enum UrlEnum {
     selectPermissionsByUserIdAndSystem("/role/get/permission/userid/system"),
     LOGIN_OUT("/logout/user"),
     SELECTALLTENANT("/tenant/select/all"),
-    frontierAuthFreshToken("/frontier/auth/freshToken")
+    frontierAuthFreshToken("/frontier/auth/freshToken"),
+    SELECT_ALL_ROLE("/role/select/all"),
+    LOGIN_USER_INFO("/user/select/userid")
     ;
 
     private String url;

@@ -73,7 +73,37 @@ var vm = new Vue({
         + '&count=' + this.query.count;
       console.info('-- handleQuery --', url)
         vm.list = []
-      $.ajax({
+        $.ajax({
+            type: "GET",
+            url: baseURL + 'proxy/get',
+            data: {url: url},
+            dataType: 'json',
+            success: function (resp) {
+                console.info(resp.data)
+                vm.loading = false;
+                if (resp.code == 500) {
+                    alert('服务器错误');
+                } else if (resp.data.Pops) {
+                    vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
+                    if (vm.list.length != 0) {
+                        if (vm.list['p'] != undefined) {
+                            var list = [
+                                {
+                                    'p':vm.list['p'],
+                                    'ct':vm.list['ct'],
+                                }
+                            ];
+                            vm.list = list;
+                        }
+                        vm.totalCount = vm.list[0].ct.cnt || 0;
+                    }
+                    vm.showNoData = false
+                } else {
+                    vm.showNoData = true
+                }
+            }
+        });
+      /*$.ajax({
         type: "GET",
         url: baseURL + 'proxy/get',
         data: {url: url},
@@ -85,8 +115,8 @@ var vm = new Vue({
             alert('服务器错误');
           } else if (resp.data.Pops) {
               vm.list = resp.data.Pops.pop ? resp.data.Pops.pop : []
-            if (vm.list.length != 0) {
-                vm.totalCount = vm.list[0].cnt || 0;
+                if (vm.list.length != 0) {
+                    vm.totalCount = vm.list[0].cnt || 0;
             }
             vm.showNoData = false
           } else {
@@ -94,7 +124,7 @@ var vm = new Vue({
           }
           vm.loading = false;
         }
-      });
+      });*/
     },
     onCurrentChangeHandle(pi) {
       this.pageIndex = pi;

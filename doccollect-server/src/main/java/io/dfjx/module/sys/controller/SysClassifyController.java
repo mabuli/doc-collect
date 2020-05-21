@@ -45,23 +45,27 @@ public class SysClassifyController extends AbstractController {
 	@Autowired
 	private SysClassifyService sysClassifyService;
 
+	@Autowired
+	private SysRoleService sysRoleService;
 	/**
 	 * 分页列出人口分类
 	 */
 	@RequestMapping("/page")
 	@RequiresPermissions("sys:classify:page")
 	public R page(@RequestParam Map<String, Object> params){
+		List<Long> userId=getUser().getRoleIdList();
 		PageUtils page = sysClassifyService.queryPage(params);
 
 		return R.ok().put("page", page);
 	}
 
 	/**
-	 * 所有分类
+	 * 所有当前用户的分类
 	 */
 	@RequestMapping("/select")
 	public R select(){
-		List<SysClassifyEntity> list = sysClassifyService.list();
+
+		List<SysClassifyEntity> list = sysClassifyService.filterList();
 		return R.ok().put("list", list);
 	}
 

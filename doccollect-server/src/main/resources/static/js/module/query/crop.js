@@ -17,7 +17,7 @@ var vm = new Vue({
   },
   methods: {
     handleQuery() {
-        let url = 'https://172.21.10.33:8243/corpration/v1.1/queryLegalByNmOrCd?1=1'
+        let url = '/corpration/v1.1/queryLegalByNmOrCd?1=1'
         + (this.query.orgName == '' ? '' : '&orgName=' + this.query.orgName)
         + (this.query.orgCode == '' ? '' : '&orgCode=' + this.query.orgCode)
         + (this.query.credCode == '' ? '' : '&credCode=' + this.query.credCode)

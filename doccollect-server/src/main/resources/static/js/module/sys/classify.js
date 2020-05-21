@@ -110,7 +110,8 @@ var vm = new Vue({
                 vm.classify = r.classify;
                 vm.checkList= []
                 if(r.classify.roleIds!=''){
-                    vm.checkList = r.classify.roleIds.split(",").map(Number);
+                   // vm.checkList = r.classify.roleIds.split(",").map(Number);
+                    vm.checkList = r.classify.roleIds.split(",");
                 }
             });
         },
@@ -143,7 +144,6 @@ var vm = new Vue({
 
         getRoles: function () {
             $.get(baseURL + "sys/role/select", function(r){
-                console.log(r.list);
                 vm.roleList = r.list;
             });
         },

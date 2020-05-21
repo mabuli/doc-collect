@@ -20,6 +20,8 @@ import io.dfjx.common.annotation.SysLog;
 import io.dfjx.common.utils.PageUtils;
 import io.dfjx.common.utils.R;
 import io.dfjx.common.validator.ValidatorUtils;
+import io.dfjx.module.auth.service.AuthService;
+import io.dfjx.module.auth.vo.OauthRoleVO;
 import io.dfjx.module.sys.entity.SysRoleEntity;
 import io.dfjx.module.sys.service.SysRoleDeptService;
 import io.dfjx.module.sys.service.SysRoleMenuService;
@@ -47,7 +49,9 @@ public class SysRoleController extends AbstractController {
 	private SysRoleMenuService sysRoleMenuService;
 	@Autowired
 	private SysRoleDeptService sysRoleDeptService;
-	
+	@Autowired
+	private AuthService authService;
+
 	/**
 	 * 角色列表
 	 */
@@ -65,8 +69,11 @@ public class SysRoleController extends AbstractController {
 	@RequestMapping("/select")
 	@RequiresPermissions("sys:role:select")
 	public R select(){
-		List<SysRoleEntity> list = sysRoleService.list();
-		
+		List<OauthRoleVO> list = authService.selectAllRole();
+		/*Map<String,String> roleMap=new HashMap<>();
+		for(OauthRoleVO sysRoleEntity:list){
+			roleMap.put(sysRoleEntity.getId()+"",sysRoleEntity.getRoleName());
+		}*/
 		return R.ok().put("list", list);
 	}
 	

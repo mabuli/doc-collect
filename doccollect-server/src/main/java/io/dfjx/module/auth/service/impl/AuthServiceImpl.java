@@ -5,14 +5,13 @@ import io.dfjx.module.auth.service.AuthService;
 import io.dfjx.module.auth.utils.CookieUtils;
 import io.dfjx.module.auth.utils.RestTemplateUtils;
 import io.dfjx.module.auth.utils.UrlEnum;
+import io.dfjx.module.auth.utils.UserThreadLocal;
+import io.dfjx.module.auth.vo.OauthRoleVO;
 import io.dfjx.module.auth.vo.OauthUserDTO;
 import io.dfjx.module.auth.vo.OnlineUser;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,6 +25,7 @@ import sun.misc.BASE64Encoder;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.util.*;
 
@@ -182,6 +182,25 @@ public class AuthServiceImpl implements AuthService {
             return arrays[0].getUsername();
         }
         return "无";
+    }
+
+    @Override
+    public List<OauthRoleVO> selectAllRole(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        request.getCookies();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("authorization", "bearer " + CookieUtils.GetToken(request));
+        String reqUrl = authUrl + UrlEnum.SELECT_ALL_ROLE.getUrl();
+        OauthRoleVO[] arrays = restTemplate.exchange(reqUrl, HttpMethod.GET, new HttpEntity<>(new LinkedMultiValueMap<>(),headers), OauthRoleVO[].class).getBody();
+        return Arrays.asList(arrays);
+    }
+
+    @Override
+    public OauthUserDTO getLoginUserInfo() {
+        String reqUrl = authUrl + UrlEnum.LOGIN_USER_INFO.getUrl();
+        OnlineUser onlineUser = UserThreadLocal.get();
+        OauthUserDTO[] arrays = restTemplate.exchange(reqUrl, HttpMethod.POST, new HttpEntity<>(Arrays.asList(onlineUser.getUserId())), OauthUserDTO[].class).getBody();
+        return arrays[0];
     }
 
     @Override

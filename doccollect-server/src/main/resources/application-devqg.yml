@@ -44,11 +44,11 @@ auth:
     id: testclientid
     secret: 123456
   config:
-    need: true
+    need: false
   login:
-    url: http://123.207.126.81:30001/frontier/auth/toLogin?redirect_url=http%3a%2f%2f127.0.0.1%3a12100%2fdoc-collect%2Floginback
+    url: http://59.212.226.45:31000/frontier/auth/toLogin?redirect_url=http%3a%2f%2f127.0.0.1%3a12100%2fdoc-collect%2Floginback
   logout:
     url: http://59.212.226.49:9302/cas/logout
 
-auth-url: http://123.207.126.81:30002
-auth-frontier-url: http://123.207.126.81:30001
+auth-url: http://59.212.226.45:31987
+auth-frontier-url: http://59.212.226.45:31000
