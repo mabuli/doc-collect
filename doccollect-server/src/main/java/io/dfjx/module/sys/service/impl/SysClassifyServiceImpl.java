@@ -80,14 +80,8 @@ public class SysClassifyServiceImpl extends ServiceImpl<SysClassifyDao, SysClass
         List<OauthRoleVO> roleId=authService.getLoginUserInfo().getRoles();
         List<String> roleIds= new ArrayList<>();
         if(roleId!=null){
-            roleIds=roleId.stream().map(e->e.getId()+"").collect(Collectors.toList());
+            roleIds=Optional.ofNullable(roleId).orElse(Collections.emptyList()).stream().map(e->e.getId()+"").collect(Collectors.toList());
         }
-        roleIds.add("133296286643392510");
-        roleIds.add("6");
-        roleIds.add("140478860276928510");
-        roleIds.add("152827024350777340");
-        roleIds.add("162256775784042500");
-        roleIds.add("162256801822281730");
         //过滤当前角色拥有的接口信息
         for(SysClassifyEntity e:recordsList){
             if(StringUtils.isNotBlank(e.getRoleIds())&&roleIds.size()>0){

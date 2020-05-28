@@ -19,9 +19,14 @@
     .content-wrapper{
       margin-left:0;
     }
-    .heafer-bg{background-color: #1F2E4D; height: 50px;line-height:50px;}
+    .heafer-bg{
+      /*background-color: #1F2E4D;*/
+      background-color: #183078;
+      height: 50px;
+      line-height:50px;}
     .header-tile{
-      line-height: 50px; color: #ffffff; font-size: 18px; padding-left: 20px
+      line-height: 50px; color: #ffffff; font-size: 18px;
+      /*padding-left: 20px*/
     }
     .header-tile:hover{color: #fff}
     .el-menu.el-menu--horizontal{
@@ -38,6 +43,12 @@
     .el-submenu__title{
       font-size:16px;
     }
+    .el-menu--horizontal .el-menu-item{
+      float:left;height:50px;
+      font-size: 16px;
+      line-height:50px;margin:0;
+      border-bottom:2px solid transparent;
+      color:#909399}
     .el-menu--collapse .el-menu .el-submenu, .el-menu--popup{min-width:140px;margin-top:0}
     .el-menu--horizontal>.el-menu-item.is-active {
       border-bottom: none;
@@ -71,32 +82,64 @@
     }
     .skin-blue .content-header{background:#f5f4f9;}
     .content-header>.breadcrumb>li{float:left;}
-  </style>
+    .el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
+        border-bottom:#183078;
+    }
+</style>
 </head>
 <!-- ADD THE CLASS layout-boxed TO GET A BOXED LAYOUT -->
 <body class="hold-transition skin-blue sidebar-mini">
   <!-- Site wrapper -->
-  <div class="wrapper" id="rrapp" v-cloak style="overflow: hidden;">
+  <div  id="rrapp" v-cloak style="overflow: hidden;">
     <header class="main-header">
       <el-row class="heafer-bg">
         <el-col :span="6">
-          <a :href="'#'+main" class="header-tile">数据查询服务</a>
+          <a :href="'#'+main" class="header-tile">
+            <img src="${request.contextPath}/static/img/logo2.png"/>
+          </a>
           <!--<input type="text" :value="main" />-->
         </el-col>
-        <el-col :span="16">
+        <el-col :span="14">
           <menu-item :data="menuList"></menu-item>
-          <!--<el-menu :default-active="getActiveTab" class="el-menu-demo" mode="horizontal" background-color="#1F2E4D" text-color="#FFFFFF" active-text-color="#FFFFFF">
-            <el-menu-item v-if="item.type == 0" @click="toLink(item.url)" :index="index" v-for="(item,index) in menuList">{{item.name}}</el-menu-item>
-          </el-menu>-->
         </el-col>
-        <el-col :span="2">
-          <div style="color: #ffffff;">
-            <!--<span style="font-size: 16px">{{user.userRealName}}，欢迎您访问！</span>-->
-            <!--<el-button type="text" class="quit" @click="logout()"><i class="el-icon-switch-button"></i>注销</el-button>-->
-            <a href="${request.contextPath}/logout.html" class="logout">
-              <i class="fa fa-sign-out"></i>注销
-              &nbsp;
-            </a>
+        <el-col :span="4">
+          <!--<div>
+          <el-popover
+                  placement="top"
+                  width="160"
+                  >
+            <div class="menu-wrap">
+              <ul>
+                <li class="tenant-name" >tenantName</li>
+                <li class="divider"></li>
+                <li>
+                  <a href="javascript:" @click="handleLogout">退出</a>
+                </li>
+              </ul>
+            </div>
+            <div slot="reference">
+              <div class="ej-app-user el-popover__reference"
+                   aria-describedby="el-popover-7062" tabindex="0">
+                <img src="${request.contextPath}/static/img/avatar.svg" alt=""
+                     class="ej-app-user__avatar flex-none rounded-full bg-white mr-2">
+                <span class="flex-none">大兴区管理员</span></div>
+            </div>
+          </el-popover>
+          </div>-->
+          <div >
+            <el-menu  default-active="1"  background-color="#183078" text-color="#FFFFFF" style="float: right;" active-text-color="#FFFFFF" mode="horizontal">
+              <el-submenu index="2">
+                <template slot="title" >
+                  <img style="width:25px;height:25px;background-color: #ffffff;border-radius: 50%;" src="${request.contextPath}/static/img/avatar.svg"/>
+                  {{user.username}}</template>
+                <el-menu-item index="2-1" disabled>
+                  <a>{{user.username}}</a>
+                  </el-menu-item>
+                <el-menu-item index="2-2">
+                  <a href="http://10.217.17.116:8094/cas/logout" class="logout">退出</a>
+                </el-menu-item>
+              </el-submenu>
+            </el-menu>
           </div>
         </el-col>
       </el-row>

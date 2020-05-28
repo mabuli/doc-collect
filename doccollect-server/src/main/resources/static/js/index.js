@@ -34,16 +34,16 @@ var menuItem = Vue.extend({
         }
     },
     template : '<div>\n' +
-        '<el-menu mode="horizontal" :default-active="getActiveTab()" background-color="#1F2E4D" text-color="#FFFFFF" active-text-color="#FFFFFF"> \n' +
+        '<el-menu mode="horizontal" :default-active="getActiveTab()" background-color="#183078" text-color="#FFFFFF" active-text-color="#FFFFFF"> \n' +
         '      <template v-for="item in data" >' +
         '        <el-submenu :index="item.menuId.toString()" v-if="item.list && item.list.length>0" :key="item.menuId" > \n' +
-        '          <template slot="title"  style="padding-left:10px" >\n' +
-        '            <span slot="title">{{ item.name}}</span>\n' +
+        '          <template slot="title" >\n' +
+        '            {{ item.name}} \n' +
         '          </template>\n' +
         '          <menu-item :data="item.list"></menu-item>' +
         '        </el-submenu>\n' +
         '        <el-menu-item v-else :index="item.menuId.toString()" :key="item.menuId"  @click="toLink(item.url)">\n' +
-        '          <span>{{item.name}}</span>\n' +
+        '          {{ item.name}} \n' +
         '        </el-menu-item>\n' +
         '      </template>\n' +
         '</el-menu>' +
