@@ -42,7 +42,8 @@ public class SysFileServiceImpl extends FmBaseServiceImpl<FmComDao, SysBaseEntit
         // 构成新文件名
         String fileName = uuid + suffix;
         String fullDir = getFullFileDir(subDir);
-        String fileUrl = UPLOAD_DIR + subDir + fileName;
+        //String fileUrl = UPLOAD_DIR + subDir + fileName;
+        String fileUrl =  subDir + fileName;
         String fullPath = fullDir + fileName;
         File uploadFile = new File(fullPath);
         try {

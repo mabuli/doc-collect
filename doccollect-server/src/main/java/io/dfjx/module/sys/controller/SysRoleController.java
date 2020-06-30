@@ -70,10 +70,7 @@ public class SysRoleController extends AbstractController {
 	@RequiresPermissions("sys:role:select")
 	public R select(){
 		List<OauthRoleVO> list = authService.selectAllRole();
-		/*Map<String,String> roleMap=new HashMap<>();
-		for(OauthRoleVO sysRoleEntity:list){
-			roleMap.put(sysRoleEntity.getId()+"",sysRoleEntity.getRoleName());
-		}*/
+		//List<SysRoleEntity> list =sysRoleService.list();
 		return R.ok().put("list", list);
 	}
 	

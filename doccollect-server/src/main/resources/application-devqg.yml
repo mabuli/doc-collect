@@ -32,7 +32,7 @@ spring:
             multi-statement-allow: true
 system-config:
   #上传文件保存路径
-  file-dir: D:/Project/doc-collect/collectfile/project
+  file-dir: D:/test/
   project-url: http://127.0.0.1:12100/doc-collect/
 # 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹
 server:

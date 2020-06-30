@@ -91,6 +91,7 @@ var vm = new Vue({
             vm.showList = false;
             vm.title = "新增";
             vm.classify = {};
+            vm.classify.orderNum=1;
             vm.checkList= []
         },
 
@@ -118,6 +119,9 @@ var vm = new Vue({
 
 
         saveOrUpdate: function (event) {
+            if(!this.validate()){
+                return;
+            }
             var url = vm.classify.classifyId == null ? "sys/classify/save" : "sys/classify/update";
             vm.classify.roleIds=vm.checkList.join();
             $.ajax({
@@ -147,6 +151,20 @@ var vm = new Vue({
                 vm.roleList = r.list;
             });
         },
-
+        validate(){
+            if(this.classify.classifyName==null){
+                alert('请输入分类名称');
+                return false;
+            }
+            if(this.classify.serviceApi==null){
+                alert('请输入接口服务');
+                return false;
+            }
+            if(vm.checkList.length== 0){
+                alert('至少选择一个关联角色');
+                return false;
+            }
+            return true;
+        }
     }
 });

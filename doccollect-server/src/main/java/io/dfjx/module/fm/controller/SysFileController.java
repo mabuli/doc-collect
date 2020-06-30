@@ -6,10 +6,14 @@ import io.dfjx.common.utils.R;
 import io.dfjx.module.fm.service.ISysFileService;
 import io.dfjx.module.sys.controller.AbstractController;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -89,5 +93,33 @@ public class SysFileController extends AbstractController {
         return R.ok();
     }
 
-
+    @Value("${system-config.file-dir}")
+    private String saveDir;
+    @RequestMapping(value = "/downloadFile", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
+    @ResponseBody
+    public void downExcel(HttpServletResponse response,@RequestParam("tranFileName") String tranFileName,@RequestParam("realFileName")String realFileName) throws Exception {
+        String filepath = saveDir + tranFileName;
+        // 如果文件名不为空，则进行下载
+        if (tranFileName != null) {
+            File file = new File(filepath);
+            // 如果文件存在，则进行下载
+            if (file.exists()) {
+                // 下载文件能正常显示中文
+                response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(realFileName, "UTF-8"));
+                // 实现文件下载
+                byte[] buffer = new byte[1024];
+                FileInputStream fis = null;
+                BufferedInputStream bis = null;
+                fis = new FileInputStream(file);
+                bis = new BufferedInputStream(fis);
+                OutputStream os = response.getOutputStream();
+                int len;
+                while ((len = bis.read(buffer)) != -1) {
+                    os.write(buffer, 0, len);
+                }
+                bis.close();
+                fis.close();
+            }
+        }
+    }
 }

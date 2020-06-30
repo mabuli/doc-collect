@@ -6,6 +6,9 @@ var menuItem = Vue.extend({
     name : 'menu-item',
     props : ['data'],
     methods:{
+        handleSelect(key, keyPath) {
+            console.log(key, keyPath);
+        },
         getActiveTab:function(){
             for (var index = 0; index<this.data.length; index++) {
                 let nd = this.data[index];
@@ -34,9 +37,24 @@ var menuItem = Vue.extend({
         }
     },
     template : '<div>\n' +
-        '<el-menu mode="horizontal" :default-active="getActiveTab()" background-color="#183078" text-color="#FFFFFF" active-text-color="#FFFFFF"> \n' +
+        '<el-menu  mode="horizontal" @select="handleSelect" :default-active="getActiveTab()" background-color="#183078" text-color="#ffffffa6" active-text-color="#ffffff"> \n' +
         '      <template v-for="item in data" >' +
-        '        <el-submenu :index="item.menuId.toString()" v-if="item.list && item.list.length>0" :key="item.menuId" > \n' +
+        '        <el-submenu  :index="item.menuId.toString()" v-if="item.list && item.list.length>0" > \n' +
+        '          <template slot="title" >\n' +
+        '            {{ item.name}} \n' +
+        '          </template>\n' +
+        '          <el-menu-item :index="itemNext.menuId.toString()" v-for="itemNext in item.list" @click="toLink(itemNext.url)">{{itemNext.name}}</el-menu-item>'+
+        '        </el-submenu>\n' +
+        '        <el-menu-item v-else :index="item.menuId.toString()" @click="toLink(item.url)">\n' +
+        '          {{ item.name}} \n' +
+        '        </el-menu-item>\n' +
+        '      </template>\n' +
+        '</el-menu>' +
+        '    </div>',
+    /*template : '<div>\n' +
+        '<el-menu  mode="horizontal" @select="handleSelect" default-active="1" background-color="#183078" text-color="#ffffffa6" active-text-color="#ffffff"> \n' +
+        '      <template v-for="item in data" >' +
+        '        <el-submenu  :index="item.menuId.toString()" v-if="item.list && item.list.length>0" :key="item.menuId" > \n' +
         '          <template slot="title" >\n' +
         '            {{ item.name}} \n' +
         '          </template>\n' +
@@ -47,7 +65,7 @@ var menuItem = Vue.extend({
         '        </el-menu-item>\n' +
         '      </template>\n' +
         '</el-menu>' +
-        '    </div>'
+        '    </div>'*/
 });
 
 // iframe自适应
@@ -81,6 +99,7 @@ var vm = new Vue({
         headerMenus2: [],
     },
     computed: {
+
         getActiveTab(){
             for (var index = 0; index<this.menuList.length; index++) {
                 console.log('===',this.menuList[index].url)
@@ -92,6 +111,12 @@ var vm = new Vue({
         },
     },
     methods : {
+        handleSelect(key, keyPath) {
+            console.log(key, keyPath);
+        },
+        bluree:function(){
+          console.log("xxx");
+        },
         getMenuList : function(event) {
             console.info('getMenuList')
             $.getJSON("sys/menu/nav?_" + $.now(), function(r) {

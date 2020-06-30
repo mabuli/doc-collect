@@ -4,14 +4,9 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>数据查询服务</title>
-<!-- Tell the browser to be responsive to screen width -->
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 <link href="${request.contextPath}/favicon.ico" rel="shortcut icon">
-<!--<link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap.min.css">-->
 <link rel="stylesheet" href="${request.contextPath}/static/css/font-awesome.min.css">
-<!--<link rel="stylesheet" href="${request.contextPath}/static/css/AdminLTE.min.css">-->
-<!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
 <link rel="stylesheet" href="${request.contextPath}/static/css/all-skins.min.css">
 <link rel="stylesheet" href="${request.contextPath}/static/css/main.css">
 <link rel="stylesheet" href="${request.contextPath}/static/lib/elementui/index.css">
@@ -20,48 +15,72 @@
       margin-left:0;
     }
     .heafer-bg{
-      /*background-color: #1F2E4D;*/
-      background-color: #183078;
+      background-color: #1a3275;
       height: 50px;
-      line-height:50px;}
-    .header-tile{
+      padding: 0 24px;
+      line-height:50px;
+    }
+    /*.header-tile{
       line-height: 50px; color: #ffffff; font-size: 18px;
-      /*padding-left: 20px*/
     }
     .header-tile:hover{color: #fff}
-    .el-menu.el-menu--horizontal{
+    */
+    .el-menu .el-menu--horizontal{
       border-bottom:none;
+      /*background: #fff !important;*/
     }
     .el-menu--horizontal>.el-submenu .el-submenu__title,.el-menu--horizontal .el-menu .el-menu-item{
       height: 50px;
       line-height: 50px;
       text-align: center;
       width: 140px;
+      font-size: 16px;
       border-bottom:none;
+      /**鼠标聚焦菜单的颜色**/
+      background-color: #1a3275 !important;
     }
-    .el-menu--horizontal .el-menu .el-menu-item{text-align:left;}
-    .el-submenu__title{
+    /*选中菜单的颜色*/
+    .el-menu--horizontal>.el-submenu.is-active /deep/ .el-submenu__title {
+      background: #485c91 !important;
+    }
+    .el-menu--horizontal .el-menu .el-menu-item{
+        text-align:left;
+        padding-left: 20px;
+        width: 175px;
+        font-size: 14px;
+      /**弹出下拉菜单项的背景颜色
+        background-color: #3a7529 !important;*/
+
+    }
+    .el-menu--horizontal :hover { color: #ffffff !important;}
+    /*.el-submenu__title{
       font-size:16px;
-    }
+    }*/
     .el-menu--horizontal .el-menu-item{
-      float:left;height:50px;
+      float:left;
+      height:50px;
       font-size: 16px;
       line-height:50px;margin:0;
       border-bottom:2px solid transparent;
-      color:#909399}
-    .el-menu--collapse .el-menu .el-submenu, .el-menu--popup{min-width:140px;margin-top:0}
-    .el-menu--horizontal>.el-menu-item.is-active {
-      border-bottom: none;
-      background:#477DE9!important;
     }
-    .quit{
+    /**滑出下拉菜单的设置**/
+    .el-menu--collapse .el-menu .el-submenu, .el-menu--popup{
+        min-width:140px;
+        margin-top:0;
+        /*间隙的颜色*/
+        background: rgba(164, 255, 201, 0) !important;
+    }
+    .el-menu--horizontal .el-menu-item .is-active {
+      border-bottom: none;
+    }
+    /*.quit{
       width: 80px;
       height: 32px;
       letter-spacing: 1px;
       border-radius: 4px;
       font-size: 14px;
       color:#fff;
-    }
+    }*/
     .logout{color:#fff;}
     .footer{
       width: 100%;
@@ -77,13 +96,81 @@
       font-size: 14px;
       line-height: 28px;
       letter-spacing: 1px;
-      color: #2b9afe;
+      /*color: #2b9afe;*/
       text-align: center;
     }
-    .skin-blue .content-header{background:#f5f4f9;}
-    .content-header>.breadcrumb>li{float:left;}
-    .el-menu--horizontal>.el-submenu.is-active .el-submenu__title{
-        border-bottom:#183078;
+    /*.skin-blue .content-header{background: #f95c1b;}*/
+    .content-header>.breadcrumb>li{
+        float:left;
+    }
+    /*右边个人菜单激活后最底下的颜色设置*/
+    .el-menu--horizontal>.el-submenu.is-active .el-submenu__title {
+      border-bottom: none;
+    }
+    /**logo -start*/
+    .ej-app-logo {
+      margin-right: 100px;
+    }
+    .flex-none {
+      -webkit-box-flex: 0;
+      flex: none;
+    }
+    .items-center {
+      -webkit-box-align: center;
+      align-items: center;
+    }
+    .flex {
+      display: -webkit-box;
+      display: flex;
+    }
+    a {
+      color: inherit;
+      text-decoration: inherit;
+    }
+    a {
+      background-color: transparent;
+    }
+
+    .ej-app-logo img {
+      height: 28px;
+    }
+    .mr-3 {
+      margin-right: .75rem;
+    }
+    img, video {
+      max-width: 100%;
+      height: auto;
+    }
+    .ej-app-logo span {
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .text-lg {
+      font-size: 1.1428571428571428rem;
+      color: #ffffff;
+    }
+    /**logo -end**/
+    /**分割线**/
+    .setting .divider {
+      border-left: 1px solid hsla(0,0%,100%,.08)
+    }
+    /*箭头的颜色、设置和背景成一样进行隐藏*/
+    .setting .el-submenu__title i {
+      display: none;
+    }
+    /**设置右边个人菜单的大小**/
+    .setting .el-submenu__title {
+      font-size: 14px !important;
+      width: 100px !important;
+      padding-left: 26px;
+      background-color: #1a3275 !important;
+    }
+    .el-menu-item:hover {
+      color: #fff
+    }
+    /**选中菜单项的背景颜色**/
+    .el-menu--horizontal .el-menu .el-menu-item.is-active, .el-menu--horizontal .el-menu .el-submenu.is-active>.el-submenu__title {
+      background: #477de9!important;
     }
 </style>
 </head>
@@ -94,48 +181,32 @@
     <header class="main-header">
       <el-row class="heafer-bg">
         <el-col :span="6">
-          <a :href="'#'+main" class="header-tile">
-            <img src="${request.contextPath}/static/img/logo2.png"/>
+          <a href="javascript:" class="ej-app-logo flex-none flex items-center">
+            <img src="${request.contextPath}/static/img/daxing-logo.5d412d14.svg"  class="mr-3">
+            <span class="flex-none text-lg">数据查询服务</span>
           </a>
-          <!--<input type="text" :value="main" />-->
         </el-col>
         <el-col :span="14">
-          <menu-item :data="menuList"></menu-item>
+          <menu-item
+                  :data="menuList"></menu-item>
         </el-col>
         <el-col :span="4">
-          <!--<div>
-          <el-popover
-                  placement="top"
-                  width="160"
-                  >
-            <div class="menu-wrap">
-              <ul>
-                <li class="tenant-name" >tenantName</li>
-                <li class="divider"></li>
-                <li>
-                  <a href="javascript:" @click="handleLogout">退出</a>
-                </li>
-              </ul>
-            </div>
-            <div slot="reference">
-              <div class="ej-app-user el-popover__reference"
-                   aria-describedby="el-popover-7062" tabindex="0">
-                <img src="${request.contextPath}/static/img/avatar.svg" alt=""
-                     class="ej-app-user__avatar flex-none rounded-full bg-white mr-2">
-                <span class="flex-none">大兴区管理员</span></div>
-            </div>
-          </el-popover>
-          </div>-->
-          <div >
-            <el-menu  default-active="1"  background-color="#183078" text-color="#FFFFFF" style="float: right;" active-text-color="#FFFFFF" mode="horizontal">
-              <el-submenu index="2">
-                <template slot="title" >
-                  <img style="width:25px;height:25px;background-color: #ffffff;border-radius: 50%;" src="${request.contextPath}/static/img/avatar.svg"/>
+          <div class="setting">
+            <el-menu  default-active="2-1"
+                      style="float: right;"
+                      background-color="#1a3275"
+                      text-color="#ffffff"
+                      menu-trigger="click"
+                      width="100"
+                      mode="horizontal">
+              <el-submenu index="2" class="divider">
+                <template slot="title" style="width: 100px !important;">
+                  <img style="width:26px;height:26px;background-color: #ffffff;border-radius: 50%;" src="${request.contextPath}/static/img/avatar.svg"/>
                   {{user.username}}</template>
-                <el-menu-item index="2-1" disabled>
+               <!--<el-menu-item index="2-1" >
                   <a>{{user.username}}</a>
-                  </el-menu-item>
-                <el-menu-item index="2-2">
+                  </el-menu-item>-->
+                <el-menu-item index="2" >
                   <a href="http://10.217.17.116:8094/cas/logout" class="logout">退出</a>
                 </el-menu-item>
               </el-submenu>
@@ -146,16 +217,6 @@
     </header>
 
     <div class="content-wrapper">
-      <!-- Content Header (Page header) -->
-      <!--<section class="content-header">
-      <ol class="breadcrumb" id="nav_title" style="position: static; float: none;">
-        <li class="active">
-          <i class="fa fa-home" style="font-size: 20px; position: relative; top: 2px; left: -3px;"></i>
-          &nbsp; 首页
-        </li>
-        <li class="active">{{navTitle}}</li>
-      </ol>
-    </section>-->
       <!-- Main content -->
       <section class="content" >
         <iframe scrolling="yes" frameborder="0" style="width: 100%; height: 100%; overflow: visible;" :src="main"></iframe>
@@ -193,13 +254,10 @@
       </div>
     </div>
   </div>
-  <!-- ./wrapper -->
   <script src="${request.contextPath}/static/lib/jquery.min.js"></script>
   <script src="${request.contextPath}/static/lib/vue.js"></script>
   <script src="${request.contextPath}/static/lib/elementui/elementui.min.js"></script>
   <script src="${request.contextPath}/static/lib/router.js"></script>
-  <!--<script src="${request.contextPath}/static/lib/bootstrap.min.js"></script>-->
-  <!--<script src="${request.contextPath}/static/lib/app.js"></script>-->
   <script src="${request.contextPath}/static/lib/layer/layer.js"></script>
   <script src="${request.contextPath}/static/js/index.js"></script>
 </body>

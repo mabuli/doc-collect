@@ -175,8 +175,8 @@ var vm = new Vue({
       },
       downloadFile(row){
         var link = document.createElement('a');
-        link.setAttribute("download", row.file_name);
-        link.href = baseURL + row.file_url
+        //link.setAttribute("download", row.file_name);
+        link.href = baseURL + "/sys/file/downloadFile?tranFileName="+row.file_url+"&realFileName="+row.file_name
         link.click();
       },
       delFile(row){
