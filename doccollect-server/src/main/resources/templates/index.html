@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <title>数据查询服务</title>
 <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<link href="${request.contextPath}/favicon.ico" rel="shortcut icon">
+<link href="${request.contextPath}/static/favicon2.ico" rel="shortcut icon">
 <link rel="stylesheet" href="${request.contextPath}/static/css/font-awesome.min.css">
 <link rel="stylesheet" href="${request.contextPath}/static/css/all-skins.min.css">
 <link rel="stylesheet" href="${request.contextPath}/static/css/main.css">
@@ -60,8 +60,15 @@
       float:left;
       height:50px;
       font-size: 16px;
-      line-height:50px;margin:0;
+      line-height:50px;
       border-bottom:2px solid transparent;
+    }
+    /**
+      修改下拉弹出菜单项的高度
+    */
+    .el-menu--horizontal .el-menu .el-menu-item {
+      line-height:36px !important;
+      height:36px !important;
     }
     /**滑出下拉菜单的设置**/
     .el-menu--collapse .el-menu .el-submenu, .el-menu--popup{
@@ -202,12 +209,12 @@
               <el-submenu index="2" class="divider">
                 <template slot="title" style="width: 100px !important;">
                   <img style="width:26px;height:26px;background-color: #ffffff;border-radius: 50%;" src="${request.contextPath}/static/img/avatar.svg"/>
-                  {{user.username}}</template>
+                  {{user.userRealName}}</template>
                <!--<el-menu-item index="2-1" >
                   <a>{{user.username}}</a>
                   </el-menu-item>-->
                 <el-menu-item index="2" >
-                  <a href="http://10.217.17.116:8094/cas/logout" class="logout">退出</a>
+                  <a href="http://172.25.117.52:8094/cas/logout" class="logout">退出</a>
                 </el-menu-item>
               </el-submenu>
             </el-menu>

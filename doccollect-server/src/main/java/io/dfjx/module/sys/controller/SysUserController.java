@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import io.dfjx.module.auth.service.AuthService;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,8 @@ public class SysUserController extends AbstractController {
 	@Autowired
 	private SysUserRoleService sysUserRoleService;
 
+	@Autowired
+	private AuthService authService;
 	/**
 	 * 所有用户列表
 	 */
@@ -75,7 +78,9 @@ public class SysUserController extends AbstractController {
 	 */
 	@RequestMapping("/info")
 	public R info(){
-		return R.ok().put("user", getUser());
+		SysUserEntity user=getUser();
+		user.setUserRealName(authService.getLoginUserInfo().getName());
+		return R.ok().put("user", user);
 	}
 
 	/**

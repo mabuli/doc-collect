@@ -3,9 +3,9 @@ spring:
     type: com.alibaba.druid.pool.DruidDataSource
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/doc_collect?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-      username: root
-      password: sun123456
+      url: jdbc:mysql://192.21.9.220:3316/doc_collect?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: cntoor
+      password: Ujmiui#Etfl6!LD0
       initial-size: 10
       max-active: 100
       min-idle: 10
@@ -32,12 +32,16 @@ spring:
             multi-statement-allow: true
 system-config:
   #上传文件保存路径
-  file-dir: D:/test/
-  project-url: http://137.0.0.9:12100/doc-collect/
+  file-dir: /apps/dataQuery/uploadfile/
+  project-url: http://192.21.9.224:12100/doc-collect/
 # 存放Tomcat的日志、Dump等文件的临时文件夹，默认为系统的tmp文件夹
 server:
   tomcat:
-    basedir: D:/Project/doc-collect/collectfile/tmp
+    basedir: /apps/dataQuery/doc-collect/tmp
+
+auth-url: http://172.25.13.75:31234
+auth-frontier-url: http://172.25.117.56:31000
+
 #统一认证
 auth:
   client:
@@ -46,9 +50,6 @@ auth:
   config:
     need: true
   login:
-    url: http://59.212.226.45:31000/frontier/auth/toLogin?redirect_url=http%3a%2f%2f127.0.0.1%3a12100%2fdoc-collect%2Floginback
+    url: http://172.25.117.56:31000/frontier/auth/toLogin?redirect_url=http%3a%2f%2f10.217.17.116%3a12100%2fdoc-collect%2Floginback
   logout:
-    url: http://59.212.226.49:9302/cas/logout
-
-auth-url: http://59.212.226.45:31987
-auth-frontier-url: http://59.212.226.45:31000
+    url: http://10.217.17.116:8094/cas/logout

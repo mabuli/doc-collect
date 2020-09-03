@@ -75,7 +75,7 @@ public class SysClassifyServiceImpl extends ServiceImpl<SysClassifyDao, SysClass
             }
         }
         List<SysClassifyEntity> filterAfterList=new ArrayList<>();
-
+        System.err.print(authService.getLoginUserInfo());
         //查询当前用户的角色
         List<OauthRoleVO> roleId=authService.getLoginUserInfo().getRoles();
         List<String> roleIds= new ArrayList<>();

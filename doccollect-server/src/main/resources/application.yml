@@ -9,8 +9,10 @@ server:
     context-path: /doc-collect
 remote:
   request:
-   #url: https://172.21.10.33:8243
-   url: https://10.217.17.110:8243
+    url: https://172.25.117.62:8243
+   #url: https://10.217.17.110:8243
+xframe:
+  url: http://10.217.17.116:37799/webroot/
 template:
     cache: false
 
