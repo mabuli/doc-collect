@@ -28,7 +28,15 @@
 				<input type="text" class="form-control" v-model="deptName" @keyup.enter="query" placeholder="部门名称" style="height: 34px">
 			</div>
 			<a class="btn btn-default" @click="query(true)"><i class="fa fa-search"></i>&nbsp;查询</a>
-
+			<#if shiro.hasPermission("sys:dept:save")>
+				<a class="btn btn-primary" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</a>
+			</#if>
+			<#if shiro.hasPermission("sys:dept:update")>
+				<a class="btn btn-primary" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</a>
+			</#if>
+			<#if shiro.hasPermission("sys:dept:delete")>
+				<a class="btn btn-primary" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</a>
+			</#if>
 		</div>
 		<div style="padding: 0px 10px">
 			<el-breadcrumb separator-class="el-icon-arrow-right">
