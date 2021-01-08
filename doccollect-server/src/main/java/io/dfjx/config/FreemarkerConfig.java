@@ -28,7 +28,7 @@ public class FreemarkerConfig {
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
         configurer.setTemplateLoaderPath("classpath:/templates");
         Map<String, Object> variables = new HashMap<>(1);
-        variables.put("shiro", shiroTag);
+        variables.put("shiro", new ShiroTag());
         configurer.setFreemarkerVariables(variables);
 
         Properties settings = new Properties();

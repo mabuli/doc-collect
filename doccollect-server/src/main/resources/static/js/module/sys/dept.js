@@ -13,12 +13,22 @@ var vm = new Vue({
         },
         parentId:0,
         lableList:[],
-        multipleSelection:[]
+        multipleSelection:[],
+        codes:[],
     },
     mounted(){
         this.query(true);
+        this.getUserPermissionCode();
     },
     methods: {
+        ifShow(code){
+            return this.codes.indexOf(code)!==-1
+        },
+        getUserPermissionCode: function () {
+            $.get(baseURL + "sys/user/getUserPermissionCode", function(r){
+                vm.codes = r.codes;
+            });
+        },
         initPage(){
             this.dataPage = {
                 list: [],

@@ -17,20 +17,14 @@
 package io.dfjx.module.sys.controller;
 
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import io.dfjx.module.auth.service.AuthService;
+import io.dfjx.module.auth.utils.UserThreadLocal;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import io.dfjx.common.annotation.SysLog;
 import io.dfjx.common.utils.PageUtils;
@@ -166,5 +160,19 @@ public class SysUserController extends AbstractController {
 		sysUserService.removeByIds(Arrays.asList(userIds));
 
 		return R.ok();
+	}
+
+	@GetMapping("/getUserPermissionCode")
+	public R getUserPermissionCode(){
+		logger.info("用户权限码【"+UserThreadLocal.get().getPermissions()+"】");
+		/*Set<String> set=new HashSet();
+		set.add("fm:project:upload");
+		set.add("fm:project:delete");
+		set.add("sys:dept:save");
+		set.add("sys:dept:update");
+		set.add("sys:role:save");
+		set.add("sys:role:update");
+		return R.ok().put("codes", set);*/
+		return R.ok().put("codes", UserThreadLocal.get().getPermissions());
 	}
 }

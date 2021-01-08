@@ -6,7 +6,6 @@ import io.dfjx.module.auth.service.AuthService;
 import io.dfjx.module.auth.utils.CookieUtils;
 import io.dfjx.module.auth.utils.UserThreadLocal;
 import io.dfjx.module.auth.vo.OnlineUser;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;

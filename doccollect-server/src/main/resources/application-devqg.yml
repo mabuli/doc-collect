@@ -44,7 +44,7 @@ auth:
     id: testclientid
     secret: 123456
   config:
-    need: true
+    need: false
   login:
     url: http://59.212.226.45:31000/frontier/auth/toLogin?redirect_url=http%3a%2f%2f127.0.0.1%3a12100%2fdoc-collect%2Floginback
   logout:

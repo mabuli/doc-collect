@@ -42,14 +42,25 @@ var vm = new Vue({
             fileList:[],
             config:[],
             multipleSelection:[],
+            codes:[]
         }
     },
     mounted(){
         this.query();
         this.queryForm();
         this.initCmp();
+        this.getUserPermissionCode();
+
     },
     methods: {
+        ifShow(code){
+            return this.codes.indexOf(code)!==-1
+        },
+        getUserPermissionCode: function () {
+            $.get(baseURL + "sys/user/getUserPermissionCode", function(r){
+                vm.codes = r.codes;
+            });
+        },
       query: function () {
           var url = "fm/project/list";
           $.ajax({

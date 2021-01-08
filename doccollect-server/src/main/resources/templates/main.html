@@ -1,60 +1,155 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<title>欢迎页</title>
-<meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-<link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap.min.css">
-<link rel="stylesheet" href="${request.contextPath}/static/css/font-awesome.min.css">
-<link rel="stylesheet" href="${request.contextPath}/static/css/AdminLTE.min.css">
-<link rel="stylesheet" href="${request.contextPath}/static/lib/daterangepicker/daterangepicker.css">
-<!-- <link rel="stylesheet" href="${request.contextPath}/static/css/all-skins.min.css">
-<link rel="stylesheet" href="${request.contextPath}/static/css/main.css"> -->
-<style type="text/css">
-.content {
-	min-height: 250px;
-	/* padding: 15px; */
-	margin-right: auto;
-	margin-left: auto;
-	/* padding-left: 15px; */
-	/* padding-right: 15px; */
-}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>欢迎页</title>
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="${request.contextPath}/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/static/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/static/lib/daterangepicker/daterangepicker.css">
+    <!-- <link rel="stylesheet" href="${request.contextPath}/static/css/all-skins.min.css">
+    <link rel="stylesheet" href="${request.contextPath}/static/css/main.css"> -->
+    <style type="text/css">
+        .content {
+            min-height: 250px;
+            /* padding: 15px; */
+            margin-right: auto;
+            margin-left: auto;
+            /* padding-left: 15px; */
+            /* padding-right: 15px; */
+        }
 
-.panel {
-	/* margin-bottom: 20px; */
-	background-color: #fff;
-	border: 0px solid transparent;
-	border-radius: 0px;
-	-webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
-	/* box-shadow: 0 1px 1px rgba(0,0,0,.05); */
-}
+        .panel {
+            /* margin-bottom: 20px; */
+            background-color: #fff;
+            border: 0px solid transparent;
+            border-radius: 0px;
+            -webkit-box-shadow: 0 0px 0px rgba(0, 0, 0, 0);
+            /* box-shadow: 0 1px 1px rgba(0,0,0,.05); */
+        }
 
-.box {
-	position: relative;
-	border-radius: 3px;
-	background: #ffffff;
-	border-top: 0px solid #d2d6de;
-	margin-bottom: 0px;
-	width: 100%;
-	box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
-}
-</style>
+        .box {
+            position: relative;
+            border-radius: 3px;
+            background: #ffffff;
+            border-top: 0px solid #d2d6de;
+            margin-bottom: 0px;
+            width: 100%;
+            box-shadow: 0 0px 0px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-root {
+            display: flex;
+            flex: none;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .page-content {
+            width: 100%;
+        }
+
+        .col-width {
+            width: 50%;
+        }
+
+        .page-footer {
+            float: left;
+            width: 100%;
+            margin-top: -80px;
+        }
+
+        .col-img {
+            width: 63%;
+            float: left;
+            display: flex;
+            justify-content: flex-start;
+            margin: 76px 0 0 169px;
+        }
+
+        .clear-float {
+            width: 45%;
+            margin: 0 0 0 169px;
+            clear: both;
+        }
+
+        h4 {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        p {
+            text-align: left;
+            line-height: 30px;
+        }
+    </style>
 </head>
 <!-- <body style="overflow-y: hidden;"> -->
 <body>
-  <div class="panel panel-default" style="border: none">
+<div class="panel panel-default" style="border: none">
     <!-- Main content -->
-    <section class="content">
-      <!-- 任务信息 -->
-      <div class="row">
-        <div class="col-md-12 col-sm-12 col-xs-12">
-          欢迎使用数据查询服务
+    <div class="page-content">
+        <el-row>
+            <img src="static/img/banner.png" style="width: 100%;height: 615px">
+        </el-row>
+        <el-row>
+            <el-col class="col-md-6">
+                <div class="col-img">
+                    <img src="static/img/1.png" style="width: 261px;height: 169px">
+                </div>
+                <div class="clear-float">
+                    <h4>开放数据共享</h4>
+                    <p>汇聚各方数据资源，为全区提供统一数据查询服务窗口</p>
+                </div>
+            </el-col>
+            <el-col class="col-md-6">
+                <div class="col-img">
+                    <img src="static/img/2.png" style="width: 273px;height: 176px">
+                </div>
+                <div class="clear-float">
+                    <h4>简化业务流程</h4>
+                    <p>让“数据多跑路，群众少跑路”，以数据查询支撑业务办理</p>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col class="col-md-6">
+                <div class="col-img">
+                    <img src="static/img/3.png" style="width: 229px;height: 193px">
+                </div>
+                <div class="clear-float">
+                    <h4>提供办事效率</h4>
+                    <p>数据查询结果及时在线反馈，改善人工处理数据现状</p>
+                </div>
+            </el-col>
+            <el-col class="col-md-6">
+                <div class="col-img">
+                    <img src="static/img/4.png" style="width: 281px;height: 187px">
+                </div>
+                <div class="clear-float">
+                    <h4>支撑管理决策</h4>
+                    <p>以“大数据为基础+应用图标可视化展现”，为管理决策提供数据支撑</p>
+                </div>
+            </el-col>
+        </el-row>
+        <div class="page-footer">
+            <img src="static/img/5.png" style="width: 100%;height: 212px">
         </div>
-      </div>
+    </div>
+    <!--<section class="content">
+        &lt;!&ndash; 任务信息 &ndash;&gt;
+        <div class="row">
+            &lt;!&ndash;<div class="col-md-12 col-sm-12 col-xs-12">
+                欢迎使用数据查询服务
+            </div>&ndash;&gt;
 
-    </section>
-  </div>
+        </div>
+
+    </section>-->
+</div>
 
 </body>
 </html>

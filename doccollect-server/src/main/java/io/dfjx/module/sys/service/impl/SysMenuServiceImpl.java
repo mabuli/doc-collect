@@ -107,7 +107,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuDao, SysMenuEntity> i
 
 	@Override
 	public List<SysMenuEntity> getUserMenuList(Long userId) {
-		List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
+		 List<Long> menuIdList = sysUserService.queryAllMenuId(userId);
 		return getAllMenuList(menuIdList);
 	}
 
