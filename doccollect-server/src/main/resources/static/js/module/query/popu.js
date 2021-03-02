@@ -71,7 +71,6 @@ var vm = new Vue({
         + (this.query.hltySituCd == '' ? '' : '&hltySituCd=' + this.query.hltySituCd)
         + '&start=' + this.query.start
         + '&count=' + this.query.count;
-      console.info('-- handleQuery --', url)
         vm.list = []
         $.ajax({
             type: "GET",
@@ -79,8 +78,8 @@ var vm = new Vue({
             data: {url: url},
             dataType: 'json',
             success: function (resp) {
-                console.info(resp.data)
                 vm.loading = false;
+                vm.showNoData = false
                 if (resp.code == 500) {
                     alert('服务器错误');
                 } else if (resp.data.Pops) {
@@ -97,9 +96,8 @@ var vm = new Vue({
                         }
                         vm.totalCount = vm.list[0].ct.cnt || 0;
                     }
-                    vm.showNoData = false
                 } else {
-                    vm.showNoData = true
+                    vm.list = []
                 }
             }
         });

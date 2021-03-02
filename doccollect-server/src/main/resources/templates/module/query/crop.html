@@ -110,14 +110,15 @@
   <div class="bottom">
 
     <div class="b-header" v-if="showNoData">
-      无数据
+      请输入查询条件
     </div>
-
+    <div class="b-header" v-if="!showNoData && list.length ==0">
+      查询无数据
+    </div>
     <div v-for="item in list" v-if="!showNoData">
       <div class="b-header">
         {{item.org_nm}}
       </div>
-
       <table>
         <tr bgcolor="#f5fbff">
           <td><label>注册号：</label></td>

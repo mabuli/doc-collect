@@ -34,17 +34,18 @@ var vm = new Vue({
           resp = JSON.parse(resp);
           console.info(resp.data)
           //vm.list = resp.data.Entries ? resp.data.Entries: []
+          vm.showNoData = false
           if (resp.code == 500) {
             alert('服务器错误');
           } else if (resp.data.Entries) {
-            vm.showNoData = false
             if (resp.data.Entries.Entry.length == undefined) {
               vm.list.push(resp.data.Entries.Entry)
             } else {
               vm.list = resp.data.Entries.Entry
             }
           } else {
-            vm.showNoData = true
+              vm.list = []
+            //vm.showNoData = true
           }
         }
       });

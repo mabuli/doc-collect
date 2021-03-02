@@ -91,7 +91,10 @@
 
   <div class="bottom">
     <div class="b-header" v-if="showNoData">
-      无数据
+      请输入查询条件
+    </div>
+    <div class="b-header" v-if="!showNoData && list.length ==0">
+      查询无数据
     </div>
     <table v-for="item in list" v-if="!showNoData" v-loading="loading">
       <tr bgcolor="#f5fbff">
