@@ -12,6 +12,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import io.dfjx.datasource.properties.DataSourceProperties;
 import io.dfjx.datasource.properties.DynamicDataSourceProperties;
 import io.dfjx.datasource.properties.HiveSourceProperties;
+import io.dfjx.datasource.properties.PostGreSourceProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -59,9 +60,12 @@ public class DynamicDataSourceConfig {
         });
 
         targetDataSources.put("hiveSource", DynamicHiveDataSourceFactory.buildDruidDataSource(hiveSourceProperties));
-
+        targetDataSources.put("postGreSource", DynamicPostGreDataSourceFactory.buildDruidDataSource(postGreSourceProperties));
         return targetDataSources;
     }
     @Autowired
     private HiveSourceProperties hiveSourceProperties;
+
+    @Autowired
+    private PostGreSourceProperties postGreSourceProperties;
 }

@@ -1,0 +1,914 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name='apple-mobile-web-app-capable' content='yes'>
+    <meta name='apple-mobile-web-app-status-bar-style' content='black'>
+    <meta name='format-detection' content='telephone=no'>
+    <link rel="stylesheet" href="${request.contextPath}/static/css/data/data-converge.css">
+    <title>大兴区数据能力支撑平台</title>
+</head>
+<body>
+<div id="converge" class="converge">
+    <div class="count">
+        <ul class="publicFontSytleDefault">
+            <li>
+                <img src="${request.contextPath}/static/img/data/organization.svg" alt="" style="width: 12%;height: 20%;">
+                <div class="item">
+                    <div class="countItem"><span>接入委办局</span><img src="${request.contextPath}/static/img/data/desc.png" title="指接入了多少家委办局的数据（包括市级和区级单位）" style="width: 12%;height: 20%;margin-left: 10%;"></div>
+                    <p style="font-size: 1vw;"><span class="num" style="color: #fff;font-size: 1.2vw;font-weight: 700">
+                        <!--<template>-->
+                            <!--{{countUnit.tolWbjAmount || 0}}-->
+                        <!--</template>-->
+                        36
+                    </span>个</p>
+                </div>
+            </li>
+            <li>
+                <img src="${request.contextPath}/static/img/data/sys.svg" alt="" style="width: 15%;height: 20%;">
+                <div class="item">
+                    <div class="countItem">接入系统数<img src="${request.contextPath}/static/img/data/desc.png" title="指接入了多少个系统的数据（包括市级和区级的系统，市级都算一个系统“市前置系统”）" style="width: 12%;height: 20%;margin-left: 10%;"></div>
+                    <p style="font-size: 1vw;"><span v-cloak class="num" style="color: #fff;font-size: 1.2vw;font-weight: 700">
+                        <!--<template>-->
+                            <!--{{countUnit.sysId || 0}}-->
+                        <!--</template>-->
+                        30
+                    </span>个</p>
+                </div>
+            </li>
+            <li>
+                <img src="${request.contextPath}/static/img/data/table.svg" alt="" style="width: 15%;height: 20%;">
+                <div class="item">
+                    <div class="countItem">接入表数<img src="${request.contextPath}/static/img/data/desc.png" title="指接入了多少张数据库的表（包括市系统和区内系统的数据库表）" style="width: 12%;height: 20%;margin-left: 10%;"></div>
+                    <p style="font-size: 1vw;"><span v-cloak class="num" style="color: #fff;font-size: 1.2vw;font-weight: 700">
+                        <!--<template>-->
+                            <!--{{countUnit.tolTabAmount || 0}}-->
+                        <!--</template>-->
+                        440
+                    </span>个</p>
+                </div>
+            </li>
+            <li>
+                <img src="${request.contextPath}/static/img/data/unit.svg" alt="" style="width: 15%;height: 20%;">
+                <div class="item">
+                    <div class="countItem">接入字段数<img src="${request.contextPath}/static/img/data/desc.png" title="指接入的所有表的数据项个数" style="width: 12%;height: 20%;margin-left: 10%;"></div>
+                    <p style="font-size: 1vw;"><span v-cloak class="num" style="color: #fff;font-size: 1.2vw;font-weight: 700">
+                        <!--<template>-->
+                            <!--{{countUnit.toleFiledCount || 0}}-->
+                        <!--</template>-->
+                        8755
+                    </span>个</p>
+                </div>
+            </li>
+            <li>
+                <img src="${request.contextPath}/static/img/data/data.svg" alt="" style="width: 15%;height: 20%;">
+                <div class="item">
+                    <div class="countItem">接入数据记录<img src="${request.contextPath}/static/img/data/desc.png" title="指累计接入了多少条数据（不计重复接入数据，例如：市卫健每日接入100万人口数据，则2天累计不会计为200万，而是100万）" style="width: 1vw;height: 20%;margin-left: 10%;"></div>
+                    <p style="font-size: 1vw;"><span v-cloak class="num" style="color: #fff;font-size: 1.2vw;font-weight: 700">
+                        <!--<template>-->
+                            <!--{{countUnit.actRecodAmount?.toFixed(2) || 0}}-->
+                        <!--</template>-->
+                        53818.12
+                    </span>万条</p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="conContiner">
+        <div class="left">
+            <div class="top">
+                <div class="title">系统接入领域分布<img src="${request.contextPath}/static/img/data/desc.png" title="本环形柱状图展示按接入的委办局所属归口占比分析" style="width: 6%;height: 70%;margin-left: 5%;cursor: pointer;"></div>
+                <div style="width: 100%;height: 90%;" id="sysInsert"></div>
+            </div>
+            <div class="bottom">
+                <div class="title searchTitle">
+                    <span>数据记录接入趋势</span>
+                    <!--<div class="search">-->
+                        <!--<div class="searchItem" v-for="item in dateEnum" :key="item.value" @click="handlerClickItem(item)">-->
+                            <!--<img v-if="renderSearch(item)" src="${request.contextPath}/static/img/data/radio-active.svg" style="width: 1vw;height: 100%;">-->
+                            <!--<img v-else src="${request.contextPath}/static/img/data/radio.svg" style="width: 1vw;height: 100%;">-->
+                            <!--<template>-->
+                                <!--{{item.label}}-->
+                            <!--</template>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                </div>
+                <div style="width: 100%;height: 90%;" id="dataInsert"></div>
+            </div>
+        </div>
+        <div class="center">
+            <div class="center_number">
+                <div class="count_num">
+                    <p style="color: #fff;font-size: 1.6vw;font-weight: 700;">今日接入数据条数</p>
+                    <p style="display: flex;align-items: center;font-size: 1vw">
+                        较昨日增减
+                        <span style="color: #FC7549;font-size: 1.3vw;font-weight: 700;margin-left: 10px;">
+                            <!--<template>-->
+                                <!--{{todayCount.addRate || '0%'}}-->
+                            <!--</template>-->
+                            -15.73%
+                        </span>
+                    </p>
+                </div>
+                <ul class="singleNum">
+                    <!--<li v-for="(item, index) in numList" :key="index">-->
+                        <!--<template>-->
+                            <!--{{item}}-->
+                        <!--</template>-->
+                    <!--</li>-->
+                    <li>1</li>
+                    <li>5</li>
+                    <li>9</li>
+                    <li>7</li>
+                    <li>.</li>
+                    <li>3</li>
+                    <li>8</li>
+                    <li>万</li>
+                </ul>
+            </div>
+            <div class="center_circle">
+                <p style="font-size: 1.5vw;">数据汇聚</p>
+                <div style="top: 2%;left: 50%;transform: translateX(-50%)" class="arae">
+                    <!--<template>-->
+                        <!--{{org1}}-->
+                    <!--</template>-->
+                    北京市残疾人联合会
+                </div>
+                <div style="top: 15%;right: 20%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org2}}-->
+                    <!--</template>-->
+                    北京市卫生健康委员会
+                </div>
+                <div style="top: 34%;right: 10%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org3}}-->
+                    <!--</template>-->
+                    北京市经济和信息化局
+                </div>
+                <div style="bottom: 39%;right: 10%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org4}}-->
+                    <!--</template>-->
+                    大兴区政务服务管理局
+                </div>
+                <div style="bottom: 13%;right: 20%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org5}}-->
+                    <!--</template>-->
+                    大兴区司法局
+                </div>
+                <div style="bottom: 0%;left: 50%;transform: translateX(-50%)" class="arae">
+                    <!--<template>-->
+                        <!--{{org6}}-->
+                    <!--</template>-->
+                    大兴区农业农村局
+                </div>
+                <div style="bottom: 13%;left: 15%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org7}}-->
+                    <!--</template>-->
+                    北京市水务局
+                </div>
+                <div style="bottom: 39%;left: 10%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org8}}-->
+                    <!--</template>-->
+                    大兴区应急管理局
+                </div>
+                <div style="top: 34%;left: 10%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org9}}-->
+                    <!--</template>-->
+                    大兴区城指中心
+                </div>
+                <div style="top: 15%;left: 20%;" class="arae">
+                    <!--<template>-->
+                        <!--{{org10}}-->
+                    <!--</template>-->
+                    北京市质量技术监督局
+                </div>
+            </div>
+        </div>
+        <div class="right">
+            <div class="top">
+                <div class="title">人口库/法人库建设<img src="${request.contextPath}/static/img/data/desc.png" title="人口库主要基于接入市卫健、市公安数据进行融合加工形成的大兴区人口库（包含大兴流动人口及大兴户籍人口）；法人库基于市工商局数据形成的大兴区法人库。" style="width: 6%;height: 70%;margin-left: 5%;cursor: pointer"></div>
+                <div class="pepole">
+                    <div style="width: 50%;display: flex;flex-direction: column;justify-content: center;align-items: center;border-right: 1px solid #142C83;">
+                        <img src="${request.contextPath}/static/img/data/people.png" alt="" style="width: 40%;height: 20%;">
+                        <p style="color: #00A9FF;font-size: 1vw;margin: 3% 0;">大兴区人口数据</p>
+                        <p style="color: #fff;font-size: 1vw;"><span style="color: #fff;font-size: 1.2vw;font-weight: bold;">
+                            <!--<template>-->
+                                <!--{{people.exstLegalNum || 0}}-->
+                            <!--</template>-->
+                            181.41
+                        </span>万</p>
+                    </div>
+                    <div style="width: 50%;display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                        <img src="${request.contextPath}/static/img/data/policy.png" alt="" style="width: 40%;height: 20%;">
+                        <p style="color: #00A9FF;font-size: 1vw;margin: 3% 0;">大兴区法人数据</p>
+                        <p style="color: #fff;font-size: 1vw;"><span style="font-size: 1.2vw;font-weight: bold;">
+                            <!--<template>-->
+                                <!--{{people.exstPopuNum || 0}}-->
+                            <!--</template>-->
+                            13.14
+                        </span>万</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom">
+                <div class="title searchTitle">
+                    <span>委办局接入TOP10</span>
+                    <!--<div class="search">-->
+                        <!--<p class="searchItem" v-for="item in dataTopEnum" :key="item.value" @click="handlerTopItem(item)">-->
+                            <!--<img v-if="renderTop(item)" src="${request.contextPath}/static/img/data/radio-active.svg" style="width: 1vw;height: 100%;">-->
+                            <!--<img v-else src="${request.contextPath}/static/img/data/radio.svg" style="width: 1vw;height: 100%;">-->
+                            <!--<template>-->
+                                <!--{{item.label}}-->
+                            <!--</template>-->
+                        <!--</p>-->
+                    <!--</div>-->
+                </div>
+                <div style="width: 100%;height: 90%;" id="insertOrg"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="${request.contextPath}/static/lib/vue.min.js"></script>
+<script src="${request.contextPath}/static/lib/jquery.min.js"></script>
+<script src="${request.contextPath}/static/lib/echarts/echarts.min.js"></script>
+<script src="${request.contextPath}/static/js/common.js"></script>
+<script src="${request.contextPath}/static/js/module/data/data-converge.js"></script>
+<script type="text/javascript">
+    function chart1 () {
+            const result = [
+                {
+                    gkName: '农业口',
+                    accessCount: '3',
+                    zb: '8%',
+                },
+                {
+                    gkName: '国企口',
+                    accessCount: '1',
+                    zb: '2%',
+                },
+                {
+                    gkName: '文教口',
+                    accessCount: '4',
+                    zb: '11%',
+                },
+                {
+                    gkName: '机关口',
+                    accessCount: '3',
+                    zb: '8%',
+                },
+                {
+                    gkName: '其他',
+                    accessCount: '2',
+                    zb: '5%',
+                },
+                {
+                    gkName: '城建口',
+                    accessCount: '6',
+                    zb: '17%',
+                },
+                {
+                    gkName: '工业口',
+                    accessCount: '8',
+                    zb: '22%',
+                },
+                {
+                    gkName: '政法口',
+                    accessCount: '3',
+                    zb: '8%',
+                },
+                {
+                    gkName: '综合计划口',
+                    accessCount: '5',
+                    zb: '14%',
+                },
+            ]
+            const resultList = result.map(i => {
+                const {accessCount, gkName, zb} = i
+                return {
+                    value: parseInt(accessCount),
+                    name: gkName,
+                    zb,
+                }
+            })
+            option = {
+                color: ["#FF5FA7","#FC7549","#FE9938","#FAC916","#6ACD15","#00CD9D","#00C4FF","#2378FF","#7079F6","#B261F0",],
+                tooltip: {
+                    trigger: 'item'
+                },
+                grid: {
+                    bottom: "0%",
+                },
+                // legend: {
+                //     top: '5%',
+                //     left: 'center'
+                // },
+                series: [
+                    {
+                        type: 'pie',
+                        radius: ["10%", "25%"],
+                        hoverAnimation: false,
+                        label: {
+                            normal: {
+                                show: true,
+                                formatter: function(params){
+                                    return params.name + params.value
+                                },
+                                textStyle: {
+                                    fontSize: 10,
+                                },
+                                position: 'outside',
+                                formatter: '{a|{b}：{d}%}\n{hr|}',
+                                rich: {
+                                    a: {
+                                        color:'#F9F9F9',
+                                        padding: [20, -70, 10, -50]
+                                    }
+                                }
+                            },
+                            emphasis: {
+                                show: true
+                            }
+                        },
+                        labelLine: {
+                            normal: {
+                                show: true,
+                                length: 30,
+                                length2: 30,
+                                lineStyle:{
+                                    width:2
+                                }
+                            },
+                            emphasis: {
+                                show: false
+                            },
+                        },
+                        data: resultList
+                    },
+                ]
+            };
+            var myChart = echarts.init(document.getElementById('sysInsert'))
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option)
+    }
+
+    chart1()
+    function chart2 () {
+        const result1 = [
+            {
+                currRecodAmount: '1585.6807',
+                accessDate: '3月3日',
+            },
+            {
+                currRecodAmount: '1619.8904',
+                accessDate: '3月4日',
+            },
+            {
+                currRecodAmount: '1584.6286',
+                accessDate: '3月5日',
+            },
+            {
+                currRecodAmount: '1588.4235',
+                accessDate: '3月6日',
+            },
+            {
+                currRecodAmount: '3421.6909',
+                accessDate: '3月7日',
+            },
+            {
+                currRecodAmount: '1599.7872',
+                accessDate: '3月8日',
+            },
+            {
+                currRecodAmount: '1597.388',
+                accessDate: '3月9日',
+            },
+        ]
+        const result2 = [
+            {
+                currRecodAmount: '1788.6724',
+                accessDate: '2月8日',
+            },
+            {
+                currRecodAmount: '1549.7668',
+                accessDate: '2月9日',
+            },
+            {
+                currRecodAmount: '1533.1869',
+                accessDate: '2月10日',
+            },
+            {
+                currRecodAmount: '1552.5268',
+                accessDate: '2月11日',
+            },
+            {
+                currRecodAmount: '1547.4437',
+                accessDate: '2月12日',
+            },
+            {
+                currRecodAmount: '1572.736',
+                accessDate: '2月13日',
+            },
+            {
+                currRecodAmount: '1932.9525',
+                accessDate: '2月14日',
+            },
+            {
+                currRecodAmount: '1822.7612',
+                accessDate: '2月15日',
+            },
+            {
+                currRecodAmount: '1559.8868',
+                accessDate: '2月16日',
+            },
+            {
+                currRecodAmount: '1561.1872',
+                accessDate: '2月17日',
+            },
+            {
+                currRecodAmount: '1562.6548',
+                accessDate: '2月18日',
+            },
+            {
+                currRecodAmount: '1562.5393',
+                accessDate: '2月19日',
+            },
+            {
+                currRecodAmount: '1563.4268',
+                accessDate: '2月20日',
+            },
+            {
+                currRecodAmount: '2906.1692',
+                accessDate: '2月21日',
+            },
+            {
+                currRecodAmount: '1849.5627',
+                accessDate: '2月22日',
+            },
+            {
+                currRecodAmount: '1569.8333',
+                accessDate: '2月23日',
+            },
+            {
+                currRecodAmount: '5140.1242',
+                accessDate: '2月24日',
+            },
+            {
+                currRecodAmount: '1567.7348',
+                accessDate: '2月25日',
+            },
+            {
+                currRecodAmount: '1589.064',
+                accessDate: '2月26日',
+            },
+            {
+                currRecodAmount: '1603.794',
+                accessDate: '2月27日',
+            },
+            {
+                currRecodAmount: '2905.2024',
+                accessDate: '2月28日',
+            },
+            {
+                currRecodAmount: '3827.5921',
+                accessDate: '3月1日',
+            },
+            {
+                currRecodAmount: '1586.0905',
+                accessDate: '3月2日',
+            },
+            {
+                currRecodAmount: '1585.6807',
+                accessDate: '3月3日',
+            },
+            {
+                currRecodAmount: '1619.8904',
+                accessDate: '3月4日',
+            },
+            {
+                currRecodAmount: '1584.6286',
+                accessDate: '3月5日',
+            },
+            {
+                currRecodAmount: '1588.4235',
+                accessDate: '3月6日',
+            },
+            {
+                currRecodAmount: '3421.6909',
+                accessDate: '3月7日',
+            },
+            {
+                currRecodAmount: '1599.7872',
+                accessDate: '3月8日',
+            },
+        ]
+        const result = result1
+        option = {
+            tooltip: {
+                trigger: 'axis',
+                textStyle: {
+                    color: '#fff'
+                },
+            },
+            grid: {
+                top: '10%',
+                right: "10%",
+                bottom: "15%",
+                left: "20%",
+            },
+            xAxis: [{
+                show: true,
+                type: 'category',
+                data: result.map(i => i.accessDate) || [],
+                axisLine: {
+                    lineStyle: {
+                        color: '#163387'
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    interval: 1,
+                    textStyle: {
+                        color: '#ffffff'
+                    },
+                    // 默认x轴字体大小
+                    fontSize: 12,
+                    // margin:文字到x轴的距离
+                    // margin: 15
+                },
+                axisPointer: {
+                    label: {
+                        // padding: [11, 5, 7],
+                        padding: [0, 0, 10, 0],
+                        margin: 15,
+                        // 移入时的字体大小
+                        fontSize: 12,
+                        backgroundColor: {
+                            type: 'linear',
+                            x: 0,
+                            y: 0,
+                            x2: 0,
+                            y2: 1,
+                            colorStops: [{
+                                offset: 0,
+                                color: '#fff' // 0% 处的颜色
+                            }, {
+                                // offset: 0.9,
+                                offset: 0.86,
+                                /*
+        0.86 = （文字 + 文字距下边线的距离）/（文字 + 文字距下边线的距离 + 下边线的宽度）
+
+                                */
+                                color: '#fff' // 0% 处的颜色
+                            }, {
+                                offset: 0.86,
+                                color: '#33c0cd' // 0% 处的颜色
+                            }, {
+                                offset: 1,
+                                color: '#33c0cd' // 100% 处的颜色
+                            }],
+                            global: false // 缺省为 false
+                        }
+                    }
+                },
+                boundaryGap: false
+            }],
+            yAxis: [{
+                type: 'value',
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: false,
+                    lineStyle: {
+                        color: '#163387'
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#ffffff'
+                    }
+                },
+                splitLine: {
+                    lineStyle: {
+                        type: "dotted", //设置网格线类型 dotted：虚线   solid:实线
+                        width: 1,
+                    },
+                    show: true, //隐藏或显示
+                },
+                data: [20],
+            }],
+            series: [{
+                name: '接入数',
+                type: 'line',
+                data: result.map(i => i.currRecodAmount) || [],
+                symbolSize: 1,
+                symbol: 'circle',
+                smooth: true,
+                areaStyle: {
+                    normal: {
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                            { offset: 0, color: "#1438A3" },
+                            { offset: 1, color: "#0E1B6E" }
+                        ])
+                    }
+                },
+                yAxisIndex: 0,
+                showSymbol: false,
+                lineStyle: {
+                    width: 5,
+                    color: "#2176FD",
+                    // shadowColor: '#2176FD',
+                    // shadowBlur: 10,
+                    // shadowOffsetY: 20
+                },
+            }
+            ]
+        }
+        var myChart = echarts.init(document.getElementById('dataInsert'))
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option)
+    }
+    chart2()
+    function chart3 () {
+        const result1 = [
+                    {
+                        sjlAmountW: '450783.95',
+                        comBureauNm: '北京市残疾人联合会',
+                    },
+                    {
+                        sjlAmountW: '369684.25',
+                        comBureauNm: '北京市卫生健康委员会',
+                    },
+                    {
+                        sjlAmountW: '62693.79',
+                        comBureauNm: '北京市经济和信息化局',
+                    },
+                    {
+                        sjlAmountW: '28106.93',
+                        comBureauNm: '大兴区政务服务管理局',
+                    },
+                    {
+                        sjlAmountW: '22775.62',
+                        comBureauNm: '大兴区司法局',
+                    },
+                    {
+                        sjlAmountW: '20906.23',
+                        comBureauNm: '大兴区农业农村局',
+                    },
+                    {
+                        sjlAmountW: '11223.63',
+                        comBureauNm: '北京市水务局',
+                    },
+                    {
+                        sjlAmountW: '10692.62',
+                        comBureauNm: '大兴区应急管理局',
+                    },
+                    {
+                        sjlAmountW: '10558.81',
+                        comBureauNm: '大兴区城指中心',
+                    },
+                    {
+                        sjlAmountW: '7772.24',
+                        comBureauNm: '北京市质量技术监督局',
+                    },
+                ]
+                const result2 = [
+                    {
+                        sjlAmountW: '33868',
+                        comBureauNm: '北京市卫生健康委员会',
+                    },
+                    {
+                        sjlAmountW: '7356.62',
+                        comBureauNm: '北京市经济和信息化局',
+                    },
+                    {
+                        sjlAmountW: '3866.4',
+                        comBureauNm: '大兴区政务服务管理局',
+                    },
+                    {
+                        sjlAmountW: '3415.46',
+                        comBureauNm: '大兴区司法局',
+                    },
+                    {
+                        sjlAmountW: '2676.01',
+                        comBureauNm: '大兴区应急管理局',
+                    },
+                    {
+                        sjlAmountW: '2476.82',
+                        comBureauNm: '大兴区城指中心',
+                    },
+                    {
+                        sjlAmountW: '1315.43',
+                        comBureauNm: '北京市质量技术监督局',
+                    },
+                    {
+                        sjlAmountW: '979.94',
+                        comBureauNm: '北京市残疾人联合会',
+                    },
+                    {
+                        sjlAmountW: '656.77',
+                        comBureauNm: '大兴区经济和信息化局',
+                    },
+                    {
+                        sjlAmountW: '496.46',
+                        comBureauNm: '大兴区生态环境局',
+                    },
+                ]
+                const result3 = [
+                    {
+                        sjlAmountW: '205768.99',
+                        comBureauNm: '北京市卫生健康委员会',
+                    },
+                    {
+                        sjlAmountW: '135838.75',
+                        comBureauNm: '北京市残疾人联合会',
+                    },
+                    {
+                        sjlAmountW: '50611.73',
+                        comBureauNm: '北京市经济和信息化局',
+                    },
+                    {
+                        sjlAmountW: '23276.25',
+                        comBureauNm: '大兴区政务服务管理局',
+                    },
+                    {
+                        sjlAmountW: '22775.62',
+                        comBureauNm: '大兴区司法局',
+                    },
+                    {
+                        sjlAmountW: '10326.32',
+                        comBureauNm: '大兴区城指中心',
+                    },
+                    {
+                        sjlAmountW: '9755.52',
+                        comBureauNm: '大兴区应急管理局',
+                    },
+                    {
+                        sjlAmountW: '6272.96',
+                        comBureauNm: '大兴区农业农村局',
+                    },
+                    {
+                        sjlAmountW: '5550.61',
+                        comBureauNm: '北京市质量技术监督局',
+                    },
+                    {
+                        sjlAmountW: '3849.82',
+                        comBureauNm: '北京市教育委员会',
+                    },
+                ]
+                const result = result1
+                const maxValue = result.map(i => i.sjlAmountW).reduce((num1, num2) => {
+                    return parseInt(num1) > parseInt(num2) ? num1 : num2
+                })
+                const maxValueList = []
+                result.forEach(() => {
+                    maxValueList.push(parseInt(maxValue))
+                })
+                option = {
+                        grid: {
+                            left: '5%',
+                            right: '5%',
+                    bottom: '1%',
+                    top: '1%',
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'none'
+                    },
+                    formatter: function(params) {
+                        return params[0].name + '<br/>' +
+                            "<span style='display:inline-block;margin-right:5px;border-radius:10px;width:9px;height:9px;background-color:rgba(36,207,233,0.9)'></span>" +
+                            params[0].seriesName + ' : ' + Number((params[0].value.toFixed(4) / 10000).toFixed(2)).toLocaleString() + ' 亿条<br/>'
+                    }
+                },
+                xAxis: {
+                    show: false,
+                    type: 'value'
+                },
+                yAxis: [{
+                    type: 'category',
+                    inverse: true,
+                    axisLabel: {
+                        show: true,
+                        textStyle: {
+                            color: '#fff'
+                        },
+                        formatter: function(value) {
+                            if (value.length > 6) {
+                                return value.substring(0, 5) + "...";
+                            } else {
+                                return value;
+                            }
+                        },
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    data: result.map(i => i.comBureauNm) || []
+                }, {
+                    type: 'category',
+                    inverse: true,
+                    axisTick: 'none',
+                    axisLine: 'none',
+                    show: true,
+                    axisLabel: {
+                        textStyle: {
+                            color: '#ffffff',
+                            fontSize: '12'
+                        },
+                        formatter: function(value) {
+                            if (value >= 10000) {
+                                return (value / 10000).toLocaleString() + '亿条';
+                            } else {
+                                return value.toLocaleString() + '万条';
+                            }
+                        },
+                    },
+                    data: result.map(i => i.sjlAmountW) || []
+                }],
+                series: [{
+                    name: '接入数',
+                    type: 'bar',
+                    zlevel: 1,
+                    itemStyle: {
+                        normal: {
+                            barBorderRadius: 8,
+                            //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                            color: function (params) {
+                                var colorList = [
+                                    ['#FB7449', '#FC7549'],
+                                    ['#FE9937', '#FF9A37'],
+                                    ['#F9C816', '#FAC916'],
+                                    ['#69CD14', '#6ACE14'],
+                                    ['#00CB9C', '#00CD9D'],
+                                    ['#00C3FF', '#00C4FF'],
+                                    ['#2277FF', '#2378FF'],
+                                    ['#6F78F6', '#7079F6'],
+                                    ['#B160F0', '#B261F0'],
+                                    ['#FE5EA7', '#FF5FA7'],
+                                ];
+                                var index = params.dataIndex;
+                                if (params.dataIndex >= colorList.length) {
+                                    index = params.dataIndex - colorList.length;
+                                }
+                                return new echarts.graphic.LinearGradient(1, 0, 0, 0, [{
+                                    offset: 0,
+                                    color: colorList[index][0]
+                                },
+                                    {
+                                        offset: 1,
+                                        color: colorList[index][1]
+                                    }
+                                ]);
+                            },
+                            borderColor: '#09298D'//边框颜色
+                        },
+                    },
+                    barWidth: 10,
+                    data: result.map(i => i.sjlAmountW) || []
+                },
+                    {
+                        name: '背景',
+                        type: 'bar',
+                        barWidth: 10,
+                        barGap: '-100%',
+                        data: maxValueList,
+                        itemStyle: {
+                            normal: {
+                                color: '#082874',
+                                barBorderRadius: 30,
+                                borderColor: '#09298D',
+                            }
+                        },
+                    },
+                ]
+            };
+            var myChart = echarts.init(document.getElementById('insertOrg'))
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option)
+    }
+    chart3()
+
+</script>
+</html>

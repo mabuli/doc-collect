@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96px" height="127px" viewBox="0 0 96 127" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>数字背景-1</title>
+    <defs>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="3.061617e-15%" id="linearGradient-1">
+            <stop stop-color="#1594FF" offset="0%"></stop>
+            <stop stop-color="#42A9FF" offset="71.3914991%"></stop>
+            <stop stop-color="#85E8FF" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-2">
+            <stop stop-color="#1594FF" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#1594FF" offset="49.609375%"></stop>
+            <stop stop-color="#1594FF" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+        <g id="数据汇聚情况" transform="translate(-1122.000000, -313.000000)">
+            <g id="数字背景-1" transform="translate(1122.000000, 313.000000)">
+                <path d="M4.04408912,0.044577789 L92.0440891,1.01459732 C94.2358963,1.0387575 96,2.82241397 96,5.01435433 L96,122 C96,124.209139 94.209139,126 92,126 L4,126 C1.790861,126 2.705415e-16,124.209139 0,122 L0,4.0443348 C6.17636919e-16,1.8351958 1.790861,0.0443348003 4,0.0443348003 C4.01469671,0.0443348003 4.0293933,0.0444157978 4.04408912,0.044577789 Z" id="矩形" fill="url(#linearGradient-1)" opacity="0.3"></path>
+                <rect id="矩形" fill="url(#linearGradient-2)" x="0" y="0" width="2.66666667" height="126"></rect>
+                <rect id="矩形备份" fill="url(#linearGradient-2)" x="93.3333333" y="0" width="2.66666667" height="126"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -22,7 +22,7 @@ public interface SumMhDataAccessMapper extends BaseMapper<SumMhDataAccess> {
  @Select("SELECT  " +
          "  cast(tol_wbj_amount as NUMERIC) as tolWbjAmount," +
          "  cast(tol_tab_amount as NUMERIC) as tolTabAmount," +
-         "  act_recod_amount " +
+         "  tol_recod_amount as actRecodAmount  " +
          "from " +
          "sum_mh_data_access where access_date = CURRENT_DATE -1")
  public DataAccessVo getAccessData();

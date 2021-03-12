@@ -1,0 +1,211 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+}
+html,body {
+    width: 100%;
+    height: 100%;
+}
+/*@media screen and (max-width: 800px) {*/
+    /*html,body {*/
+        /*width: 1200px!important;*/
+    /*}*/
+/*}*/
+.converge {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+.count {
+    height: 10%;
+    background: url("../../../static/img/data/count.png");
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+}
+.count > ul {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 1% 0;
+}
+.count > ul > li {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right: 1px solid #0D2B83;
+}
+.count > ul > li .item {
+    width: 10vw;
+}
+.count > ul > li:last-child {
+    border: none;
+}
+.count > ul > li > img {
+    margin-right: 3%;
+}
+.count > ul > li .countItem {
+    display: flex;
+    color: #00A9FF;
+    align-items: center;
+    font-size: 1vw;
+    /*justify-content: center;*/
+ }
+.count > ul > li .countItem > img {
+    cursor: pointer;
+}
+.count > ul > li p {
+    color: #00A9FF;
+}
+.count > ul > li img {
+    margin-right: 3%;
+}
+.conContiner {
+    box-sizing: border-box;
+    height: 90%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 1%;
+}
+.conContiner .title {
+    color: #fff;
+    font-size: 1vw;
+    /*font-weight: 700;*/
+    height: 10%;
+    display: flex;
+    align-items: center;
+    /*position: absolute;*/
+}
+ .conContiner .searchTitle {
+     justify-content: space-between;
+ }
+.conContiner .searchTitle .search {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    cursor: pointer;
+}
+.conContiner .searchTitle .search .searchItem {
+    /*margin-left: 2%;*/
+    font-size: 1vw;
+    display: inline;
+    display: flex;
+    align-items: center;
+}
+.conContiner .left {
+    width: 23.7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.conContiner .left .top,.bottom {
+    height: 49%;
+    background: url("../../../static/img/data/border.png");
+    background-size: 100% 100%;
+    padding: 2%;
+}
+.conContiner .center {
+    width: 52.6%;
+    padding: 0 1%;
+}
+.conContiner .center .center_number {
+    width: 100%;
+    height: 13%;
+    display: flex;
+    justify-content: space-between;
+}
+ .conContiner .center .center_number .count_num {
+     width: 40%;
+     height: 100%;
+     color: #fff;
+     display: flex;
+     flex-direction: column;
+     justify-content: center;
+     align-items: center;
+     border: 1px solid #0D2B83;
+     border-radius: 5px;
+ }
+.conContiner .center .center_number .singleNum {
+    display: flex;
+    width: 58%;
+    overflow: hidden;
+    justify-content: space-around;
+
+}
+.conContiner .center .center_number .singleNum > li {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    width: 9%;
+    height: 100%;
+    color: #fff;
+    font-size: 1.5vw;
+    background: url("../../../static/img/data/number.svg");
+    background-size: 100% 100%;
+}
+
+.conContiner .center .center_circle {
+    width: 100%;
+    height: 87%;
+    display: flex;
+    background: url("../../../static/img/data/body.png");
+    background-size: 100% 110%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.conContiner .center .center_circle > p {
+    font-weight: bold;
+    color: #fff;
+}
+
+.conContiner .center .center_circle > div {
+    color: #fff;
+    position: absolute;
+}
+.conContiner .center .center_circle > .org {
+    background: url("../../../static/img/data/city.png");
+    background-size: 100% 100%;
+    padding: 1%;
+}
+.conContiner .center .center_circle > .arae {
+    background: url("../../../static/img/data/arae.png");
+    background-size: 100% 100%;
+    padding: 1%;
+    font-size: 1vw;
+}
+
+.conContiner .right {
+    width: 23.7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.conContiner .right .top {
+    height: 30%;
+    background: url("../../../static/img/data/border.png");
+    background-size: 100% 100%;
+    padding: 2%;
+}
+.conContiner .right .top .title {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    display: flex;
+    align-items: center;
+}
+.conContiner .right .top .pepole {
+    width: 100%;
+    height: 80%;
+    display: flex;
+    display: flex;
+    align-items: center;
+}
+.conContiner .right .bottom {
+    height: 68%;
+    padding: 2%;
+}

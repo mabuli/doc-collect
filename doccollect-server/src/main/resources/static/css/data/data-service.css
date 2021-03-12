@@ -1,0 +1,250 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,body {
+    width: 100%;
+    height: 100%;
+}
+/*@media screen and (max-width: 800px) {*/
+    /*html,body {*/
+        /*width: 1200px!important;*/
+    /*}*/
+/*}*/
+#services_box {
+    width: 100%;
+    height: 100%;
+}
+
+#services_main{
+    display: flex;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+#services_main  .container_left , #services_main  .container_right{
+    width: 23.7%;
+}
+
+#services_main > .container_main {
+    width: 52%;
+    margin: 0 0.6%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.container_left , .container_right{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+ #leftCen, #leftTop, #rightTop, #leftCen, #leftBomData1, #centerCen{
+    width: 100%;
+    height: 100%;
+}
+
+.rightBom p, .leftTop p, .leftBom p, .rightCen h1, .rightTop p, .leftCen p, .centerCen p{
+    font-size: 1vw;
+    color: #F9F9F9;
+}
+.leftBom > p {
+    height: 10%;
+    display: flex;
+    align-items: center;
+}
+
+.leftCen, .leftBom , .leftTop , .rightTop, .centerBom{
+    height: 32%;
+    background: url(../../../static/img/data/border.png) center center;
+    background-size: 100% 100%;
+    padding: 0 2%;
+    box-sizing: border-box;
+}
+.centerBom .title {
+    height: 10%;
+}
+#centerBom {
+    height: 90%;
+}
+.container_right > .rightBom {
+    height: 66%;
+    background: url(../../../static/img/data/border.png) center center;
+    background-size: 100% 100%;
+    box-sizing: border-box;
+}
+
+.container_right > .rightBom > .bottomBox {
+    height: 58%;
+    padding: 2% 2% 0 2%;
+    box-sizing: border-box;
+}
+.container_right > .rightBom > .bottomBox .boxTop,.boxBottom {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.container_right > .rightBom > .bottomBox .boxTop > p {
+    height: 10%;
+}
+.container_right > .rightBom > .bottomBox .boxTop > ul {
+    height: 85%;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.container_right > .rightBom > .bottomBox .boxTop > ul > li {
+    width: 32%;
+    height: 48%;
+    background: url(../../../static/img/data/border.png) center center;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #41A7FF;
+    padding: 2%;
+}
+.container_right > .rightBom > .bottomBox .boxTop > ul > li p {
+    color: #41A7FF;
+}
+.container_right > .rightBom > .bottomBox .boxTop > ul > li span {
+    color: #fff;
+    font-size: 1.3vw;
+    font-weight: 700;
+}
+.container_right > .rightBom > .bottomBox .boxBottom > p {
+    height: 10%;
+}
+.container_right > .rightBom > .bottomBox .boxBottom > ul {
+    height: 85%;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.container_right > .rightBom > .bottomBox .boxBottom > ul > li {
+    width: 48%;
+    height: 45%;
+    padding: 2% 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient(to right, #0F1C59, #112F88, #1140A7);
+}
+.container_right > .rightBom > .bottomBox .boxBottom > ul > li span {
+    font-size: 1.3vw;
+}
+.container_right > .rightBom > .government {
+    height: 42%;
+    padding: 2% 0 2% 2%;
+    box-sizing: border-box;
+}
+
+.centerTop{
+    height: 13%;
+    display: flex;
+    justify-content: space-around;
+}
+
+.centerCen{
+    height: 54%;
+}
+
+.centerTopPlt{
+    width: 32%;
+    height: 90%;
+    background: url(../../../static/img/data/centerTop.png) center center;
+    background-size: 100% 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.shareDataInfo{
+    display: inline-block;
+    font-size: 1vw;
+}
+
+.shareDataInfo span{
+    font-size: 1.3vw;
+    font-weight: 700;
+    color: #fff;
+}
+
+.shareDataInfo p{
+    font-size: 1vw;
+    color: #41A7FF;
+}
+
+.shareDataInfo p:first-child{
+    color: #fff;
+}
+.leftBomWrap {
+    padding: 0 2%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.leftBomWrap > .wrapItem {
+    width: 100%;
+    height: 30%;
+    display: flex;
+    justify-content: space-between;
+}
+.leftBomWrap > .wrapItem .wrapItemNum {
+    width: 73%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.leftBomWrap > .wrapItem .wrapItemNum div {
+    height: 30%;
+    font-size: 1vw;
+    color: #41A7FF;
+}
+.leftBomWrap > .wrapItem .wrapItemNum .numList {
+    height: 50%;
+    font-size: 1.3vw;
+    font-weight: 700;
+    list-style: none;
+    color: #fff;
+    display: flex;
+}.leftBomWrap > .wrapItem .wrapItemNum .numList > li {
+     width: 12%;
+     height: 100%;
+     border: 1px solid #41A7FF;
+     margin-right: 5%;
+     border-radius: 3px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+ }
+#leftBomData1 , #leftBomData2, #leftBomData3{
+    width: 25%;
+    height: 100%;
+}
+.leftdatatextClass h1{
+    color: #41A7FF;
+    font-size: 1vw;
+    height: 16%;
+    /*margin-top: 10%;*/
+}
+.leftdatatextClass p{
+    color: #fff;
+    font-size: 1.5vw;
+    height: 16%;
+}
+#rightBom {
+    width: 100%;
+    height: 90%;
+    background: url(../../../static/img/data/mapImg.svg) center center;
+    background-size: 100% 100%;
+}

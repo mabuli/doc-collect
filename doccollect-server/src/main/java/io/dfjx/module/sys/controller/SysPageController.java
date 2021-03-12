@@ -58,6 +58,21 @@ public class SysPageController {
 		return "index";
 	}
 
+	@RequestMapping("statistics.html")
+	public String statistics(){
+		return "statistics";
+	}
+
+	@RequestMapping("converge.html")
+	public String converge(){
+		return "converge";
+	}
+
+	@RequestMapping("service.html")
+	public String service(){
+		return "service";
+	}
+
 	@RequestMapping("index.html")
 	public String index1(){
 		return "index";

@@ -54,3 +54,9 @@ auth:
   logout:
     url: http://172.25.117.56:8094/cas/logout
 
+postgre:
+  platform: postgres
+  url: jdbc:postgresql://192.21.255.4:7300/servicedb?useUnicode=true&characterEncoding=utf8&allowEncodingChanges=true
+  username: seradmin
+  password: seradmin
+  driverClassName: org.postgresql.Driver

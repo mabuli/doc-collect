@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="${request.contextPath}/static/css/data/statistics.css">
+    <link rel="stylesheet" href="${request.contextPath}/static/lib/elementui/index.css">
+    <script src="${request.contextPath}/static/lib/vue.min.js"></script>
+    <title>大兴区数据能力支撑平台</title>
+</head>
+<body>
+<div id="statistics" v-cloak>
+    <div class="header">
+        <div class="left">
+<!--            <div class="back">返回</div>-->
+            <div class="title" style="font-size: 1.6vw;font-weight: 700;color: #fff;">大兴区大数据能力支撑平台</div>
+        </div>
+        <div class="center">
+            <div id="title" :class="showFlag ? 'title_active' : 'title'" @click="tiggerMenu(1)">数据汇聚情况</div>
+            <div id="title1" :class="!showFlag ? 'title_active' : 'title'" @click="tiggerMenu(0)">数据服务情况</div>
+        </div>
+        <div class="right">
+<!--            <span>你好，admin</span>-->
+            <span>
+                <template>
+                    {{currentTime}}
+                </template>
+            </span>
+            <span style="margin-left: 5%">
+                <template>
+                    {{currentDay}}
+                </template>
+            </span>
+            <div class="layout" @click="layout">退出</div>
+        </div>
+<!--        <el-button @click="tiggerMenu(1)">数据汇聚情况</el-button>-->
+<!--        <el-button @click="tiggerMenu(0)">数据服务情况</el-button>-->
+    </div>
+    <div id="mainBox">
+        <iframe v-if="showFlag" src="./converge.html" frameborder="0" width="100%" height="100%"></iframe>
+        <iframe v-else src="./service.html" frameborder="0" width="100%" height="100%"></iframe>
+    </div>
+</div>
+<script src="${request.contextPath}/static/lib/jquery.min.js"></script>
+<script src="${request.contextPath}/static/js/module/data/index.js"></script>
+
+</body>
+<script>
+    // window.onresize = function(e){
+    //     const htmlEl = document.getElementsByTagName('html')?.[0]
+    //     const bodyEl = document.getElementsByTagName('body')?.[0]
+    //     const height = window.screen.height
+    //     htmlEl.style.height = height
+    //     bodyEl.style.height = height
+    //     console.log(htmlEl, bodyEl)
+    // }
+</script>
+</html>

@@ -24,10 +24,12 @@ public class SunFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse resp = (HttpServletResponse) servletResponse;
+        HttpServletRequest resq = (HttpServletRequest) servletRequest;
         //resp.setHeader("X-Frame-Options", "ALLOW-FROM http://172.25.117.52:8094/ http://172.25.117.52:37799/ ");
         //resp.setHeader("Content-Security-Policy", "frame-ancestors http://localhost:12100/doc-collect/");
         //resp.setHeader("X-Frame-Options", "http://localhost:12100/doc-collect/");
         log.info("filter 处理中");
+        log.info("当前请求路径,{}",resq.getRequestURL());
         filterChain.doFilter(servletRequest,servletResponse);
 
     }
